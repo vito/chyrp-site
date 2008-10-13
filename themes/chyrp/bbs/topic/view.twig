@@ -3,10 +3,11 @@
 {% block content %}
 <h1>$topic.title $topic.edit_link $topic.delete_link</h1>
 <p>$topic.description</p>
+<br />
 <h2>Messages</h2>
 <ul>
     {% for message in topic.messages(25).paginated %}
-    <li>
+    <li id="message_$message.id">
         <strong>$message.user.login</strong>:
         <p>$message.body</p>
         $message.edit_link $message.delete_link

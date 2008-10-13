@@ -84,14 +84,4 @@
             Group::remove_permission("delete_own_topic", __("Delete Own Topic"));
             Group::remove_permission("delete_own_message", __("Delete Own Message"));
         }
-
-        public function bbs_add_message() {
-            $message = Message::add($_POST['body'], $_POST['topic_id']);
-            Flash::notice(__("Message added.", "bbs"), $message->topic()->url());
-        }
-
-        public function bbs_add_topic() {
-            $topic = Topic::add($_POST['title'], $_POST['description'], $_POST['forum_id']);
-            Flash::notice(__("Topic added.", "bbs"), $topic->url());
-        }
     }

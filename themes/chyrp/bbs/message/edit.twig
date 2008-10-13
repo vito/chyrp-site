@@ -1,0 +1,12 @@
+{% extends "layouts/bbs.twig" %}
+
+{% block content %}
+<h1>Edit Message</h1>
+<form action="{% url "bbs/update_message" %}" method="post" accept-charset="utf-8">
+    <textarea name="body" rows="8" cols="100%">${ message.body | escape }</textarea>
+
+    <p><input type="submit" value="Continue &rarr;"></p>
+
+    <input type="hidden" name="message_id" value="$message.id" id="message_id" />
+</form>
+{% endblock %}

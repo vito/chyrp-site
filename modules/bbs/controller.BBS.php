@@ -12,6 +12,10 @@
         # Context for displaying pages.
         public $context = array();
 
+        # String: $base
+        # The base path for this controller.
+        public $base = "bbs";
+
         # Boolean: $feed
         # Is the visitor requesting a feed?
         public $feed = false;
@@ -63,6 +67,48 @@
                            $forum->name);
         }
 
+        public function add_message() {
+            $message = Message::add($_POST['body'], $_POST['topic_id']);
+            Flash::notice(__("Message added.", "bbs"), $message->topic()->url());
+        }
+
+        public function add_topic() {
+            $topic = Topic::add($_POST['title'], $_POST['description'], $_POST['forum_id']);
+            Flash::notice(__("Topic added.", "bbs"), $topic->url());
+        }
+
+        public function edit_message() {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No message ID specified.", "bbs"));
+
+            $message = new Message($_GET['id']);
+            if ($message->no_results)
+                error(__("Error"), __("Invalid message ID specified.", "bbs"));
+
+            if (!$message->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this message.", "bbs"));
+
+            $this->display("bbs/message/edit",
+                           array("message" => $message),
+                           __("Edit Message", "bbs"));
+        }
+
+        public function update_message() {
+            if (!isset($_POST['message_id']))
+                error(__("Error"), __("No message ID specified.", "bbs"));
+
+            $message = new Message($_POST['message_id']);
+            if ($message->no_results)
+                error(__("Error"), __("Invalid message ID specified.", "bbs"));
+
+            if (!$message->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this message.", "bbs"));
+
+            $message->update($_POST['body']);
+
+            Flash::notice(__("Message updated.", "bbs"), $message->topic()->url()."#message_".$message->id);
+        }
+
         public function parse($route) {
             $config = Config::current();
 
@@ -70,8 +116,6 @@
                 $this->post_limit = $config->feed_items;
             else
                 $this->post_limit = $config->posts_per_page;
-
-            array_shift($route->arg);
 
             if (empty($route->arg[0]) and !isset($config->routes["/"])) # If they're just at /, don't bother with all this.
                 return $route->action = "index";

@@ -45,7 +45,12 @@
          * See Also:
          *     <update>
          */
-        static function add($title, $description, $forum_id, $user_id = null, $created_at = null, $updated_at = "0000-00-00 00:00:00") {
+        static function add($title,
+                            $description,
+                            $forum_id,
+                            $user_id = null,
+                            $created_at = null,
+                            $updated_at = "0000-00-00 00:00:00") {
             $sql = SQL::current();
             $visitor = Visitor::current();
             $sql->insert("topics",
@@ -73,18 +78,30 @@
          *     $title - The new title.
          *     $description - The new description.
          */
-        public function update($title, $description) {
+        public function update($title = null,
+                               $description = null,
+                               $forum_id = null,
+                               $user_id = null,
+                               $created_at = null,
+                               $updated_at = null) {
             if ($this->no_results)
                 return false;
 
             $sql = SQL::current();
             $sql->update("topics",
-                         array("id" => $this->id),
-                         array("title" => $title,
-                               "description" => $description));
+                         array("id"          => $this->id),
+                         array("title"       => fallback($title, $this->title),
+                               "description" => fallback($description, $this->description),
+                               "forum_id"    => fallback($forum_id, $this->forum_id),
+                               "user_id"     => fallback($user_id, $this->user_id),
+                               "created_at"  => fallback($created_at, $this->created_at),
+                               "updated_at"  => fallback($updated_at, $this->updated_at)));
+
+            foreach (array("title", "description", "forum_id", "user_id", "created_at", "updated_at") as $attr)
+                $this->$attr = $$attr;
 
             $trigger = Trigger::current();
-            $trigger->call("update_topic", $this, $title, $description);
+            $trigger->call("update_topic", $this);
         }
 
         /**

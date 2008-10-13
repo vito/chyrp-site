@@ -70,18 +70,21 @@
          *     $title - The new title.
          *     $description - The new description.
          */
-        public function update($title, $description) {
+        public function update($body = null, $topic_id = null, $user_id = null, $created_at = null, $updated_at = null) {
             if ($this->no_results)
                 return false;
 
             $sql = SQL::current();
             $sql->update("messages",
                          array("id" => $this->id),
-                         array("title" => $title,
-                               "description" => $description));
+                         array("body"       => fallback($body, $this->body),
+                               "topic_id"   => fallback($topic_id, $this->topic_id),
+                               "user_id"    => fallback($user_id, $this->user_id),
+                               "created_at" => fallback($created_at, $this->created_at),
+                               "updated_at" => fallback($updated_at, datetime())));
 
             $trigger = Trigger::current();
-            $trigger->call("update_message", $this, $title, $description);
+            $trigger->call("update_message", $this);
         }
 
         /**
