@@ -13,7 +13,7 @@
          *     <Model::grab>
          */
         public function __construct($message_id, $options = array()) {
-            if (!isset($message) and empty($options)) return;
+            if (!isset($message_id) and empty($options)) return;
             parent::grab($this, $message_id, $options);
 
             if ($this->no_results)
@@ -45,15 +45,15 @@
          * See Also:
          *     <update>
          */
-        static function add($title, $description) {
+        static function add($body, $topic_id, $user_id = null, $created_at = null, $updated_at = null) {
             $sql = SQL::current();
             $visitor = Visitor::current();
             $sql->insert("messages",
-                         array("title" => $title,
-                               "description" => $description,
-                               "user_id" => $user_id,
-                               "created_at" => $created_at,
-                               "updated_at" => $updated_at));
+                         array("body" => $body,
+                               "topic_id" => $topic_id,
+                               "user_id" => fallback($user_id, $visitor->id),
+                               "created_at" => fallback($created_at, datetime()),
+                               "updated_at" => fallback($updated_at, "0000-00-00 00:00:00")));
 
             $message = new self($sql->latest());
 
@@ -93,6 +93,34 @@
          */
         static function delete($id) {
             parent::destroy(get_class(), $id);
+        }
+
+        /**
+         * Function: deletable
+         * Checks if the <User> can delete the message.
+         */
+        public function deletable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            fallback($user, Visitor::current());
+
+            return ($user->group()->can("delete_message")) or
+                   ($user->group()->can("delete_own_message") and $this->user_id == $user->id);
+        }
+
+        /**
+         * Function: editable
+         * Checks if the <User> can edit the message.
+         */
+        public function editable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            fallback($user, Visitor::current());
+
+            return ($user->group()->can("edit_message")) or
+                   ($user->group()->can("edit_own_message") and $this->user_id == $user->id);
         }
 
         /**
@@ -171,12 +199,12 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function edit_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("edit_message"))
+            if (!$this->editable())
                 return false;
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -189,11 +217,11 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function delete_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("delete_message"))
+            if (!$this->deletable())
                 return false;
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

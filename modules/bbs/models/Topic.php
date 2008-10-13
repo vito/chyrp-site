@@ -13,7 +13,7 @@
          *     <Model::grab>
          */
         public function __construct($topic_id, $options = array()) {
-            if (!isset($topic) and empty($options)) return;
+            if (!isset($topic_id) and empty($options)) return;
             parent::grab($this, $topic_id, $options);
 
             if ($this->no_results)
@@ -96,6 +96,34 @@
         }
 
         /**
+         * Function: deletable
+         * Checks if the <User> can delete the topic.
+         */
+        public function deletable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            fallback($user, Visitor::current());
+
+            return ($user->group()->can("delete_topic")) or
+                   ($user->group()->can("delete_own_topic") and $this->user_id == $user->id);
+        }
+
+        /**
+         * Function: editable
+         * Checks if the <User> can edit the topic.
+         */
+        public function editable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            fallback($user, Visitor::current());
+
+            return ($user->group()->can("edit_topic")) or
+                   ($user->group()->can("edit_own_topic") and $this->user_id == $user->id);
+        }
+
+        /**
          * Function: exists
          * Checks if a topic exists.
          *
@@ -153,9 +181,11 @@
 
             return $per_page ?
                        $cache = new Paginator(Message::find(array("where" => array("topic_id" => $this->id),
+                                                                  "order" => "created_at ASC, id ASC",
                                                                   "placeholders" => true)),
                                               $per_page) :
-                       $cache = Message::find(array("where" => array("topic_id" => $this->id))) ;
+                       $cache = Message::find(array("where" => array("topic_id" => $this->id),
+                                                    "order" => "created_at ASC, id ASC")) ;
         }
 
         /**
@@ -190,12 +220,12 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function edit_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("edit_topic"))
+            if (!$this->editable())
                 return false;
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_topic&amp;id='.$this->id.'" title="Edit" class="topic_edit_link edit_link" id="topic_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_topic&amp;id='.$this->id.'" title="Edit" class="topic_edit_link edit_link" id="topic_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -208,11 +238,11 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function delete_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("delete_topic"))
+            if (!$this->deletable())
                 return false;
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_topic&amp;id='.$this->id.'" title="Delete" class="topic_delete_link delete_link" id="topic_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_topic&amp;id='.$this->id.'" title="Delete" class="topic_delete_link delete_link" id="topic_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

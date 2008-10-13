@@ -13,7 +13,7 @@
          *     <Model::grab>
          */
         public function __construct($forum_id, $options = array()) {
-            if (!isset($forum) and empty($options)) return;
+            if (!isset($forum_id) and empty($options)) return;
             parent::grab($this, $forum_id, $options);
 
             if ($this->no_results)
