@@ -45,7 +45,7 @@
          * See Also:
          *     <update>
          */
-        static function add($body, $topic_id, $user_id = null, $created_at = null, $updated_at = null) {
+        static function add($body, $topic_id, $user_id = null, $created_at = null, $updated_at = "0000-00-00 00:00:00") {
             $sql = SQL::current();
             $visitor = Visitor::current();
             $sql->insert("messages",
@@ -53,7 +53,7 @@
                                "topic_id" => $topic_id,
                                "user_id" => fallback($user_id, $visitor->id),
                                "created_at" => fallback($created_at, datetime()),
-                               "updated_at" => fallback($updated_at, "0000-00-00 00:00:00")));
+                               "updated_at" => $updated_at));
 
             $message = new self($sql->latest());
 

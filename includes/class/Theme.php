@@ -165,13 +165,13 @@
 
             if (!empty($stylesheets))
                 $stylesheets = '<link rel="stylesheet" href="'.
-                               implode('" type="text/css" media="screen" charset="utf-8" /'."\n\t\t".'<link rel="stylesheet" href="', $stylesheets).
+                               implode('" type="text/css" media="screen" charset="utf-8" /'."\n        ".'<link rel="stylesheet" href="', $stylesheets).
                                '" type="text/css" media="screen" charset="utf-8" />';
             else
                 $stylesheets = "";
 
             if (file_exists(THEME_DIR."/style.css"))
-                $stylesheets = '<link rel="stylesheet" href="'.THEME_URL.'/style.css" type="text/css" media="screen" charset="utf-8" />'."\n\t\t";
+                $stylesheets = '<link rel="stylesheet" href="'.THEME_URL.'/style.css" type="text/css" media="screen" charset="utf-8" />'."\n        ";
 
             if (!file_exists(THEME_DIR."/stylesheets/") and !file_exists(THEME_DIR."/css/"))
                 return $stylesheets;
@@ -199,7 +199,7 @@
                 if ($file == "ie.css" or preg_match("/(lt|gt)?ie([0-9\.]+)\.css/", $file))
                     $stylesheets.= "<![endif]-->";
 
-                $stylesheets.= "\n\t\t";
+                $stylesheets.= "\n        ";
             }
 
             return $stylesheets;
@@ -226,7 +226,7 @@
             Trigger::current()->filter($javascripts, "scripts");
 
             $javascripts = '<script src="'.
-                           implode('" type="text/javascript" charset="utf-8"></script>'."\n\t\t".'<script src="', $javascripts).
+                           implode('" type="text/javascript" charset="utf-8"></script>'."\n        ".'<script src="', $javascripts).
                            '" type="text/javascript" charset="utf-8"></script>';
 
             if (file_exists(THEME_DIR."/javascripts/") or file_exists(THEME_DIR."/js/")) {
@@ -235,13 +235,13 @@
 
                 foreach(array_merge($long, $short) as $file)
                     if ($file)
-                        $javascripts.= "\n\t\t".'<script src="'.$config->chyrp_url.'/includes/lib/gz.php?file='.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
+                        $javascripts.= "\n        ".'<script src="'.$config->chyrp_url.'/includes/lib/gz.php?file='.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
 
                 $long  = (array) glob(THEME_DIR."/javascripts/*.js.php");
                 $short = (array) glob(THEME_DIR."/js/*.js.php");
                 foreach(array_merge($long, $short) as $file)
                     if ($file)
-                        $javascripts.= "\n\t\t".'<script src="'.$config->chyrp_url.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
+                        $javascripts.= "\n        ".'<script src="'.$config->chyrp_url.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
             }
 
             return $javascripts;
@@ -266,9 +266,9 @@
             $route = Route::current();
             $feeds = '<link rel="alternate" type="application/atom+xml" title="'.$config->name.' Feed" href="'.fallback($config->feed_url, url("feed"), true).'" />'."\n";
 
-            $feeds.= "\t\t".'<link rel="alternate" type="application/atom+xml" title="Current Page (if applicable)" href="'.$config->url.$request.$append.'" />';
+            $feeds.= "        ".'<link rel="alternate" type="application/atom+xml" title="Current Page (if applicable)" href="'.$config->url.$request.$append.'" />';
 
-            $feeds.= "\n\t\t";
+            $feeds.= "\n        ";
 
             return $feeds;
         }

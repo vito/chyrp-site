@@ -89,4 +89,9 @@
             $message = Message::add($_POST['body'], $_POST['topic_id']);
             Flash::notice(__("Message added.", "bbs"), $message->topic()->url());
         }
+
+        public function bbs_add_topic() {
+            $topic = Topic::add($_POST['title'], $_POST['description'], $_POST['forum_id']);
+            Flash::notice(__("Topic added.", "bbs"), $topic->url());
+        }
     }

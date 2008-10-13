@@ -45,14 +45,17 @@
          * See Also:
          *     <update>
          */
-        static function add($title, $description) {
+        static function add($title, $description, $forum_id, $user_id = null, $created_at = null, $updated_at = "0000-00-00 00:00:00") {
             $sql = SQL::current();
             $visitor = Visitor::current();
             $sql->insert("topics",
                          array("title" => $title,
                                "description" => $description,
-                               "user_id" => $user_id,
-                               "created_at" => $created_at,
+                               "clean" => sanitize($title),
+                               "url" => self::check_url(sanitize($title)),
+                               "forum_id" => $forum_id,
+                               "user_id" => fallback($user_id, $visitor->id),
+                               "created_at" => fallback($created_at, datetime()),
                                "updated_at" => $updated_at));
 
             $topic = new self($sql->latest());
