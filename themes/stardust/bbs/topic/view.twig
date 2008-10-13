@@ -13,3 +13,11 @@
 
 ${ topic.messages(25).next_link }
 ${ topic.messages(25).prev_link }
+
+{% if visitor.group.can("add_message") %}
+<form action="{% url "bbs/add_message" %}" method="post" accept-charset="utf-8">
+    <textarea name="body" rows="8" cols="100%"></textarea>
+
+    <p><input type="submit" value="Continue &rarr;"></p>
+</form>
+{% endif %}
