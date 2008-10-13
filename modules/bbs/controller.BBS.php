@@ -93,6 +93,22 @@
                            __("Edit Message", "bbs"));
         }
 
+        public function edit_topic() {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No topic ID specified.", "bbs"));
+
+            $topic = new Topic($_GET['id']);
+            if ($topic->no_results)
+                error(__("Error"), __("Invalid topic ID specified.", "bbs"));
+
+            if (!$topic->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this topic.", "bbs"));
+
+            $this->display("bbs/topic/edit",
+                           array("topic" => $topic),
+                           _f("Edit &#8220;%s&#8221;", array(fix($topic->title)), "bbs"));
+        }
+
         public function update_message() {
             if (!isset($_POST['message_id']))
                 error(__("Error"), __("No message ID specified.", "bbs"));
@@ -107,6 +123,22 @@
             $message->update($_POST['body']);
 
             Flash::notice(__("Message updated.", "bbs"), $message->topic()->url()."#message_".$message->id);
+        }
+
+        public function update_topic() {
+            if (!isset($_POST['topic_id']))
+                error(__("Error"), __("No topic ID specified.", "bbs"));
+
+            $topic = new Topic($_POST['topic_id']);
+            if ($topic->no_results)
+                error(__("Error"), __("Invalid topic ID specified.", "bbs"));
+
+            if (!$topic->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this topic.", "bbs"));
+
+            $topic->update($_POST['title'], $_POST['description']);
+
+            Flash::notice(__("Topic updated.", "bbs"), $topic->url());
         }
 
         public function parse($route) {
