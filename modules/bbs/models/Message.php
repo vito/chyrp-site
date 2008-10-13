@@ -158,16 +158,34 @@
         /**
          * Function: url
          * Returns a message's URL.
+         *
+         * Parameters:
+         *     $topic - Link to the post in the topic?
          */
-        public function url() {
+        public function url($topic = false) {
             if ($this->no_results)
                 return false;
 
             $config = Config::current();
-            if (!$config->clean_urls)
-                return $config->url."/bbs/?action=message&amp;url=".urlencode($this->url);
 
-            return url("message/".$this->url);
+            if ($topic) {
+                $offset = 1;
+                foreach ($this->topic()->messages() as $message)
+                    if ($message->id != $this->id)
+                        $offset++;
+                    else
+                        break;
+
+                $page = ceil($offset / 25); # TODO: per-page config
+                return ($config->clean_urls) ?
+                           url("topic/".$this->topic()->url."/page/".$page)."#message_".$this->id :
+                           $config->url."/bbs/?action=topic&amp;url=".urlencode($this->topic()->url)
+                               ."&amp;page=".$page."#message_".$this->id ;
+            }
+
+            return ($config->clean_urls) ?
+                       url("message/".$this->id) :
+                       $config->url."/bbs/?action=message&amp;id=".$this->id ;
         }
 
         /**

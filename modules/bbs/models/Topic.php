@@ -14,6 +14,14 @@
          */
         public function __construct($topic_id, $options = array()) {
             if (!isset($topic_id) and empty($options)) return;
+
+            $options["left_join"][] = array("table" => "messages",
+                                            "where" => "topic_id = topics.id");
+
+            $options["select"][] = "*";
+            $options["select"][] = "COUNT(messages.id) AS message_count";
+            $options["select"][] = "MAX(messages.created_at) AS last_message";
+
             parent::grab($this, $topic_id, $options);
 
             if ($this->no_results)
@@ -95,7 +103,7 @@
                                "forum_id"    => fallback($forum_id, $this->forum_id),
                                "user_id"     => fallback($user_id, $this->user_id),
                                "created_at"  => fallback($created_at, $this->created_at),
-                               "updated_at"  => fallback($updated_at, $this->updated_at)));
+                               "updated_at"  => fallback($updated_at, datetime())));
 
             foreach (array("title", "description", "forum_id", "user_id", "created_at", "updated_at") as $attr)
                 $this->$attr = $$attr;
@@ -175,16 +183,19 @@
         /**
          * Function: url
          * Returns a topic's URL.
+         *
+         * Parameters:
+         *     $last_page - Link to the last page of the topic?
          */
         public function url() {
             if ($this->no_results)
                 return false;
 
             $config = Config::current();
-            if (!$config->clean_urls)
-                return $config->url."/bbs/?action=topic&amp;url=".urlencode($this->url);
 
-            return url("topic/".$this->url);
+            return ($config->clean_urls) ?
+                       url("topic/".$this->url) :
+                       $config->url."/bbs/?action=topic&amp;url=".urlencode($this->url) ;
         }
 
         /**

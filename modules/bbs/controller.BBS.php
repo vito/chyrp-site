@@ -69,7 +69,7 @@
 
         public function add_message() {
             $message = Message::add($_POST['body'], $_POST['topic_id']);
-            Flash::notice(__("Message added.", "bbs"), $message->topic()->url());
+            Flash::notice(__("Message added.", "bbs"), $message->url(true));
         }
 
         public function add_topic() {
@@ -122,7 +122,7 @@
 
             $message->update($_POST['body']);
 
-            Flash::notice(__("Message updated.", "bbs"), $message->topic()->url()."#message_".$message->id);
+            Flash::notice(__("Message updated.", "bbs"), $message->url(true));
         }
 
         public function update_topic() {
