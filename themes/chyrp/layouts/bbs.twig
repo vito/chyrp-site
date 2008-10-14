@@ -10,9 +10,10 @@
 ${ trigger.call("head") }
     </head>
     <body id="bbs">
+        <h1><a href="$site.url/bbs/">BBS</a></h1>
 {% for type, messages in flash.all | items %}
         {% for message in messages %}
-        <div class="${ type | depluralize }">$message</div>
+        <div class="flash ${ type | depluralize }">$message</div>
         {% endfor %}
 {% endfor %}
         {% block content %}{% endblock %}

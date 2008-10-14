@@ -6,8 +6,7 @@
 <ul>
     {% for topic in forum.topics(25).paginated %}
     <li>
-        <a href="$topic.url">$topic.title</a>
-        <p>$topic.description</p>
+        <a href="$topic.url">${ topic.title | escape }</a> by $topic.user.login
     </li>
     {% else %}
     <li>(none)</li>
@@ -20,6 +19,7 @@ ${ forum.topics(25).prev_link }
 <br />
 <br />
 {% if visitor.group.can("add_topic") %}
+<h3>New Topic</h3>
 <form action="{% url "bbs/add_topic" %}" method="post" accept-charset="utf-8">
     <label for="title">Title</label>
     <input type="text" name="title" value="" id="title" />

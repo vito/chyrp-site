@@ -98,3 +98,29 @@ label {
     display: block;
     margin-top: 1em;
 }
+
+p {
+    margin-bottom: 1em;
+}
+
+.flash {
+    margin-bottom: 1em;
+    padding: .5em .75em;
+}
+.flash .sub {
+    margin-left: .5em;
+    opacity: .5;
+    font-size: .9em;
+}
+.notice {
+    background: green;
+    color: white;
+}
+.warning {
+    background: red;
+    color: white;
+}
+.message {
+    background: blue;
+    color: white;
+}

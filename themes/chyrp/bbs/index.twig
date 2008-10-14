@@ -2,13 +2,8 @@
 
 {% block content %}
 <h1>Index</h1>
-<h2>Forums</h2>
-<ul>
     {% for forum in forums %}
-    <li>
-        <a href="$forum.url">$forum.name</a>
-        <p>$forum.description</p>
-    </li>
+    <h2><a href="$forum.url">$forum.name</a></h2>
+    <p>$forum.description</p>
     {% endfor %}
-</ul>
 {% endblock %}

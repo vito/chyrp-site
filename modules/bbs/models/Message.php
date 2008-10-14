@@ -7,6 +7,8 @@
      *     <Model>
      */
     class Message extends Model {
+        public $belongs_to = array("user", "topic");
+
         /**
          * Function: __construct
          * See Also:
@@ -18,6 +20,24 @@
 
             if ($this->no_results)
                 return false;
+
+            $this->filtered = !isset($options["filter"]) or $options["filter"];
+
+            if ($this->filtered) {
+                if (!$this->user()->group()->can("code_in_messages"))
+                    $this->body = strip_tags($this->body);
+
+                Trigger::current()->filter($this->body, "markup_message_text");
+            }
+        }
+
+        public function __get($var) {
+            if (isset($this->$var))
+                return $this->$var;
+            else {
+                if ($var == "topic")
+                    return $this->topic = $this->topic();
+            }
         }
 
         /**

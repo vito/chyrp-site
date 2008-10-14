@@ -40,23 +40,25 @@
                              updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
                          ) DEFAULT CHARSET=utf8");
 
-            Group::add_permission("add_forum", __("Add Forum"));
-            Group::add_permission("add_topic", __("Add Topic"));
-            Group::add_permission("add_message", __("Add Message"));
+            Group::add_permission("add_forum", "Add Forum");
+            Group::add_permission("add_topic", "Add Topic");
+            Group::add_permission("add_message", "Add Message");
             
-            Group::add_permission("edit_forum", __("Edit Forum"));
-            Group::add_permission("edit_topic", __("Edit Topic"));
-            Group::add_permission("edit_message", __("Edit Message"));
+            Group::add_permission("edit_forum", "Edit Forum");
+            Group::add_permission("edit_topic", "Edit Topic");
+            Group::add_permission("edit_message", "Edit Message");
             
-            Group::add_permission("edit_own_topic", __("Edit Own Topic"));
-            Group::add_permission("edit_own_message", __("Edit Own Message"));
+            Group::add_permission("edit_own_topic", "Edit Own Topic");
+            Group::add_permission("edit_own_message", "Edit Own Message");
             
-            Group::add_permission("delete_forum", __("Delete Forum"));
-            Group::add_permission("delete_topic", __("Delete Topic"));
-            Group::add_permission("delete_message", __("Delete Message"));
+            Group::add_permission("delete_forum", "Delete Forum");
+            Group::add_permission("delete_topic", "Delete Topic");
+            Group::add_permission("delete_message", "Delete Message");
             
-            Group::add_permission("delete_own_topic", __("Delete Own Topic"));
-            Group::add_permission("delete_own_message", __("Delete Own Message"));
+            Group::add_permission("delete_own_topic", "Delete Own Topic");
+            Group::add_permission("delete_own_message", "Delete Own Message");
+
+            Group::add_permission("code_in_messages", "Can Use HTML In Messages");
         }
 
         static function __uninstall($confirm) {
@@ -66,22 +68,24 @@
                 SQL::current()->query("DROP TABLE __messages");
             }
 
-            Group::remove_permission("add_forum", __("Add Forum"));
-            Group::remove_permission("add_topic", __("Add Topic"));
-            Group::remove_permission("add_message", __("Add Message"));
+            Group::remove_permission("add_forum");
+            Group::remove_permission("add_topic");
+            Group::remove_permission("add_message");
             
-            Group::remove_permission("edit_forum", __("Edit Forum"));
-            Group::remove_permission("edit_topic", __("Edit Topic"));
-            Group::remove_permission("edit_message", __("Edit Message"));
+            Group::remove_permission("edit_forum");
+            Group::remove_permission("edit_topic");
+            Group::remove_permission("edit_message");
             
-            Group::remove_permission("edit_own_topic", __("Edit Own Topic"));
-            Group::remove_permission("edit_own_message", __("Edit Own Message"));
+            Group::remove_permission("edit_own_topic");
+            Group::remove_permission("edit_own_message");
             
-            Group::remove_permission("delete_forum", __("Delete Forum"));
-            Group::remove_permission("delete_topic", __("Delete Topic"));
-            Group::remove_permission("delete_message", __("Delete Message"));
+            Group::remove_permission("delete_forum");
+            Group::remove_permission("delete_topic");
+            Group::remove_permission("delete_message");
             
-            Group::remove_permission("delete_own_topic", __("Delete Own Topic"));
-            Group::remove_permission("delete_own_message", __("Delete Own Message"));
+            Group::remove_permission("delete_own_topic");
+            Group::remove_permission("delete_own_message");
+
+            Group::remove_permission("code_in_messages");
         }
     }

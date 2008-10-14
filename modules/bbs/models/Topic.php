@@ -7,6 +7,9 @@
      *     <Model>
      */
     class Topic extends Model {
+        public $belongs_to = "forum";
+        public $has_many   = "messages";
+
         /**
          * Function: __construct
          * See Also:
@@ -26,6 +29,14 @@
 
             if ($this->no_results)
                 return false;
+
+            $this->filtered = !isset($options["filter"]) or $options["filter"];
+
+            if ($this->filtered) {
+                $trigger = Trigger::current();
+                $trigger->filter($this->title, "markup_topic_title");
+                $trigger->filter($this->description, "markup_topic_text");
+            }
         }
 
         /**
