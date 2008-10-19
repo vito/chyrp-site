@@ -7,6 +7,8 @@
      *     <Model>
      */
     class Forum extends Model {
+        public $has_many = "topics";
+
         /**
          * Function: __construct
          * See Also:
@@ -136,25 +138,6 @@
         }
 
         /**
-         * Function: topics
-         * Returns a forum's topics.
-         */
-        public function topics($per_page = false) {
-            if ($this->no_results)
-                return false;
-
-            $cache =& $this->topics[$per_page];
-            if (isset($cache))
-                return $cache;
-
-            return $per_page ?
-                       $cache = new Paginator(Topic::find(array("where" => array("forum_id" => $this->id),
-                                                                "placeholders" => true)),
-                                              $per_page) :
-                       $cache = Topic::find(array("where" => array("forum_id" => $this->id))) ;
-        }
-
-        /**
          * Function: edit_link
          * Outputs an edit link for the forum, if the <User.can> edit_forum.
          *
@@ -164,7 +147,7 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function edit_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("edit_forum"))
+            if ($this->no_results or !Visitor::current()->group->can("edit_forum"))
                 return false;
 
             fallback($text, __("Edit"));
@@ -182,7 +165,7 @@
          *     $after - If the link can be shown, show this after it.
          */
         public function delete_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group()->can("delete_forum"))
+            if ($this->no_results or !Visitor::current()->group->can("delete_forum"))
                 return false;
 
             fallback($text, __("Delete"));

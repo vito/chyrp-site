@@ -7,7 +7,7 @@
      *     <Model>
      */
     class Topic extends Model {
-        public $belongs_to = "forum";
+        public $belongs_to = array("forum", "user");
         public $has_many   = "messages";
 
         /**
@@ -144,8 +144,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group()->can("delete_topic")) or
-                   ($user->group()->can("delete_own_topic") and $this->user_id == $user->id);
+            return ($user->group->can("delete_topic")) or
+                   ($user->group->can("delete_own_topic") and $this->user_id == $user->id);
         }
 
         /**
@@ -158,8 +158,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group()->can("edit_topic")) or
-                   ($user->group()->can("edit_own_topic") and $this->user_id == $user->id);
+            return ($user->group->can("edit_topic")) or
+                   ($user->group->can("edit_own_topic") and $this->user_id == $user->id);
         }
 
         /**
@@ -207,49 +207,6 @@
             return ($config->clean_urls) ?
                        url("topic/".$this->url) :
                        $config->url."/bbs/?action=topic&amp;url=".urlencode($this->url) ;
-        }
-
-        /**
-         * Function: messages
-         * Returns a topic's messages.
-         */
-        public function messages($per_page = false) {
-            if ($this->no_results)
-                return false;
-
-            $cache =& $this->messages[$per_page];
-            if (isset($cache))
-                return $cache;
-
-            return $per_page ?
-                       $cache = new Paginator(Message::find(array("where" => array("topic_id" => $this->id),
-                                                                  "order" => "created_at ASC, id ASC",
-                                                                  "placeholders" => true)),
-                                              $per_page) :
-                       $cache = Message::find(array("where" => array("topic_id" => $this->id),
-                                                    "order" => "created_at ASC, id ASC")) ;
-        }
-
-        /**
-         * Function: forum
-         * Returns a topic's forum.
-         */
-        public function forum() {
-            if ($this->no_results)
-                return false;
-
-            return new Forum($this->forum_id);
-        }
-
-        /**
-         * Function: user
-         * Returns a topic's creator.
-         */
-        public function user() {
-            if ($this->no_results)
-                return false;
-
-            return new User($this->user_id);
         }
 
         /**

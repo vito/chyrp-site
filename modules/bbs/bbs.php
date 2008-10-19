@@ -88,4 +88,8 @@
 
             Group::remove_permission("code_in_messages");
         }
+
+        public function messages_get(&$options) {
+            $options["order"] = "created_at ASC, id ASC";
+        }
     }

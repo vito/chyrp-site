@@ -24,19 +24,10 @@
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
             if ($this->filtered) {
-                if (!$this->user()->group()->can("code_in_messages"))
+                if (!$this->user->group->can("code_in_messages"))
                     $this->body = strip_tags($this->body);
 
                 Trigger::current()->filter($this->body, "markup_message_text");
-            }
-        }
-
-        public function __get($var) {
-            if (isset($this->$var))
-                return $this->$var;
-            else {
-                if ($var == "topic")
-                    return $this->topic = $this->topic();
             }
         }
 
@@ -128,8 +119,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group()->can("delete_message")) or
-                   ($user->group()->can("delete_own_message") and $this->user_id == $user->id);
+            return ($user->group->can("delete_message")) or
+                   ($user->group->can("delete_own_message") and $this->user_id == $user->id);
         }
 
         /**
@@ -142,8 +133,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group()->can("edit_message")) or
-                   ($user->group()->can("edit_own_message") and $this->user_id == $user->id);
+            return ($user->group->can("edit_message")) or
+                   ($user->group->can("edit_own_message") and $this->user_id == $user->id);
         }
 
         /**
@@ -190,7 +181,7 @@
 
             if ($topic) {
                 $offset = 1;
-                foreach ($this->topic()->messages() as $message)
+                foreach ($this->topic->messages as $message)
                     if ($message->id != $this->id)
                         $offset++;
                     else
@@ -198,36 +189,14 @@
 
                 $page = ceil($offset / 25); # TODO: per-page config
                 return ($config->clean_urls) ?
-                           url("topic/".$this->topic()->url."/page/".$page)."#message_".$this->id :
-                           $config->url."/bbs/?action=topic&amp;url=".urlencode($this->topic()->url)
+                           url("topic/".$this->topic->url."/page/".$page)."#message_".$this->id :
+                           $config->url."/bbs/?action=topic&amp;url=".urlencode($this->topic->url)
                                ."&amp;page=".$page."#message_".$this->id ;
             }
 
             return ($config->clean_urls) ?
                        url("message/".$this->id) :
                        $config->url."/bbs/?action=message&amp;id=".$this->id ;
-        }
-
-        /**
-         * Function: topic
-         * Returns a message's topic.
-         */
-        public function topic() {
-            if ($this->no_results)
-                return false;
-
-            return new Topic($this->topic_id);
-        }
-
-        /**
-         * Function: user
-         * Returns a message's creator.
-         */
-        public function user() {
-            if ($this->no_results)
-                return false;
-
-            return new User($this->user_id);
         }
 
         /**

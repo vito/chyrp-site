@@ -6,7 +6,7 @@
 <br />
 <h2>Messages</h2>
 <ul>
-    {% for message in topic.messages(25).paginated %}
+    {% paginate message in 25 topic.messages as messages %}
     <li id="message_$message.id">
         <strong>$message.user.login</strong>:
         <p>$message.body</p>
@@ -14,11 +14,11 @@
     </li>
     {% else %}
     <li>(none)</li>
-    {% endfor %}
+    {% endpaginate %}
 </ul>
 
-${ topic.messages(25).next_link }
-${ topic.messages(25).prev_link }
+${ messages.next_link }
+${ messages.prev_link }
 
 <br />
 <br />
