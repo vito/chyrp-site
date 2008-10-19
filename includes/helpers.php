@@ -367,12 +367,8 @@
      * Function: fix
      * Returns a HTML-sanitized version of a string.
      */
-    function fix($string, $quotes = false, $decode_first = true) {
+    function fix($string, $quotes = false) {
         $quotes = ($quotes) ? ENT_QUOTES : ENT_NOQUOTES ;
-
-        if ($decode_first)
-            $string = html_entity_decode($string, ENT_QUOTES, "utf-8");
-
         return htmlspecialchars($string, $quotes, "utf-8");
     }
 
@@ -966,7 +962,7 @@
         $protocol = strtolower($split[0]);
         $default_port = ($protocol == "http") ? 80 : 443 ;
         $port = ($_SERVER['SERVER_PORT'] == $default_port) ? "" : ":".$_SERVER['SERVER_PORT'] ;
-        return $protocol."://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
+        return $protocol."://".$_SERVER['HTTP_HOST'].$port.$_SERVER['REQUEST_URI'];
     }
 
     /**
@@ -1163,10 +1159,10 @@
             if (in_array($test, $times))
                 $where[strtoupper($test)."(created_at)"] = $equals;
             elseif ($test == "author") {
-                $user = new User(null, array("where" => array("login" => $equals)));
+                $user = new User(array("login" => $equals));
                 $where["user_id"] = $user->id;
             } elseif ($test == "group") {
-                $group = new Group(null, array("where" => array("name" => $equals)));
+                $group = new Group(array("name" => $equals));
                 $test = "group_id";
                 $equals = ($group->no_results) ? 0 : $group->id ;
             } else

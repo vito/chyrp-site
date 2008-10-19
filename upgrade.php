@@ -12,7 +12,7 @@
 
     define('DEBUG',        true);
     define('UPGRADING',    true);
-    define('XML_RPC',      true);
+    define('XML_RPC',      false);
     define('MAIN_DIR',     dirname(__FILE__));
     define('INCLUDES_DIR', dirname(__FILE__)."/includes");
 
@@ -911,7 +911,7 @@
                  test(@unlink(INCLUDES_DIR."/rss.php"));
 
         if (file_exists(INCLUDES_DIR."/bookmarklet.php"))
-            echo __("Removing `includes/bookarklet.php` file...").
+            echo __("Removing `includes/bookmarklet.php` file...").
                  test(@unlink(INCLUDES_DIR."/bookmarklet.php"));
     }
 ?>

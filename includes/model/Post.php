@@ -7,6 +7,8 @@
      *     <Model>
      */
     class Post extends Model {
+        public $belongs_to = "user";
+
         # Array: $url_attrs
         # The translation array of the post URL setting to regular expressions.
         # Passed through the route_code filter.
@@ -42,15 +44,21 @@
                     $has_status = true;
 
             if (!XML_RPC) {
-                $visitor = Visitor::current();
-                $private = (isset($options["drafts"]) and $options["drafts"] and $visitor->group()->can("view_draft")) ?
-                               self::statuses(array("draft")) :
-                               self::statuses();
-
                 $options["where"][] = self::feathers();
 
-                if (!$has_status)
+                if (!$has_status) {
+                    $visitor = Visitor::current();
+                    $private = (isset($options["drafts"]) and $options["drafts"] and $visitor->group->can("view_draft")) ?
+                                   self::statuses(array("draft")) :
+                                   self::statuses() ;
+
+                    if (isset($options["drafts"]) and $options["drafts"] and $visitor->group->can("view_own_draft")) {
+                        $private.= " OR (status = 'draft' AND user_id = :visitor_id)";
+                        $options["params"][":visitor_id"] = $visitor->id;
+                    }
+
                     $options["where"][] = $private;
+                }
             }
 
             $options["left_join"][] = array("table" => "post_attributes",
@@ -74,7 +82,7 @@
                                     array() ;
 
             $this->filtered = (!isset($options["filter"]) or $options["filter"]) and !XML_RPC;
-            $this->slug =& $this->url;
+            $this->slug = $this->url;
 
             fallback($this->clean, $this->url);
 
@@ -98,15 +106,21 @@
                     $has_status = true;
 
             if (!XML_RPC) {
-                $visitor = Visitor::current();
-                $private = (isset($options["drafts"]) and $options["drafts"] and $visitor->group()->can("view_draft")) ?
-                               self::statuses(array("draft")) :
-                               self::statuses() ;
-
                 $options["where"][] = self::feathers();
 
-                if (!$has_status)
+                if (!$has_status) {
+                    $visitor = Visitor::current();
+                    $private = (isset($options["drafts"]) and $options["drafts"] and $visitor->group->can("view_draft")) ?
+                                   self::statuses(array("draft")) :
+                                   self::statuses() ;
+
+                    if (isset($options["drafts"]) and $options["drafts"] and $visitor->group->can("view_own_draft")) {
+                        $private.= " OR (status = 'draft' AND user_id = :visitor_id)";
+                        $options["params"][":visitor_id"] = $visitor->id;
+                    }
+
                     $options["where"][] = $private;
+                }
             }
 
             $options["left_join"][] = array("table" => "post_attributes",
@@ -310,12 +324,12 @@
                 return false;
 
             fallback($user, Visitor::current());
-            if ($user->group()->can("delete_post"))
+            if ($user->group->can("delete_post"))
                 return true;
 
-            return ($this->status == "draft" and $user->group()->can("delete_draft")) or
-                   ($user->group()->can("delete_own_post") and $this->user_id == $user->id) or
-                   (($user->group()->can("delete_own_draft") and $this->status == "draft") and $this->user_id == $user->id);
+            return ($this->status == "draft" and $user->group->can("delete_draft")) or
+                   ($user->group->can("delete_own_post") and $this->user_id == $user->id) or
+                   (($user->group->can("delete_own_draft") and $this->status == "draft") and $this->user_id == $user->id);
         }
 
         /**
@@ -327,12 +341,12 @@
                 return false;
 
             fallback($user, Visitor::current());
-            if ($user->group()->can("edit_post"))
+            if ($user->group->can("edit_post"))
                 return true;
 
-            return ($this->status == "draft" and $user->group()->can("edit_draft")) or
-                   ($user->group()->can("edit_own_post") and $this->user_id == $user->id) or
-                   (($user->group()->can("edit_own_draft") and $this->status == "draft") and $this->user_id == $user->id);
+            return ($this->status == "draft" and $user->group->can("edit_draft")) or
+                   ($user->group->can("edit_own_post") and $this->user_id == $user->id) or
+                   (($user->group->can("edit_own_draft") and $this->status == "draft") and $this->user_id == $user->id);
         }
 
         /**
@@ -341,24 +355,25 @@
          */
         static function any_editable() {
             $visitor = Visitor::current();
+            $sql = SQL::current();
 
             # Can they edit posts?
-            if ($visitor->group()->can("edit_post"))
+            if ($visitor->group->can("edit_post"))
                 return true;
 
             # Can they edit drafts?
-            if ($visitor->group()->can("edit_draft") and
-                Post::find(array("where" => "status = 'draft'")))
+            if ($visitor->group->can("edit_draft") and
+                $sql->count("posts", array("status" => "draft")))
                 return true;
 
             # Can they edit their own posts, and do they have any?
-            if ($visitor->group()->can("edit_own_post") and
-                Post::find(array("where" => array("user_id" => $visitor->id))))
+            if ($visitor->group->can("edit_own_post") and
+                $sql->count("posts", array("user_id" => $visitor->id)))
                 return true;
 
             # Can they edit their own drafts, and do they have any?
-            if ($visitor->group()->can("edit_own_draft") and
-                Post::find(array("where" => array("status" => "draft", "user_id" => $visitor->id))))
+            if ($visitor->group->can("edit_own_draft") and
+                $sql->count("posts", array("status" => "draft", "user_id" => $visitor->id)))
                 return true;
 
             return false;
@@ -370,24 +385,25 @@
          */
         static function any_deletable() {
             $visitor = Visitor::current();
+            $sql = SQL::current();
 
             # Can they delete posts?
-            if ($visitor->group()->can("delete_post"))
+            if ($visitor->group->can("delete_post"))
                 return true;
 
             # Can they delete drafts?
-            if ($visitor->group()->can("delete_draft") and
-                Post::find(array("where" => "status = 'draft'")))
+            if ($visitor->group->can("delete_draft") and
+                $sql->count("posts", array("status" => "draft")))
                 return true;
 
             # Can they delete their own posts, and do they have any?
-            if ($visitor->group()->can("delete_own_post") and
-                Post::find(array("where" => array("user_id" => $visitor->id))))
+            if ($visitor->group->can("delete_own_post") and
+                $sql->count("posts", array("user_id" => $visitor->id)))
                 return true;
 
             # Can they delete their own drafts, and do they have any?
-            if ($visitor->group()->can("delete_own_draft") and
-                Post::find(array("where" => array("status" => "draft", "user_id" => $visitor->id))))
+            if ($visitor->group->can("delete_own_draft") and
+                $sql->count("posts", array("status" => "draft", "user_id" => $visitor->id)))
                 return true;
 
             return false;
@@ -436,7 +452,7 @@
             if (!$config->clean_urls)
                 return $config->url."/?action=view&amp;url=".urlencode($this->url);
 
-            $login = (strpos($config->post_url, "(author)") !== false) ? $this->user()->login : null ;
+            $login = (strpos($config->post_url, "(author)") !== false) ? $this->user->login : null ;
             $vals = array(when("Y", $this->created_at),
                           when("m", $this->created_at),
                           when("d", $this->created_at),
@@ -456,7 +472,9 @@
 
         /**
          * Function: user
-         * Returns a post's user. Example: $post->user()->login
+         * Returns a post's user. Example: $post->user->login
+         * 
+         * !! DEPRECATED AFTER 2.0 !!
          */
         public function user() {
             if ($this->no_results)
@@ -732,10 +750,10 @@
             if (logged_in())
                 $statuses[] = "registered_only";
 
-            if ($visitor->group()->can("view_private"))
+            if ($visitor->group->can("view_private"))
                 $statuses[] = "private";
 
-            return "posts.status IN ('".implode("', '", $statuses)."') OR posts.status LIKE '%{".$visitor->group()->id."}%'";
+            return "posts.status IN ('".implode("', '", $statuses)."') OR posts.status LIKE '%{".$visitor->group->id."}%'";
         }
 
         /**
