@@ -226,7 +226,7 @@
             Trigger::current()->filter($javascripts, "scripts");
 
             $javascripts = '<script src="'.
-                           implode('" type="text/javascript" charset="utf-8"></script>'."\n        ".'<script src="', $javascripts).
+                           implode('" type="text/javascript" charset="utf-8"></script>'."\n\t\t".'<script src="', $javascripts).
                            '" type="text/javascript" charset="utf-8"></script>';
 
             if (file_exists(THEME_DIR."/javascripts/") or file_exists(THEME_DIR."/js/")) {
@@ -235,13 +235,13 @@
 
                 foreach(array_merge($long, $short) as $file)
                     if ($file)
-                        $javascripts.= "\n        ".'<script src="'.$config->chyrp_url.'/includes/lib/gz.php?file='.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
+                        $javascripts.= "\n\t\t".'<script src="'.$config->chyrp_url.'/includes/lib/gz.php?file='.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
 
                 $long  = (array) glob(THEME_DIR."/javascripts/*.js.php");
                 $short = (array) glob(THEME_DIR."/js/*.js.php");
                 foreach(array_merge($long, $short) as $file)
                     if ($file)
-                        $javascripts.= "\n        ".'<script src="'.$config->chyrp_url.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
+                        $javascripts.= "\n\t\t".'<script src="'.$config->chyrp_url.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
             }
 
             return $javascripts;
@@ -266,9 +266,9 @@
             $route = Route::current();
             $feeds = '<link rel="alternate" type="application/atom+xml" title="'.$config->name.' Feed" href="'.fallback($config->feed_url, url("feed"), true).'" />'."\n";
 
-            $feeds.= "        ".'<link rel="alternate" type="application/atom+xml" title="Current Page (if applicable)" href="'.$config->url.$request.$append.'" />';
+            $feeds.= "\t\t".'<link rel="alternate" type="application/atom+xml" title="Current Page (if applicable)" href="'.$config->url.$request.$append.'" />';
 
-            $feeds.= "\n        ";
+            $feeds.= "\n\t\t";
 
             return $feeds;
         }
