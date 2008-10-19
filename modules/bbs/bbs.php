@@ -91,7 +91,9 @@
 
         public function __init() {
             $this->addAlias("markup_topic_text", "markdown");
+            $this->addAlias("markup_topic_text", "smartypants");
             $this->addAlias("markup_message_text", "markdown");
+            $this->addAlias("markup_message_text", "smartypants");
             $this->addAlias("markup_topic_title", "smartypants");
         }
 
