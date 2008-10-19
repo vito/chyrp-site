@@ -89,7 +89,23 @@
             Group::remove_permission("code_in_messages");
         }
 
+        public function __init() {
+            $this->addAlias("markup_topic_text", "markdown");
+            $this->addAlias("markup_message_text", "markdown");
+            $this->addAlias("markup_topic_title", "smartypants");
+        }
+
         public function messages_get(&$options) {
             $options["order"] = "created_at ASC, id ASC";
+        }
+
+        public function markdown($text) {
+            if (module_enabled("markdown"))
+                return Markdown::markdownify($text);
+        }
+
+        public function smartypants($text) {
+            if (module_enabled("smartypants"))
+                return Smartypants::smartify($text);
         }
     }
