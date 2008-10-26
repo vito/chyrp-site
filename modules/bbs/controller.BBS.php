@@ -67,6 +67,20 @@
                            $forum->name);
         }
 
+        public function message() {
+            if (!isset($_GET['id']))
+                exit; # TODO
+
+            $message = new Message($_GET['id']);
+
+            if ($message->no_results)
+                exit; # TODO
+
+            $this->display("bbs/message/view",
+                           array("message" => $message),
+                           __("Message", "bbs"));
+        }
+
         public function add_message() {
             $message = Message::add($_POST['body'], $_POST['topic_id']);
             Flash::notice(__("Message added.", "bbs"), $message->url(true));
@@ -81,7 +95,7 @@
             if (!isset($_GET['id']))
                 error(__("Error"), __("No message ID specified.", "bbs"));
 
-            $message = new Message($_GET['id']);
+            $message = new Message($_GET['id'], array("filter" => false));
             if ($message->no_results)
                 error(__("Error"), __("Invalid message ID specified.", "bbs"));
 
