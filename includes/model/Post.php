@@ -148,7 +148,7 @@
          *
          * Most of the function arguments will fall back to various POST values.
          *
-         * Calls the `add_post` trigger with the inserted post and extra options.
+         * Calls the @add_post@ trigger with the inserted post and extra options.
          *
          * Parameters:
          *     $values - The data to insert.
@@ -165,7 +165,7 @@
          *     $options - Options for the post.
          *
          * Returns:
-         *     self - An object containing the new post.
+         *     The newly created <Post>.
          *
          * See Also:
          *     <update>
@@ -501,19 +501,6 @@
         }
 
         /**
-         * Function: user
-         * Returns a post's user. Example: $post->user->login
-         * 
-         * !! DEPRECATED AFTER 2.0 !!
-         */
-        public function user() {
-            if ($this->no_results)
-                return false;
-
-            return new User($this->user_id);
-        }
-
-        /**
          * Function: title_from_excerpt
          * Generates an acceptable Title from the post's excerpt.
          *
@@ -745,5 +732,18 @@
          */
         static function feathers() {
             return "posts.feather IN ('".implode("', '", Config::current()->enabled_feathers)."')";
+        }
+
+        /**
+         * Function: user
+         * Returns a post's user. Example: $post->user->login
+         * 
+         * !! DEPRECATED AFTER 2.0 !!
+         */
+        public function user() {
+            if ($this->no_results)
+                return false;
+
+            return new User($this->user_id);
         }
     }

@@ -43,7 +43,7 @@
          *     $password - The matching Password to check.
          *
          * Returns:
-         *     true - if a match is found.
+         *     @true@ or @false@
          */
         static function authenticate($login, $password) {
             $check = new self(array("login" => $login, "password" => $password));
@@ -54,7 +54,7 @@
          * Function: add
          * Adds a user to the database with the passed username, password, and e-mail.
          *
-         * Calls the `add_user` trigger with the inserted user.
+         * Calls the @add_user@ trigger with the inserted user.
          *
          * Parameters:
          *     $login - The Login for the new user.
@@ -62,7 +62,7 @@
          *     $email - The E-Mail for the new user.
          *
          * Returns:
-         *     $user - The newly created user.
+         *     The newly created <User>.
          *
          * See Also:
          *     <update>
@@ -144,7 +144,7 @@
 
         /**
          * Function: delete
-         * Deletes a given user. Calls the `delete_user` trigger and passes the <User> as an argument.
+         * Deletes a given user. Calls the @delete_user@ trigger and passes the <User> as an argument.
          *
          * Parameters:
          *     $id - The user to delete.

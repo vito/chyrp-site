@@ -45,7 +45,7 @@ Arguments:
 not_found
 ---------
 Called from:
-	includes/helpers.php on line 1087
+	includes/helpers.php on line 1138
 	includes/ajax.php on line 27
 	includes/ajax.php on line 52
 	includes/ajax.php on line 73
@@ -92,7 +92,7 @@ Arguments:
 new_page_options
 ----------------
 Called from:
-	admin/layout/partials/page_fields.twig on line 46
+	admin/layout/partials/page_fields.twig on line 43
 
 
 before_post_fields
@@ -194,7 +194,7 @@ Arguments:
 add_group
 ---------
 Called from:
-	includes/model/Group.php on line 104
+	includes/model/Group.php on line 113
 Arguments:
 	$group
 
@@ -288,7 +288,7 @@ Called from:
 edit_page_options
 -----------------
 Called from:
-	admin/layout/partials/page_fields.twig on line 48
+	admin/layout/partials/page_fields.twig on line 45
 Arguments:
 	page
 
@@ -358,7 +358,7 @@ Arguments:
 update_group
 ------------
 Called from:
-	includes/model/Group.php on line 149
+	includes/model/Group.php on line 159
 Arguments:
 	$this, $old
 
@@ -414,7 +414,7 @@ filter_post
 Target:
 	$this
 Called from:
-	includes/model/Post.php on line 651
+	includes/model/Post.php on line 638
 
 
 user
@@ -484,7 +484,7 @@ title
 Target:
 	$title
 Called from:
-	includes/model/Post.php on line 557
+	includes/model/Post.php on line 544
 Arguments:
 	$post
 
@@ -534,7 +534,7 @@ send_mail
 Target:
 	$function
 Called from:
-	includes/helpers.php on line 1467
+	includes/helpers.php on line 1535
 
 
 post_url_token
@@ -542,7 +542,7 @@ post_url_token
 Target:
 	$tokens
 Called from:
-	includes/model/Post.php on line 707
+	includes/model/Post.php on line 694
 
 
 flash_notice_message
@@ -586,7 +586,7 @@ excerpt
 Target:
 	$excerpt
 Called from:
-	includes/model/Post.php on line 574
+	includes/model/Post.php on line 561
 Arguments:
 	$post
 
@@ -604,7 +604,7 @@ feed_content
 Target:
 	$feed_content
 Called from:
-	includes/model/Post.php on line 591
+	includes/model/Post.php on line 578
 Arguments:
 	$post
 
@@ -638,7 +638,7 @@ link_regexp
 Target:
 	$regexp
 Called from:
-	includes/helpers.php on line 600
+	includes/helpers.php on line 623
 
 
 scripts
@@ -646,7 +646,7 @@ scripts
 Target:
 	$javascripts
 Called from:
-	includes/class/Theme.php on line 231
+	includes/class/Theme.php on line 242
 
 
 page
@@ -662,7 +662,7 @@ title_from_excerpt
 Target:
 	$excerpt
 Called from:
-	includes/model/Post.php on line 532
+	includes/model/Post.php on line 519
 
 
 bookmarklet_submit_values
@@ -686,7 +686,7 @@ stylesheets
 Target:
 	$stylesheets
 Called from:
-	includes/class/Theme.php on line 169
+	includes/class/Theme.php on line 180
 
 
 export
