@@ -97,7 +97,7 @@
             if (!isset($_GET['id']))
                 error(__("Error"), __("No topic ID specified.", "bbs"));
 
-            $topic = new Topic($_GET['id']);
+            $topic = new Topic($_GET['id'], array("filter" => false));
             if ($topic->no_results)
                 error(__("Error"), __("Invalid topic ID specified.", "bbs"));
 
@@ -139,6 +139,70 @@
             $topic->update($_POST['title'], $_POST['description']);
 
             Flash::notice(__("Topic updated.", "bbs"), $topic->url());
+        }
+
+        public function delete_message() {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No message ID specified.", "bbs"));
+
+            $message = new Message($_GET['id']);
+            if ($message->no_results)
+                error(__("Error"), __("Invalid message ID specified.", "bbs"));
+
+            if (!$message->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this message.", "bbs"));
+
+            $this->display("bbs/message/delete",
+                           array("message" => $message),
+                           __("Delete Message", "bbs"));
+        }
+
+        public function delete_topic() {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No topic ID specified.", "bbs"));
+
+            $topic = new Topic($_GET['id']);
+            if ($topic->no_results)
+                error(__("Error"), __("Invalid topic ID specified.", "bbs"));
+
+            if (!$topic->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this topic.", "bbs"));
+
+            $this->display("bbs/topic/delete",
+                           array("topic" => $topic),
+                           _f("Delete &#8220;%s&#8221;", array(fix($topic->title)), "bbs"));
+        }
+
+        public function destroy_message() {
+            if (!isset($_POST['message_id']))
+                error(__("Error"), __("No message ID specified.", "bbs"));
+
+            $message = new Message($_POST['message_id']);
+            if ($message->no_results)
+                error(__("Error"), __("Invalid message ID specified.", "bbs"));
+
+            if (!$message->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this message.", "bbs"));
+
+            Message::delete($message->id);
+
+            Flash::notice(__("Message deleted.", "bbs"), $message->topic->url());
+        }
+
+        public function destroy_topic() {
+            if (!isset($_POST['topic_id']))
+                error(__("Error"), __("No topic ID specified.", "bbs"));
+
+            $topic = new Topic($_POST['topic_id']);
+            if ($topic->no_results)
+                error(__("Error"), __("Invalid topic ID specified.", "bbs"));
+
+            if (!$topic->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this topic.", "bbs"));
+
+            Topic::delete($topic->id);
+
+            Flash::notice(__("Topic deleted.", "bbs"), $topic->forum->url());
         }
 
         public function parse($route) {

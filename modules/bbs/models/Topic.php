@@ -32,11 +32,14 @@
 
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
+            $trigger = Trigger::current();
+
             if ($this->filtered) {
-                $trigger = Trigger::current();
-                $trigger->filter($this->title, "markup_topic_title");
-                $trigger->filter($this->description, "markup_topic_text");
+                $trigger->filter($this->title, array("markup_title", "markup_topic_title"), $this);
+                $trigger->filter($this->description, array("markup_text", "markup_topic_text"), $this);
             }
+
+            $trigger->filter($this, "topic");
         }
 
         /**
@@ -67,24 +70,26 @@
         static function add($title,
                             $description,
                             $forum_id,
-                            $user_id = null,
+                            $user_id    = null,
                             $created_at = null,
                             $updated_at = "0000-00-00 00:00:00") {
             $sql = SQL::current();
             $visitor = Visitor::current();
+            $trigger = Trigger::current();
+
             $sql->insert("topics",
-                         array("title" => $title,
+                         array("title"       => $title,
                                "description" => $description,
-                               "clean" => sanitize($title),
-                               "url" => self::check_url(sanitize($title)),
-                               "forum_id" => $forum_id,
-                               "user_id" => fallback($user_id, $visitor->id),
-                               "created_at" => fallback($created_at, datetime()),
-                               "updated_at" => $updated_at));
+                               "clean"       => sanitize($title),
+                               "url"         => self::check_url(sanitize($title)),
+                               "forum_id"    => $forum_id,
+                               "user_id"     => oneof($user_id, $visitor->id),
+                               "created_at"  => oneof($created_at, datetime()),
+                               "updated_at"  => $updated_at));
 
             $topic = new self($sql->latest());
 
-            Trigger::current()->call("add_topic", $topic);
+            $trigger->call("add_topic", $topic);
 
             return $topic;
         }
@@ -97,30 +102,39 @@
          *     $title - The new title.
          *     $description - The new description.
          */
-        public function update($title = null,
+        public function update($title       = null,
                                $description = null,
-                               $forum_id = null,
-                               $user_id = null,
-                               $created_at = null,
-                               $updated_at = null) {
+                               $forum       = null,
+                               $user        = null,
+                               $created_at  = null,
+                               $updated_at  = null) {
             if ($this->no_results)
                 return false;
 
             $sql = SQL::current();
-            $sql->update("topics",
-                         array("id"          => $this->id),
-                         array("title"       => fallback($title, $this->title),
-                               "description" => fallback($description, $this->description),
-                               "forum_id"    => fallback($forum_id, $this->forum_id),
-                               "user_id"     => fallback($user_id, $this->user_id),
-                               "created_at"  => fallback($created_at, $this->created_at),
-                               "updated_at"  => fallback($updated_at, datetime())));
+            $trigger = Trigger::current();
+
+            $old = clone $this;
 
             foreach (array("title", "description", "forum_id", "user_id", "created_at", "updated_at") as $attr)
-                $this->$attr = $$attr;
+                if (substr($attr, -3) == "_id") {
+                    $arg = ${substr($attr, 0, -3)};
+                    $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
+                } elseif ($attr == "updated_at")
+                    $this->$attr = $$attr = datetime();
+                else
+                    $this->$attr = fallback($$attr, $this->$attr);
 
-            $trigger = Trigger::current();
-            $trigger->call("update_topic", $this);
+            $sql->update("topics",
+                         array("id"          => $this->id),
+                         array("title"       => $title,
+                               "description" => $description,
+                               "forum_id"    => $forum_id,
+                               "user_id"     => $user_id,
+                               "created_at"  => $created_at,
+                               "updated_at"  => $updated_at));
+
+            $trigger->call("update_topic", $this, $old);
         }
 
         /**
@@ -218,13 +232,13 @@
          *     $before - If the link can be shown, show this before it.
          *     $after - If the link can be shown, show this after it.
          */
-        public function edit_link($text = null, $before = null, $after = null){
+        public function edit_link($text = null, $before = null, $after = null, $classes = "") {
             if (!$this->editable())
                 return false;
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_topic&amp;id='.$this->id.'" title="Edit" class="topic_edit_link edit_link" id="topic_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_topic&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'topic_edit_link edit_link" id="topic_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -236,12 +250,12 @@
          *     $before - If the link can be shown, show this before it.
          *     $after - If the link can be shown, show this after it.
          */
-        public function delete_link($text = null, $before = null, $after = null){
+        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
             if (!$this->deletable())
                 return false;
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_topic&amp;id='.$this->id.'" title="Delete" class="topic_delete_link delete_link" id="topic_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_topic&amp;id='.$this->id.'" title="Delete" class="topic_delete_link delete_link" id="'.($classes ? $classes." " : '').'topic_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

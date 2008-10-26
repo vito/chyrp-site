@@ -20,6 +20,8 @@
 
             if ($this->no_results)
                 return false;
+
+            Trigger::current()->filter($this, "forum");
         }
 
         /**
@@ -72,14 +74,18 @@
             if ($this->no_results)
                 return false;
 
+            $old = clone $this;
+
+            $this->name        = $name;
+            $this->description = $description;
+
             $sql = SQL::current();
             $sql->update("forums",
-                         array("id" => $this->id),
-                         array("name" => $name,
+                         array("id"          => $this->id),
+                         array("name"        => $name,
                                "description" => $description));
 
-            $trigger = Trigger::current();
-            $trigger->call("update_forum", $this, $name, $description);
+            Trigger::current()->call("update_forum", $this, $old);
         }
 
         /**
@@ -135,41 +141,5 @@
                 return $config->url."/bbs/?action=forum&amp;url=".urlencode($this->url);
 
             return url("forum/".$this->url);
-        }
-
-        /**
-         * Function: edit_link
-         * Outputs an edit link for the forum, if the <User.can> edit_forum.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function edit_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group->can("edit_forum"))
-                return false;
-
-            fallback($text, __("Edit"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_forum&amp;id='.$this->id.'" title="Edit" class="forum_edit_link edit_link" id="forum_edit_'.$this->id.'">'.$text.'</a>'.$after;
-        }
-
-        /**
-         * Function: delete_link
-         * Outputs a delete link for the forum, if the <User.can> delete_forum.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function delete_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group->can("delete_forum"))
-                return false;
-
-            fallback($text, __("Delete"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_forum&amp;id='.$this->id.'" title="Delete" class="forum_delete_link delete_link" id="forum_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

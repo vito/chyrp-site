@@ -23,12 +23,16 @@
 
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
+            $trigger = Trigger::current();
+
             if ($this->filtered) {
                 if (!$this->user->group->can("code_in_messages"))
                     $this->body = strip_tags($this->body);
 
-                Trigger::current()->filter($this->body, "markup_message_text");
+                $trigger->filter($this->body, array("markup_text", "markup_message_text"), $this);
             }
+
+            $trigger->filter($this, "message");
         }
 
         /**
@@ -81,21 +85,35 @@
          *     $title - The new title.
          *     $description - The new description.
          */
-        public function update($body = null, $topic_id = null, $user_id = null, $created_at = null, $updated_at = null) {
+        public function update($body       = null,
+                               $topic      = null,
+                               $user       = null,
+                               $created_at = null,
+                               $updated_at = null) {
             if ($this->no_results)
                 return false;
 
+            $old = clone $this;
+
+            foreach (array("body", "topic_id", "user_id", "created_at", "updated_at") as $attr)
+                if (substr($attr, -3) == "_id") {
+                    $arg = ${substr($attr, 0, -3)};
+                    $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
+                } elseif ($attr == "updated_at")
+                    $this->$attr = $$attr = datetime();
+                else
+                    $this->$attr = fallback($$attr, $this->$attr);
+
             $sql = SQL::current();
             $sql->update("messages",
-                         array("id" => $this->id),
-                         array("body"       => fallback($body, $this->body),
-                               "topic_id"   => fallback($topic_id, $this->topic_id),
-                               "user_id"    => fallback($user_id, $this->user_id),
-                               "created_at" => fallback($created_at, $this->created_at),
-                               "updated_at" => fallback($updated_at, datetime())));
+                         array("id"         => $this->id),
+                         array("body"       => $body,
+                               "topic_id"   => $topic_id,
+                               "user_id"    => $user_id,
+                               "created_at" => $created_at,
+                               "updated_at" => $updated_at));
 
-            $trigger = Trigger::current();
-            $trigger->call("update_message", $this);
+            Trigger::current()->call("update_message", $this, $old);
         }
 
         /**
@@ -173,7 +191,7 @@
          * Parameters:
          *     $topic - Link to the post in the topic?
          */
-        public function url($topic = false) {
+        public function url($topic = true) {
             if ($this->no_results)
                 return false;
 
@@ -208,13 +226,13 @@
          *     $before - If the link can be shown, show this before it.
          *     $after - If the link can be shown, show this after it.
          */
-        public function edit_link($text = null, $before = null, $after = null){
+        public function edit_link($text = null, $before = null, $after = null, $classes = "") {
             if (!$this->editable())
                 return false;
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -226,12 +244,12 @@
          *     $before - If the link can be shown, show this before it.
          *     $after - If the link can be shown, show this after it.
          */
-        public function delete_link($text = null, $before = null, $after = null){
+        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
             if (!$this->deletable())
                 return false;
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

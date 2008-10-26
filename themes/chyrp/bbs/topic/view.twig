@@ -1,7 +1,7 @@
 {% extends "layouts/bbs.twig" %}
 
 {% block content %}
-<h1>$topic.title $topic.edit_link $topic.delete_link</h1>
+<h1><a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title $topic.edit_link $topic.delete_link</h1>
 <p>$topic.description</p>
 <br />
 <h2>Messages</h2>
