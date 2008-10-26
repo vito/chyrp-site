@@ -16,6 +16,15 @@
          */
         public function __construct($forum_id, $options = array()) {
             if (!isset($forum_id) and empty($options)) return;
+
+            $options["left_join"][] = array("table" => "topics",
+                                            "where" => "forum_id = forums.id");
+
+            $options["select"][] = "forums.*";
+            $options["select"][] = "COUNT(topics.id) AS topic_count";
+
+            $options["group"][] = "id";
+
             parent::grab($this, $forum_id, $options);
 
             if ($this->no_results)
@@ -30,6 +39,14 @@
          *     <Model::search>
          */
         static function find($options = array(), $options_for_object = array()) {
+            $options["left_join"][] = array("table" => "topics",
+                                            "where" => "forum_id = forums.id");
+
+            $options["select"][] = "forums.*";
+            $options["select"][] = "COUNT(topics.id) AS topic_count";
+
+            $options["group"][] = "id";
+
             return parent::search(get_class(), $options, $options_for_object);
         }
 
@@ -141,5 +158,37 @@
                 return $config->url."/discuss/?action=forum&amp;url=".urlencode($this->url);
 
             return url("forum/".$this->url);
+        }
+
+        /**
+         * Function: last_activity
+         * Returns the latest message/updated message timestamp.
+         */
+        public function last_activity() {
+            $last_activity = 0;
+
+            foreach ($this->topics as $topic) {
+                $timestamp = max($topic->last_activity, strtotime($topic->updated_at), strtotime($topic->created_at));
+                if ($timestamp > $last_activity)
+                    $last_activity = $timestamp;
+            }
+
+            return $last_activity;
+        }
+
+        /**
+         * Function: message_count
+         * Returns the total messages of every topic in the forum.
+         *
+         * Parameters:
+         *     $inclusive - Count topics as messages?
+         */
+        public function message_count($inclusive = false) {
+            $messages = 0;
+
+            foreach ($this->topics as $topic)
+                $messages += ($inclusive ? $topic->message_count + 1 : $topic->message_count);
+
+            return $messages;
         }
     }

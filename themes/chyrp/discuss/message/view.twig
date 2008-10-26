@@ -1,0 +1,8 @@
+{% extends "layouts/discuss.twig" %}
+
+{% block content %}
+<h1><a href="$message.topic.forum.url">$message.topic.forum.name</a> &raquo; <a href="$message.topic.url">$message.topic.title</a> &rarr; Message</h1>
+<strong>$message.user.login</strong>:
+<p>$message.body</p>
+$message.edit_link $message.delete_link
+{% endblock %}

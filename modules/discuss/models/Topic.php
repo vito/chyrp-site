@@ -21,14 +21,19 @@
             $options["left_join"][] = array("table" => "messages",
                                             "where" => "topic_id = topics.id");
 
-            $options["select"][] = "*";
+            $options["select"][] = "topics.*";
             $options["select"][] = "COUNT(messages.id) AS message_count";
             $options["select"][] = "MAX(messages.created_at) AS last_message";
+            $options["select"][] = "MAX(messages.updated_at) AS last_update";
+
+            $options["group"][] = "id";
 
             parent::grab($this, $topic_id, $options);
 
             if ($this->no_results)
                 return false;
+
+            $this->last_activity = max(strtotime($this->last_message), strtotime($this->last_update));
 
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
@@ -48,6 +53,16 @@
          *     <Model::search>
          */
         static function find($options = array(), $options_for_object = array()) {
+            $options["left_join"][] = array("table" => "messages",
+                                            "where" => "topic_id = topics.id");
+
+            $options["select"][] = "topics.*";
+            $options["select"][] = "COUNT(messages.id) AS message_count";
+            $options["select"][] = "MAX(messages.created_at) AS last_message";
+            $options["select"][] = "MAX(messages.updated_at) AS last_update";
+
+            $options["group"][] = "id";
+
             return parent::search(get_class(), $options, $options_for_object);
         }
 

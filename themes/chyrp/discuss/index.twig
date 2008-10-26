@@ -1,0 +1,9 @@
+{% extends "layouts/discuss.twig" %}
+
+{% block content %}
+<h1>Index</h1>
+    {% for forum in forums %}
+    <h2><a href="$forum.url">$forum.name</a></h2>
+    <p>$forum.description</p>
+    {% endfor %}
+{% endblock %}

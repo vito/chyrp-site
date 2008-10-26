@@ -22,11 +22,19 @@ body {
 }
 
 pre {
-    font-size: 10px;
+    font-size: 9px;
 }
 code {
     font-family: monospace;
 }
+pre code {
+    display: block;
+    background: #111;
+    color: #fff;
+    padding: .5em .75em .35em;
+    margin-bottom: 1em;
+}
+
 em {
     font-style: italic;
 }
@@ -123,4 +131,81 @@ p {
 .message {
     background: blue;
     color: white;
+}
+
+div#controls {
+    background-color: #131313;
+    border-bottom: .1em solid #0f0f0f;
+    padding: .2em 0 .3em;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+div#controls ul {
+    margin: 0 auto;
+    padding: .4em;
+    width: 660px;
+}
+div#controls ul li {
+    background: none;
+    display: inline;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+div#controls ul li a:link,
+div#controls ul li a:visited {
+    color: #bbb;
+    border: none;
+    padding: .1em .6em;
+}
+div#controls ul li a:hover {
+    color: #fff;
+}
+div#controls ul li.close a:link,
+div#controls ul li.close a:visited {
+    color: #e35533;
+}
+div#controls ul li.close a:hover {
+    color: #ff6039;
+}
+
+/* Debugger */
+#debug {
+    background: #ffffdd;
+    color: #666;
+    padding: .4em .75em .5em .75em;
+    border-top: .1em solid #ddd;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 33%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#debug h5 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #a3a39a;
+}
+#debug h5 .sub {
+    color: #b3b3aa;
+}
+#debug ol.queries li {
+    margin: 0 0 1em;
+}
+#debug pre {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0 .5em;
+    xoverflow-x: scroll;
+    word-wrap: break-word;
+}
+#debug .toggle {
+    font-weight: bold;
+    color: #666;
+    float: right;
 }

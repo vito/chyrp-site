@@ -1,0 +1,34 @@
+{% extends "layouts/discuss.twig" %}
+
+{% block content %}
+<h1><a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title $topic.edit_link $topic.delete_link</h1>
+<p>$topic.description</p>
+<br />
+<h2>Messages</h2>
+<ul>
+    {% paginate message in 25 topic.messages as messages %}
+    <li id="message_$message.id">
+        <strong>$message.user.login</strong>:
+        <p>$message.body</p>
+        $message.edit_link $message.delete_link
+    </li>
+    {% else %}
+    <li>(none)</li>
+    {% endpaginate %}
+</ul>
+
+${ messages.next_link }
+${ messages.prev_link }
+
+<br />
+<br />
+{% if visitor.group.can("add_message") %}
+<form action="{% url "discuss/add_message" %}" method="post" accept-charset="utf-8">
+    <textarea name="body" rows="8" cols="100%"></textarea>
+
+    <p><input type="submit" value="Continue &rarr;"></p>
+
+    <input type="hidden" name="topic_id" value="$topic.id" id="topic_id" />
+</form>
+{% endif %}
+{% endblock %}
