@@ -5,10 +5,10 @@
     require_once "../includes/common.php";
 
     # Prepare the controller.
-    $bbs = BBSController::current();
+    $discuss = DiscussController::current();
 
     # Parse the route.
-    $route = Route::current($bbs);
+    $route = Route::current($discuss);
 
     # Execute the appropriate Controller responder.
     $route->init();
@@ -21,7 +21,7 @@
         $displayed = false;
 
         if (!$displayed and $theme->file_exists("pages/".$route->action))
-            $main->display("pages/bbs/".$route->action);
+            $main->display("pages/discuss/".$route->action);
         elseif (!$displayed)
             show_404();
     }

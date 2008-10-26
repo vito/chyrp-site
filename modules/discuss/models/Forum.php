@@ -138,7 +138,7 @@
 
             $config = Config::current();
             if (!$config->clean_urls)
-                return $config->url."/bbs/?action=forum&amp;url=".urlencode($this->url);
+                return $config->url."/discuss/?action=forum&amp;url=".urlencode($this->url);
 
             return url("forum/".$this->url);
         }

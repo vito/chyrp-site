@@ -208,13 +208,13 @@
                 $page = ceil($offset / 25); # TODO: per-page config
                 return ($config->clean_urls) ?
                            url("topic/".$this->topic->url."/page/".$page)."#message_".$this->id :
-                           $config->url."/bbs/?action=topic&amp;url=".urlencode($this->topic->url)
+                           $config->url."/discuss/?action=topic&amp;url=".urlencode($this->topic->url)
                                ."&amp;page=".$page."#message_".$this->id ;
             }
 
             return ($config->clean_urls) ?
                        url("message/".$this->id) :
-                       $config->url."/bbs/?action=message&amp;id=".$this->id ;
+                       $config->url."/discuss/?action=message&amp;id=".$this->id ;
         }
 
         /**
@@ -232,7 +232,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -250,6 +250,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/bbs/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }
