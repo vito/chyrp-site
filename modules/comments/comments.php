@@ -116,7 +116,7 @@
             if (!$comment->deletable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this comment.", "comments"));
 
-            $admin->display("delete_comment", array("comments" => $comment));
+            $admin->display("delete_comment", array("comment" => $comment));
         }
 
         static function admin_destroy_comment() {
@@ -171,7 +171,8 @@
         }
 
         public function post_options($fields, $post = null) {
-            fallback($post->comment_status, "open");
+            if ($post)
+                $post->comment_status = oneof(@$post->comment_status, "open");
 
             $fields[] = array("attr" => "option[comment_status]",
                               "label" => __("Comment Status", "comments"),

@@ -22,10 +22,12 @@
 
             parent::grab($this, $group_id, $options);
 
-            $this->permissions = (array) fallback($this->permissions, array(), true);
+            $this->permissions = (array) oneof(@$this->permissions, array());
 
             if ($this->no_results)
                 return false;
+
+            Trigger::current()->filter($this, "group");
         }
 
         /**
@@ -211,41 +213,5 @@
                 return false;
 
             return User::find(array("where" => array("group_id" => $this->id)));
-        }
-
-        /**
-         * Function: edit_link
-         * Outputs an edit link for the group, if the user can.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function edit_link($text = null, $before = null, $after = null) {
-            if ($this->no_results or !Visitor::current()->group->can("edit_group"))
-                return false;
-
-            fallback($text, __("Edit"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_group&amp;id='.$this->id.'" title="Edit" class="group_edit_link edit_link" id="group_edit_'.$this->id.'">'.$text.'</a>'.$after;
-        }
-
-        /**
-         * Function: delete_link
-         * Outputs an delete link for the group, if the user can.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function delete_link($text = null, $before = null, $after = null){
-            if ($this->no_results or !Visitor::current()->group->can("delete_group"))
-                return false;
-
-            fallback($text, __("Delete"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_group&amp;id='.$this->id.'" title="Delete" class="group_delete_link delete_link" id="group_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

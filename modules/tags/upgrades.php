@@ -63,6 +63,43 @@
              test($sql->query("DROP TABLE __tags"));
     }
 
-    update_tags_structure();
+    function move_to_yaml() {
+        $sql = SQL::current();
+        if (!$attrs = $sql->select("post_attributes", "*", array("name" => array("unclean_tags", "clean_tags"))))
+            return;
 
+        function parseTags($tags, $clean) {
+            $tags = explode(",", preg_replace("/\{\{([^\}]+)\}\}/", "\\1", $tags));
+            $clean = explode(",", preg_replace("/\{\{([^\}]+)\}\}/", "\\1", $clean));
+            return array_combine($tags, $clean);
+        }
+
+        $tags = array();
+        foreach ($attrs->fetchAll() as $attr)
+            if ($attr["name"] == "unclean_tags")
+                $tags[$attr["post_id"]]["unclean"] = $attr["value"];
+            else
+                $tags[$attr["post_id"]]["clean"] = $attr["value"];
+        
+        foreach ($tags as $post_id => $tags) {
+            $yaml = YAML::dump(parseTags($tags["unclean"], $tags["clean"]));
+
+            echo _f("Relocating tags for post #%d...", array($post_id), "tags");
+
+            echo test($insert = $sql->replace("post_attributes",
+                                              array("name" => "tags",
+                                                    "value" => $yaml,
+                                                    "post_id" => $post_id)),
+                      _f("Backup written to %s.", array("./_tags.bak.txt")));
+
+            if (!$insert)
+                return file_put_contents("./_tags.bak.txt", var_export($tags, true));
+        }
+
+        echo __("Removing old post attributes...", "tags").
+             test($sql->delete("post_attributes", array("name" => array("unclean_tags", "clean_tags"))));
+    }
+
+    update_tags_structure();
     move_to_post_attributes();
+    move_to_yaml();

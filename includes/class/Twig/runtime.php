@@ -41,15 +41,17 @@ $twig_filters = array(
     'translate' =>        'twig_translate_string_filter',
     'translate_plural' => 'twig_translate_plural_string_filter',
     'normalize' =>        'normalize',
-    'truncate' =>         'truncate',
+    'truncate' =>         'twig_truncate_filter',
     'replace' =>          'twig_replace_filter',
     'match' =>            'twig_match_filter',
+    'contains' =>         'substr_count',
     'linebreaks' =>       'nl2br',
     'camelize' =>         'camelize',
     'strip_tags' =>       'strip_tags',
     'pluralize' =>        'twig_pluralize_string_filter',
     'depluralize' =>      'twig_depluralize_string_filter',
     'sanitize' =>         'sanitize',
+    'repeat' =>           'str_repeat',
 
     // array helpers
     'join' =>             'twig_join_filter',
@@ -392,7 +394,7 @@ function twig_offset_filter($array, $offset = 0) {
 }
 
 function twig_fallback_filter($try, $fallback) {
-    return fallback($try, $fallback, true);
+    return oneof($try, $fallback);
 }
 
 function twig_selected_filter($foo) {
@@ -451,8 +453,14 @@ function twig_length_filter($thing) {
 }
 
 function twig_escape_filter($string, $quotes = true, $decode = true) {
-    if ($decode)
-        $string = html_entity_decode($string, ENT_QUOTES, "utf-8");
+    if (!is_string($string)) # Certain post attributes might be parsed from YAML to an array,
+        return $string;      # in which case the module provides a value. However, the attr
+                             # is still passed to the "fallback" and "fix" filters when editing.
 
-    return fix($string, $quotes);
+    $safe = fix($string);
+    return $decode ? preg_replace("/&amp;(#?[A-Za-z0-9]+);/", "&\\1;", $safe) : $safe ;
+}
+
+function twig_truncate_filter($text, $length = 100, $ending = "...", $exact = false, $html = true) {
+    return truncate($text, $length, $ending, $exact, $html);
 }

@@ -30,6 +30,10 @@
                 return;
 
             $aggregates = $config->aggregates;
+
+            if (empty($aggregates))
+                return;
+
             foreach ((array) $config->aggregates as $name => $feed) {
                 $xml_contents = preg_replace(array("/<(\/?)dc:date>/", "/xmlns=/"),
                                              array("<\\1date>", "a="),
@@ -55,19 +59,23 @@
                         array_unshift($items, $item);
 
                 foreach ($items as $item) {
-                    $date = fallback($item->pubDate, fallback($item->date, fallback($item->published, 0, true), true), true);
+                    $date = oneof(@$item->pubDate, @$item->date, @$item->published, 0);
 
                     if (strtotime($date) > $feed["last_updated"]) {
                         $data = array("aggregate" => $name);
                         foreach ($feed["data"] as $attr => $field)
                             $data[$attr] = (!empty($field)) ? $this->parse_field($field, $item) : "" ;
 
-                        Post::add($data, null, null, $feed["feather"], $feed["author"]);
+                        if (isset($data["title"]) or isset($data["name"]))
+                            $clean = sanitize(oneof(@$data["title"], @$data["name"]));
+
+                        Post::add($data, $clean, null, $feed["feather"], $feed["author"]);
 
                         $aggregates[$name]["last_updated"] = strtotime($date);
                     }
                 }
             }
+
             $config->set("aggregates", $aggregates);
             $config->set("last_aggregation", time());
         }

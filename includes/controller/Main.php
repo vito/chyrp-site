@@ -147,7 +147,7 @@
                     array_shift($params);
                     foreach ($params as $param) {
                         $split = explode("=", $param);
-                        $_GET[$split[0]] = fallback($split[1], "", true);
+                        $_GET[$split[0]] = oneof(@$split[1], "");
                     }
 
                     $route->action = $action;
@@ -196,8 +196,7 @@
                     if ($parameter[0] == "(")
                         $post_url_attrs[rtrim(ltrim($parameter, "("), ")")] = $args[$index];
 
-                if ((fallback($post_url_attrs["url"], "", true) == "feed" or     # If the URL val or the clean val is "feed",
-                     fallback($post_url_attrs["clean"], "", true) == "feed") and # do some checking to see if they're trying
+                if ((oneof(@$post_url_attrs["url"], @$post_url_attrs["clean"]) == "feed") and # do some checking to see if they're trying
                     (count(explode("/", trim($post_url, "/"))) > count($args) or # to view the post or the post's feed.
                      end($args) != "feed"))
                     $this->feed = false;
@@ -295,7 +294,7 @@
                 if (!is_numeric($_GET['year']) or !is_numeric($_GET['month']))
                     error(__("Error"), __("Please enter a valid year and month."));
 
-                $timestamp = mktime(0, 0, 0, $_GET['month'], fallback($_GET['day'], "1", true), $_GET['year']);
+                $timestamp = mktime(0, 0, 0, $_GET['month'], oneof(@$_GET['day'], 1), $_GET['year']);
                 $depth = isset($_GET['day']) ? "day" : (isset($_GET['month']) ? "month" : (isset($_GET['year']) ? "year" : ""));
 
                 $this->display("pages/archive",
@@ -374,7 +373,7 @@
             if (isset($attrs))
                 $post = Post::from_url($attrs, array("drafts" => true));
             else
-                $post = new Post(array("url" => fallback($_GET['url'], null, true)));
+                $post = new Post(array("url" => @$_GET['url']));
 
             if ($post->no_results)
                 return false;
@@ -419,7 +418,7 @@
          */
         public function rss() {
             header("HTTP/1.1 301 Moved Permanently");
-            redirect(fallback(Config::current()->feed_url, url("feed"), true));
+            redirect(oneof(@Config::current()->feed_url, url("feed")));
         }
 
         /**
@@ -471,7 +470,7 @@
 
                 if (empty($_POST['email']))
                     Flash::warning(__("E-mail address cannot be blank."));
-                elseif (!preg_match("/^[[:alnum:]][a-z0-9_.\-\+]*@[a-z0-9.-]+\.[a-z]{2,6}$/i", $_POST['email']))
+                elseif (!preg_match("/^[_A-z0-9-]+((\.|\+)[_A-z0-9-]+)*@[A-z0-9-]+(\.[A-z0-9-]+)*(\.[A-z]{2,4})$/", $_POST['email']))
                     Flash::warning(__("Unsupported e-mail address."));
 
                 if (!Flash::exists("warning")) {
@@ -585,7 +584,7 @@
                               $user->website,
                               $user->group_id);
 
-                $sent = @mail($user->email,
+                $sent = email($user->email,
                               __("Lost Password Request"),
                               _f("%s,\n\nWe have received a request for a new password for your account at %s.\n\nPlease log in with the following password, and feel free to change it once you've successfully logged in:\n\t%s",
                                  array($user->login, $config->name, $new_password)));

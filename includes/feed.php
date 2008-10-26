@@ -33,12 +33,12 @@
         $trigger->filter($url, "feed_url", $post);
 
         if (!$post->user->no_results)
-            $author = fallback($post->user->full_name, $post->user->login, true);
+            $author = oneof($post->user->full_name, $post->user->login);
         else
             $author = __("Guest");
 ?>
     <entry>
-        <title type="html"><?php echo fix(fallback($title, ucfirst($post->feather), true)); ?></title>
+        <title type="html"><?php echo fix(oneof($title, ucfirst($post->feather))); ?></title>
         <id>tag:<?php echo $tagged; ?></id>
         <updated><?php echo when("c", $updated); ?></updated>
         <published><?php echo when("c", $post->created_at); ?></published>
@@ -49,9 +49,7 @@
             <uri><?php echo fix($post->user->website); ?></uri>
 <?php endif; ?>
         </author>
-        <content type="html">
-            <?php echo fix($post->feed_content(), false); ?>
-        </content>
+        <content type="html"><?php echo fix($post->feed_content()); ?></content>
 <?php $trigger->call("feed_item", $post); ?>
     </entry>
 <?php

@@ -287,50 +287,95 @@
 
     /**
      * Function: truncate
-     * Truncates a string to the passed length, appending an ellipsis to the end.
+     * Truncates a string to the given length, optionally taking into account HTML tags, and/or keeping words in tact.
      *
      * Parameters:
      *     $text - String to shorten.
-     *     $numb - Length of the shortened string.
-     *     $keep_words - Whether or not to keep words in-tact.
-     *     $minimum - If the truncated string is less than this and $keep_words is true, it will act as if $keep_words is false.
+     *     $length - Length to truncate to.
+     *     $ending - What to place at the end, e.g. "...".
+     *     $exact - Break words?
+     *     $html - Auto-close cut-off HTML tags?
+     *
+     * Author:
+     *     CakePHP team, code style modified.
      */
-    function truncate($text, $numb = 50, $keep_words = true, $minimum = 10) {
-        # Entities only represent one character when rendered, so treat them as one character.
-        preg_match_all("/&([^\s;]+);/", $text, $entities);
-        foreach ($entities[0] as $entity)
-            $numb += strlen($entity) - 1;
+    function truncate($text, $length = 100, $ending = "...", $exact = false, $html = false) {
+        if (is_array($ending))
+            extract($ending);
 
-        $original = $text;
-        $numb -= 3;
-        if (strlen($text) > $numb) {
-            if (function_exists('mb_strcut')) {
-                if ($keep_words) {
-                    $text = mb_strcut($text, 0, $numb, "utf-8");
-                    $text = mb_strcut($text, 0 , strrpos($text, " "), "utf-8");
+        if ($html) {
+            if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length)
+                return $text;
 
-                    if (strlen($text) < $minimum)
-                        $text = mb_strcut($original, 0, $numb, "utf-8");
-
-                    $text.= "...";
-                } else {
-                    $text = mb_strcut($text, 0, $numb, "utf-8")."...";
+            $totalLength = strlen($ending);
+            $openTags = array();
+            $truncate = "";
+            preg_match_all("/(<\/?([\w+]+)[^>]*>)?([^<>]*)/", $text, $tags, PREG_SET_ORDER);
+            foreach ($tags as $tag) {
+                if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2]) and preg_match('/<[\w]+[^>]*>/s', $tag[0]))
+                    array_unshift($openTags, $tag[2]);
+                elseif (preg_match('/<\/([\w]+)[^>]*>/s', $tag[0], $closeTag)) {
+                    $pos = array_search($closeTag[1], $openTags);
+                    if ($pos !== false)
+                        array_splice($openTags, $pos, 1);
                 }
-            } else {
-                if ($keep_words) {
-                    $text = substr($text, 0, $numb);
-                    $text = substr($text, 0 , strrpos($text, " "));
 
-                    if (strlen($text) < $minimum)
-                        $text = substr($text, 0, $numb);
+                $truncate .= $tag[1];
 
-                    $text.= "...";
+                $contentLength = strlen(preg_replace("/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i", " ", $tag[3]));
+                if ($contentLength + $totalLength > $length) {
+                    $left = $length - $totalLength;
+                    $entitiesLength = 0;
+                    if (preg_match_all("/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i", $tag[3], $entities, PREG_OFFSET_CAPTURE))
+                        foreach ($entities[0] as $entity)
+                            if ($entity[1] + 1 - $entitiesLength <= $left) {
+                                $left--;
+                                $entitiesLength += strlen($entity[0]);
+                            } else
+                                break;
+
+                    $truncate .= substr($tag[3], 0 , $left + $entitiesLength);
+
+                    break;
                 } else {
-                    $text = substr($text, 0, $numb)."...";
+                    $truncate .= $tag[3];
+                    $totalLength += $contentLength;
                 }
+
+                if ($totalLength >= $length)
+                    break;
+            }
+        } else {
+            if (strlen($text) <= $length)
+                return $text;
+            else
+                $truncate = substr($text, 0, $length - strlen($ending));
+        }
+
+        if (!$exact) {
+            $spacepos = strrpos($truncate, " ");
+
+            if (isset($spacepos)) {
+                if ($html) {
+                    $bits = substr($truncate, $spacepos);
+                    preg_match_all('/<\/([a-z]+)>/', $bits, $droppedTags, PREG_SET_ORDER);
+                    if (!empty($droppedTags))
+                        foreach ($droppedTags as $closingTag)
+                            if (!in_array($closingTag[1], $openTags))
+                                array_unshift($openTags, $closingTag[1]);
+                }
+
+                $truncate = substr($truncate, 0, $spacepos);
             }
         }
-        return $text;
+
+        $truncate .= $ending;
+
+        if ($html)
+            foreach ($openTags as $tag)
+                $truncate .= '</'.$tag.'>';
+
+        return $truncate;
     }
 
     /**
@@ -705,27 +750,70 @@
 
     /**
      * Function: fallback
-     * Gracefully falls back a given variable if it's empty or not set.
+     * Sets a given variable if it is not set.
+     *
+     * The last of the arguments or the first non-empty value will be used.
      *
      * Parameters:
-     *     &$variable - The variable to check for.
-     *     $fallback - What to set if the variable is empty or not set.
-     *     $return - Whether to set it or to return.
+     *     &$variable - The variable to return or set.
      *
      * Returns:
-     *     $variable = $fallback - If $return is false and $variable is empty or not set.
-     *     $fallback - If $return is true and $variable is empty or not set.
+     *     The value of whatever was chosen.
      */
-    function fallback(&$variable, $fallback = null, $return = false) {
+    function fallback(&$variable) {
         if (is_bool($variable))
             return $variable;
 
-        $set = (!isset($variable) or empty($variable) or (is_string($variable) and trim($variable) == ""));
+        $set = (!isset($variable) or (is_string($variable) and trim($variable) === ""));
 
-        if (!$return and $set)
+        $args = func_get_args();
+        array_shift($args);
+        if (count($args) > 1) {
+            foreach ($args as $arg) {
+                $fallback = $arg;
+
+                if (isset($arg) and (!is_string($arg) or (is_string($arg) and trim($arg) !== "")))
+                    continue;
+            }
+        } else
+            $fallback = isset($args[0]) ? $args[0] : null ;
+
+        if ($set)
             $variable = $fallback;
 
         return $set ? $fallback : $variable ;
+    }
+
+    /**
+     * Function: oneof
+     * Returns the first argument that is set and non-empty.
+     */
+    function oneof() {
+        $last = null;
+        $args = func_get_args();
+        foreach ($args as $index => $arg) {
+            if (!isset($arg) or (is_string($arg) and trim($arg) === "") or $arg === array() or (is_object($arg) and empty($arg)))
+                $last = $arg;
+            else
+                return $arg;
+
+            if ($index + 1 == count($args))
+                break;
+
+            $next = $args[$index + 1];
+
+            $incomparable = ((is_array($arg) and !is_array($next)) or        # This is a big check but it should cover most "incomparable" cases.
+                             (!is_array($arg) and is_array($next)) or        # Using simple type comparison wouldn't work too well, for example
+                             (is_object($arg) and !is_object($next)) or      # when "" would take priority over 1 in oneof("", 1) because they're
+                             (!is_object($arg) and is_object($next)) or      # different types.
+                             (is_resource($arg) and !is_resource($next)) or
+                             (!is_resource($arg) and is_resource($next)));
+
+            if (isset($arg) and isset($next) and $incomparable)
+                return $arg;
+        }
+
+        return $last;
     }
 
     /**
@@ -741,12 +829,12 @@
         if ($specialchars)
             $pattern.= "!@#$%^&*()?~";
 
-        $len = ($specialchars) ? 47 : 35 ;
+        $len = strlen($pattern) - 1;
 
-        $key = $pattern{rand(0, $len)};
-        for($i = 1; $i < $length; $i++) {
-            $key.= $pattern{rand(0, $len)};
-        }
+        $key = "";
+        for($i = 0; $i < $length; $i++)
+            $key.= $pattern[rand(0, $len)];
+
         return $key;
     }
 
@@ -860,13 +948,25 @@
      *     <upload>
      */
     function upload_from_url($url, $extension = null, $path = "") {
-        $file = tempnam(sys_get_temp_dir(), "chyrp");
+        $file = tempnam(null, "chyrp");
         file_put_contents($file, get_remote($url));
 
         $fake_file = array("name" => basename(parse_url($url, PHP_URL_PATH)),
                            "tmp_name" => $file);
 
         return upload($fake_file, $extension, $path, true);
+    }
+
+    /**
+     * Function: uploaded
+     * Returns a URL to an uploaded file.
+     *
+     * Parameters:
+     *     $file - Filename relative to the uploads directory.
+     */
+    function uploaded($file) {
+        $config = Config::current();
+        return $config->chyrp_url.$config->uploads_path.$file;
     }
 
     /**
@@ -1336,4 +1436,34 @@
         $amount = round($difference / $units[$unit], $precision);
 
         return $amount." ".pluralize($unit, $amount)." ".$word;
+    }
+
+    /**
+     * Function: list_notate
+     * Notates an array as a list of things, e.g. "foo, bar, and baz."
+     */
+    function list_notate($array, $quotes = false) {
+        $count = 0;
+        $items = array();
+        foreach ($array as $item) {
+            $string = (is_string($item) and $quotes) ? "&#8220;".$item."&#8221;" : $item ;
+            if (count($array) == ++$count and $count !== 1)
+                $items[] = __("and ").$string;
+            else
+                $items[] = $string;
+        }
+
+        return (count($array) == 2) ? implode(" ", $items) : implode(", ", $items) ;
+    }
+
+    /**
+     * Function: email
+     * Send an email. Function arguments are exactly the same as the PHP mail() function.
+     *
+     * This is intended so that modules can provide an email method if the server cannot use mail().
+     */
+    function email() {
+        $function = "mail";
+        Trigger::current()->filter($function, "send_mail");
+        return call_user_func_array($function, func_get_args());
     }

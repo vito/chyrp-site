@@ -66,7 +66,7 @@
             $options["select"] = array_merge(array("posts.*",
                                                    "post_attributes.name AS attribute_names",
                                                    "post_attributes.value AS attribute_values"),
-                                             fallback($options["select"], array(), true));
+                                             oneof(@$options["select"], array()));
             $options["ignore_dupes"] = array("attribute_names", "attribute_values");
 
             parent::grab($this, $post_id, $options);
@@ -87,7 +87,10 @@
             fallback($this->clean, $this->url);
 
             foreach ($this->attributes as $key => $val)
-                $this->$key = $val;
+                if (!empty($key))
+                    $this->$key = $val;
+
+            Trigger::current()->filter($this, "post");
 
             $this->filter();
         }
@@ -131,7 +134,7 @@
             $options["select"] = array_merge(array("posts.*",
                                                    "post_attributes.name AS attribute_names",
                                                    "post_attributes.value AS attribute_values"),
-                                             fallback($options["select"], array(), true));
+                                             oneof(@$options["select"], array()));
             $options["ignore_dupes"] = array("attribute_names", "attribute_values");
 
             fallback($options["order"], "pinned DESC, created_at DESC, id DESC");
@@ -185,17 +188,20 @@
             $visitor = Visitor::current();
             $trigger = Trigger::current();
 
-            fallback($feather,    fallback($_POST['feather'], "", true));
-            fallback($user,       fallback($_POST['user_id'], Visitor::current()->id, true));
+            fallback($feather,    oneof(@$_POST['feather'], ""));
+            fallback($user,       oneof(@$_POST['user_id'], Visitor::current()->id));
             fallback($pinned,     !empty($_POST['pinned']));
-            fallback($status,     (isset($_POST['draft'])) ? "draft" : fallback($_POST['status'], "public", true));
+            fallback($status,     (isset($_POST['draft'])) ? "draft" : oneof(@$_POST['status'], "public"));
             fallback($created_at, (!empty($_POST['created_at']) and
                                    (!isset($_POST['original_time']) or $_POST['created_at'] != $_POST['original_time'])) ?
                                       datetime($_POST['created_at']) :
                                       datetime());
-            fallback($updated_at, fallback($_POST['updated_at'], "0000-00-00 00:00:00", true));
-            fallback($trackbacks, fallback($_POST['trackbacks'], "", true));
-            fallback($options,    fallback($_POST['option'], array(), true));
+            fallback($updated_at, oneof(@$_POST['updated_at'], "0000-00-00 00:00:00"));
+            fallback($trackbacks, oneof(@$_POST['trackbacks'], ""));
+            fallback($options,    oneof(@$_POST['option'], array()));
+
+            if (isset($clean) and !isset($url))
+                $url = self::check_url($clean);
 
             if (isset($_POST['bookmarklet'])) {
                 $trigger->filter($values, "bookmarklet_submit_values");
@@ -290,16 +296,16 @@
             $old = clone $this;
 
             fallback($values,     array_combine($this->attribute_names, $this->attribute_values));
-            fallback($user_id,    fallback($_POST['user_id'], $this->user_id, true));
+            fallback($user_id,    oneof(@$_POST['user_id'], $this->user_id));
             fallback($pinned,     (int) !empty($_POST['pinned']));
-            fallback($status,     (isset($_POST['draft'])) ? "draft" : fallback($_POST['status'], $this->status, true));
+            fallback($status,     (isset($_POST['draft'])) ? "draft" : oneof(@$_POST['status'], $this->status));
             fallback($clean,      $this->clean);
-            fallback($url,        fallback($_POST['slug'], $this->feather.".".$this->id));
+            fallback($url,        oneof(@$_POST['slug'], $this->feather.".".$this->id));
             fallback($created_at, (!empty($_POST['created_at'])) ? datetime($_POST['created_at']) : $this->created_at);
             fallback($updated_at, ($updated_at === false ?
                                       $this->updated_at :
-                                      fallback($updated_at, fallback($_POST['updated_at'], datetime(), true))));
-            fallback($options,    fallback($_POST['option'], array(), true));
+                                      oneof($updated_at, @$_POST['updated_at'], datetime())));
+            fallback($options,    oneof(@$_POST['option'], array()));
 
             # Update all values of this post.
             list($this->user_id,
@@ -648,7 +654,7 @@
                 foreach (Feathers::$custom_filters[$class] as $custom_filter) {
                     $varname = $custom_filter["field"]."_unfiltered";
                     if (!isset($this->$varname))
-                        $this->$varname = fallback($this->$custom_filter["field"], null);
+                        $this->$varname = @$this->$custom_filter["field"];
 
                     $this->$custom_filter["field"] = call_user_func_array(array(Feathers::$instances[$this->feather], $custom_filter["name"]),
                                                                           array($this->$custom_filter["field"], $this));
@@ -658,47 +664,11 @@
                 foreach (Feathers::$filters[$class] as $filter) {
                     $varname = $filter["field"]."_unfiltered";
                     if (!isset($this->$varname))
-                        $this->$varname = fallback($this->$filter["field"], null);
+                        $this->$varname = @$this->$filter["field"];
 
                     if (isset($this->$filter["field"]) and !empty($this->$filter["field"]))
                         $trigger->filter($this->$filter["field"], $filter["name"], $this);
                 }
-        }
-
-        /**
-         * Function: edit_link
-         * Outputs an edit link for the post, if the <User.can> edit_post.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function edit_link($text = null, $before = null, $after = null){
-            if (!$this->editable())
-                return false;
-
-            fallback($text, __("Edit"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_post&amp;id='.$this->id.'" title="Edit" class="post_edit_link edit_link" id="post_edit_'.$this->id.'">'.$text.'</a>'.$after;
-        }
-
-        /**
-         * Function: delete_link
-         * Outputs a delete link for the post, if the <User.can> delete_post.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         */
-        public function delete_link($text = null, $before = null, $after = null){
-            if (!$this->deletable())
-                return false;
-
-            fallback($text, __("Delete"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_post&amp;id='.$this->id.'" title="Delete" class="post_delete_link delete_link" id="post_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**

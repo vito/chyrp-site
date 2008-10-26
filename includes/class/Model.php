@@ -39,12 +39,11 @@
                     $this->$name = $filtered;
 
                 $this->belongs_to = (array) $this->belongs_to;
-                $this->has_many = (array) $this->has_many;
-                $this->has_one = (array) $this->has_one;
+                $this->has_many   = (array) $this->has_many;
+                $this->has_one    = (array) $this->has_one;
                 if (in_array($name, $this->belongs_to) or isset($this->belongs_to[$name])) {
-                    $id = $name."_id";
                     $class = (isset($this->belongs_to[$name])) ? $this->belongs_to[$name] : $name ;
-                    return $this->$name = new $class($this->$id);
+                    return $this->$name = new $class($this->{$name."_id"});
                 } elseif (in_array($name, $this->has_many) or isset($this->has_many[$name])) {
                     if (isset($this->has_many[$name]))
                         list($class, $by) = $this->has_many[$name];
@@ -52,11 +51,11 @@
                         list($class, $by) = array(depluralize($name), $model_name);
 
                     return $this->$name = call_user_func(array($class, "find"),
-                                                         array("where" => array($by."_id" => $this->id),
+                                                         array("where" => array(strtolower($by)."_id" => $this->id),
                                                                "placeholders" => $placeholders));
                 } elseif (in_array($name, $this->has_one)) {
                     $class = depluralize($name);
-                    return $this->$name = new $class(null, array("where" => array($model_name."_id" => $this->id)));
+                    return $this->$name = new $class(null, array("where" => array(strtolower($model_name)."_id" => $this->id)));
                 }
             }
         }
@@ -64,7 +63,7 @@
         public function __getPlaceholders($name) {
             $this->__placeholders = true;
             $return = $this->__get($name);
-            $this->__placeholders = false;
+            unset($this->__placeholders);
             return $return;
         }
 
@@ -302,5 +301,71 @@
                 Trigger::current()->call("delete_".$model, new $class($id));
 
             SQL::current()->delete(pluralize($model), array("id" => $id));
+        }
+
+        /**
+         * Function: deletable
+         * Checks if the <User> can delete the post.
+         */
+        public function deletable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            $name = strtolower(get_class($this));
+
+            fallback($user, Visitor::current());
+            return $user->group->can("delete_".$name);
+        }
+
+        /**
+         * Function: editable
+         * Checks if the <User> can edit the post.
+         */
+        public function editable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            $name = strtolower(get_class($this));
+
+            fallback($user, Visitor::current());
+            return $user->group->can("edit_".$name);
+        }
+
+        /**
+         * Function: edit_link
+         * Outputs an edit link for the model, if the visitor's <Group.can> edit_[model].
+         *
+         * Parameters:
+         *     $text - The text to show for the link.
+         *     $before - If the link can be shown, show this before it.
+         *     $after - If the link can be shown, show this after it.
+         */
+        public function edit_link($text = null, $before = null, $after = null, $classes = "") {
+            if (!$this->editable())
+                return false;
+
+            fallback($text, __("Edit"));
+
+            $name = strtolower(get_class($this));
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_'.$name.'&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').$name.'_edit_link edit_link" id="'.$name.'_edit_'.$this->id.'">'.$text.'</a>'.$after;
+        }
+
+        /**
+         * Function: delete_link
+         * Outputs a delete link for the post, if the <User.can> delete_[model].
+         *
+         * Parameters:
+         *     $text - The text to show for the link.
+         *     $before - If the link can be shown, show this before it.
+         *     $after - If the link can be shown, show this after it.
+         */
+        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
+            if (!$this->deletable())
+                return false;
+
+            fallback($text, __("Delete"));
+
+            $name = strtolower(get_class($this));
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=delete_'.$name.'&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').$name.'_delete_link delete_link" id="'.$name.'_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

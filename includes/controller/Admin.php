@@ -517,7 +517,7 @@
 
             if (empty($_POST['email']))
                 error(__("Error"), __("E-mail address cannot be blank."));
-            elseif (!preg_match("/^[[:alnum:]][a-z0-9_.-\+]*@[a-z0-9.-]+\.[a-z]{2,6}$/i", $_POST['email']))
+            elseif (!preg_match("/^[_A-z0-9-]+((\.|\+)[_A-z0-9-]+)*@[A-z0-9-]+(\.[A-z0-9-]+)*(\.[A-z]{2,4})$/", $_POST['email']))
                 error(__("Error"), __("Unsupported e-mail address."));
 
             User::add($_POST['login'],
@@ -755,8 +755,8 @@
 
             $this->display("delete_group",
                            array("group" => new Group($_GET['id']),
-                                 "permissions" => Group::find(array("where" => array("id not" => $_GET['id']),
-                                                                    "order" => "id ASC"))));
+                                 "groups" => Group::find(array("where" => array("id not" => $_GET['id']),
+                                                               "order" => "id ASC"))));
         }
 
         /**
@@ -892,7 +892,7 @@
                     $posts_atom.= '     <published>'.when("c", $post->created_at).'</published>'."\r";
                     $posts_atom.= '     <link href="'.fix($trigger->filter($url, "post_export_url", $post)).'" />'."\r";
                     $posts_atom.= '     <author chyrp:user_id="'.$post->user_id.'">'."\r";
-                    $posts_atom.= '         <name>'.fix(fallback($post->user->full_name, $post->user->login, true)).'</name>'."\r";
+                    $posts_atom.= '         <name>'.fix(oneof($post->user->full_name, $post->user->login)).'</name>'."\r";
 
                     if (!empty($post->user->website))
                         $posts_atom.= '         <uri>'.fix($post->user->website).'</uri>'."\r";
@@ -954,7 +954,7 @@
                     $pages_atom.= '     <published>'.when("c", $page->created_at).'</published>'."\r";
                     $pages_atom.= '     <link href="'.fix($trigger->filter($url, "page_export_url", $page)).'" />'."\r";
                     $pages_atom.= '     <author chyrp:user_id="'.fix($page->user_id).'">'."\r";
-                    $pages_atom.= '         <name>'.fix(fallback($page->user->full_name, $page->user->login, true)).'</name>'."\r";
+                    $pages_atom.= '         <name>'.fix(oneof($page->user->full_name, $page->user->login)).'</name>'."\r";
 
                     if (!empty($page->user->website))
                         $pages_atom.= '         <uri>'.fix($page->user->website).'</uri>'."\r";
@@ -1906,6 +1906,10 @@
 
             $info = YAML::load(THEMES_DIR."/".$_GET['theme']."/info.yaml");
 
+            # Clear the caches made by the previous theme.
+            foreach (glob(INCLUDES_DIR."/caches/*.cache") as $cache)
+                @unlink($cache);
+
             if (!empty($_SESSION['theme'])) {
                 unset($_SESSION['theme']);
                 Flash::notice(_f("Stopped previewing &#8220;%s&#8221;.", array($info["name"])), "/admin/?action=themes");
@@ -1945,8 +1949,8 @@
             $config = Config::current();
             $set = array($config->set("name", $_POST['name']),
                          $config->set("description", $_POST['description']),
-                         $config->set("chyrp_url", rtrim($_POST['chyrp_url'], '/')),
-                         $config->set("url", rtrim(fallback($_POST['url'], $_POST['chyrp_url'], true), '/')),
+                         $config->set("chyrp_url", rtrim($_POST['chyrp_url'], "/")),
+                         $config->set("url", rtrim(oneof($_POST['url'], $_POST['chyrp_url']), "/")),
                          $config->set("email", $_POST['email']),
                          $config->set("timezone", $_POST['timezone']),
                          $config->set("locale", $_POST['locale']));
