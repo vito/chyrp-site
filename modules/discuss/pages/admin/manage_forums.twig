@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% paginate forum in 25 forums as forums %}
+                    {% paginate forum in 25 forums as forums %}
                     <tr id="forum_$forum.id" class="forum {% if loop.last %} last{% endif %}">
                         <td class="main"><a href="$forum.url">$forum.name</a></td>
                         <td>${ forum.description | truncate(50) }</td>
@@ -42,11 +42,11 @@
                         {% endif %}
                         {% endif %}
                     </tr>
-                {% else %}
+                    {% else %}
                     <tr class="last">
                         <td colspan="6" class="center"><span class="sub">${ "(none)" | translate }</span></td>
                     </tr>
-                {% endpaginate %}
+                    {% endpaginate %}
                 </tbody>
             </table>
             {% if forums.paginated and forums.pages > 1 %}

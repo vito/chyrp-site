@@ -117,4 +117,36 @@
             $admin->display("manage_forums",
                             array("forums" => Forum::find(array("placeholders" => true))));
         }
+
+        public function admin_edit_forum($admin) {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No forum ID specified.", "discuss"));
+
+            $forum = new Forum($_GET['id'], array("filter" => false));
+            if ($forum->no_results)
+                error(__("Error"), __("Invalid forum ID specified.", "discuss"));
+
+            if (!$forum->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this forum.", "discuss"));
+
+            $admin->display("edit_forum",
+                            array("forum" => $forum),
+                            _f("Edit Forum &#8220;%s&#8221;", array(fix($forum->name)), "discuss"));
+        }
+
+        public function admin_update_forum($admin) {
+            if (!isset($_POST['forum_id']))
+                error(__("Error"), __("No forum ID specified.", "discuss"));
+
+            $forum = new Forum($_POST['forum_id']);
+            if ($forum->no_results)
+                error(__("Error"), __("Invalid forum ID specified.", "discuss"));
+
+            if (!$forum->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this forum.", "discuss"));
+
+            $forum->update($_POST['name'], $_POST['description']);
+
+            Flash::notice(__("Forum updated.", "discuss"), "/admin/?action=manage_forums");
+        }
     }

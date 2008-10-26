@@ -30,7 +30,16 @@
             if ($this->no_results)
                 return false;
 
-            Trigger::current()->filter($this, "forum");
+            $this->filtered = !isset($options["filter"]) or $options["filter"];
+
+            $trigger = Trigger::current();
+
+            if ($this->filtered) {
+                $trigger->filter($this->name, array("markup_title", "markup_topic_title"), $this);
+                $trigger->filter($this->description, array("markup_text", "markup_topic_text"), $this);
+            }
+
+            $trigger->filter($this, "forum");
         }
 
         /**

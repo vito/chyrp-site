@@ -1,0 +1,29 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Edit Forum" | translate("discuss") }{% endblock %}
+
+{% block content %}
+            ${ forum.delete_link('<img src="images/icons/delete.png" alt="delete" />'~ ("Delete" | translate), null, null, "button boo right") }
+            <h1>${ "Edit Forum &#8220;%s&#8221;" | translate("discuss") | format(forum.name) }</h1>
+            <form id="edit_forum" class="split" action="{% admin "update_forum" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <fieldset>
+                    <p>
+                        <label for="full_name">${ "Name" | translate("discuss") }</label>
+                        <input class="text" type="text" name="name" value="${ forum.name | escape }" id="name" />
+                    </p>
+                    <p>
+                        <label for="description">${ "Description" | translate("discuss") }</label>
+                        <textarea class="description" name="description" rows="9" cols="50" id="description">${ forum.description | escape }</textarea>
+                    </p>
+
+                    <br />
+
+                    <p>
+                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Update" | translate }</button>
+                    </p>
+
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                    <input type="hidden" name="forum_id" value="$forum.id" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}
