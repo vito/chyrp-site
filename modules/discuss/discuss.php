@@ -138,6 +138,9 @@
             if (!isset($_POST['forum_id']))
                 error(__("Error"), __("No forum ID specified.", "discuss"));
 
+            if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
+                show_403(__("Access Denied"), __("Invalid security key."));
+
             $forum = new Forum($_POST['forum_id']);
             if ($forum->no_results)
                 error(__("Error"), __("Invalid forum ID specified.", "discuss"));
@@ -148,5 +151,44 @@
             $forum->update($_POST['name'], $_POST['description']);
 
             Flash::notice(__("Forum updated.", "discuss"), "/admin/?action=manage_forums");
+        }
+
+        public function admin_delete_forum($admin) {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No forum ID specified.", "discuss"));
+
+            $forum = new Forum($_GET['id']);
+            if ($forum->no_results)
+                error(__("Error"), __("Invalid forum ID specified.", "discuss"));
+
+            if (!$forum->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this forum.", "discuss"));
+
+            $admin->display("delete_forum",
+                            array("forum" => $forum,
+                                  "forums" => Forum::find(array("where" => array("id not" => $forum->id)))),
+                            _f("Delete Forum &#8220;%s&#8221;", array(fix($forum->name)), "discuss"));
+        }
+
+        public function admin_destroy_forum() {
+            if (!isset($_POST['id']))
+                error(__("Error"), __("No forum ID specified.", "discuss"));
+
+            if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
+                show_403(__("Access Denied"), __("Invalid security key."));
+
+            $forum = new Forum($_POST['id']);
+            if ($forum->no_results)
+                error(__("Error"), __("Invalid forum ID specified.", "discuss"));
+
+            if (!$forum->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this forum.", "discuss"));
+
+            foreach ($forum->topics as $topic)
+                $topic->update(null, null, $_POST['move_forum']);
+
+            Forum::delete($forum->id);
+
+            Flash::notice(__("Forum deleted.", "discuss"), "/admin/?action=manage_forums");
         }
     }
