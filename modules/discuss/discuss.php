@@ -99,7 +99,7 @@
                 return $navs;
 
             $navs["manage_forums"] = array("title" => __("Forums", "discuss"),
-                                           "selected" => array("edit_forum", "delete_forum"));
+                                           "selected" => array("new_forum", "edit_forum", "delete_forum"));
 
             return $navs;
         }
@@ -116,6 +116,21 @@
 
             $admin->display("manage_forums",
                             array("forums" => Forum::find(array("placeholders" => true))));
+        }
+
+        public function admin_new_forum($admin) {
+            if (!Visitor::current()->group->can("add_forum"))
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to add forums.", "discuss"));
+
+            $admin->display("new_forum", array(), __("New Forum", "discuss"));
+        }
+
+        public function admin_add_forum() {
+            if (!Visitor::current()->group->can("add_forum"))
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to add forums.", "discuss"));
+
+            Forum::add($_POST['name'], $_POST['description']);
+            Flash::notice(__("Forum added.", "discuss"), "/admin/?action=manage_forums");
         }
 
         public function admin_edit_forum($admin) {

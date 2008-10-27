@@ -82,11 +82,17 @@
         }
 
         public function add_message() {
+            if (!Visitor::current()->group->can("add_message"))
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to add messages.", "discuss"));
+
             $message = Message::add($_POST['body'], $_POST['topic_id']);
             Flash::notice(__("Message added.", "discuss"), $message->url(true));
         }
 
         public function add_topic() {
+            if (!Visitor::current()->group->can("add_topic"))
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to create topics.", "discuss"));
+
             $topic = Topic::add($_POST['title'], $_POST['description'], $_POST['forum_id']);
             Flash::notice(__("Topic added.", "discuss"), $topic->url());
         }

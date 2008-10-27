@@ -8,7 +8,7 @@
             <form id="edit_forum" class="split" action="{% admin "update_forum" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <fieldset>
                     <p>
-                        <label for="full_name">${ "Name" | translate("discuss") }</label>
+                        <label for="name">${ "Name" | translate("discuss") }</label>
                         <input class="text" type="text" name="name" value="${ forum.name | escape }" id="name" />
                     </p>
                     <p>
