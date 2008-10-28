@@ -25,6 +25,8 @@
 
             $options["group"][] = "id";
 
+            fallback($options["order"], array("order ASC", "id ASC"));
+
             parent::grab($this, $forum_id, $options);
 
             if ($this->no_results)
@@ -56,6 +58,8 @@
 
             $options["group"][] = "id";
 
+            fallback($options["order"], array("order ASC", "id ASC"));
+
             return parent::search(get_class(), $options, $options_for_object);
         }
 
@@ -75,11 +79,12 @@
          * See Also:
          *     <update>
          */
-        static function add($name, $description) {
+        static function add($name, $description, $order = 0) {
             $sql = SQL::current();
             $sql->insert("forums",
                          array("name" => $name,
-                               "description" => $description));
+                               "description" => $description,
+                               "order" => $order));
 
             $forum = new self($sql->latest());
 
@@ -96,20 +101,22 @@
          *     $name - The new name.
          *     $description - The new description.
          */
-        public function update($name, $description) {
+        public function update($name = null, $description = null, $order = null) {
             if ($this->no_results)
                 return false;
 
             $old = clone $this;
 
-            $this->name        = $name;
-            $this->description = $description;
+            $this->name        = fallback($name,        $this->name);
+            $this->description = fallback($description, $this->description);
+            $this->order       = fallback($order,       $this->order);
 
             $sql = SQL::current();
             $sql->update("forums",
                          array("id"          => $this->id),
-                         array("name"        => $name,
-                               "description" => $description));
+                         array("name"        => $this->name,
+                               "description" => $this->description,
+                               "order"       => $this->order));
 
             Trigger::current()->call("update_forum", $this, $old);
         }

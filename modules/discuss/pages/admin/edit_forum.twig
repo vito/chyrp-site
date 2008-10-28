@@ -15,6 +15,9 @@
                         <label for="description">${ "Description" | translate("discuss") }</label>
                         <textarea class="description" name="description" rows="9" cols="50" id="description">${ forum.description | escape }</textarea>
                     </p>
+                    <p>
+                        <label for="order">${ "Order" | translate("discuss") }</label>
+                        <input class="text code" type="text" name="order" value="$forum.order" id="order" size="1" />
 
                     <br />
 

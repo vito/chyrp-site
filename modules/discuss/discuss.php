@@ -15,6 +15,7 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              name VARCHAR(100) DEFAULT '',
                              description TEXT,
+                             order INTEGER DEFAULT 0,
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT ''
                          ) DEFAULT CHARSET=utf8");
@@ -91,6 +92,24 @@
 
         public function messages_get(&$options) {
             $options["order"] = "created_at ASC, id ASC";
+        }
+
+        public function admin_head() {
+            $config = Config::current();
+?>
+        <script src="<?php echo $config->chyrp_url; ?>/modules/discuss/lib/tablednd.js" type="text/javascript"></script>
+        <script src="<?php echo $config->chyrp_url; ?>/modules/discuss/admin.js" type="text/javascript"></script>
+<?php
+        }
+
+        public function ajax() {
+            if ($_POST['action'] != "reorder_forums")
+                return;
+
+            foreach (explode(",", $_POST['order']) as $order => $id) {
+                $forum = new Forum($id, array("filter" => false));
+                $forum->update(null, null, $order);
+            }
         }
 
         static function manage_nav($navs) {
