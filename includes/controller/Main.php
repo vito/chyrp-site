@@ -196,15 +196,10 @@
                     if ($parameter[0] == "(")
                         $post_url_attrs[rtrim(ltrim($parameter, "("), ")")] = $args[$index];
 
-                if ((oneof(@$post_url_attrs["url"], @$post_url_attrs["clean"]) == "feed") and # do some checking to see if they're trying
-                    (count(explode("/", trim($post_url, "/"))) > count($args) or # to view the post or the post's feed.
-                     end($args) != "feed"))
-                    $this->feed = false;
-
                 if ($return_post)
                     return Post::from_url($post_url_attrs);
                 else
-                    $route->try["view"] = array($post_url_attrs);
+                    $route->try["view"] = array($post_url_attrs, $args);
             }
         }
 
@@ -316,13 +311,15 @@
             fallback($_GET['query'], "");
             $config = Config::current();
 
-            if ($config->clean_urls and substr_count($_SERVER['REQUEST_URI'], "?"))
+            if ($config->clean_urls and
+                substr_count($_SERVER['REQUEST_URI'], "?") and
+                !substr_count($_SERVER['REQUEST_URI'], "%2F")) # Searches with / and clean URLs = server 404
                 redirect("search/".urlencode($_GET['query'])."/");
 
             if (empty($_GET['query']))
                 return Flash::warning(__("Please enter a search term."));
 
-            list($where, $params) = keywords($_GET['query'], "post_attributes.value LIKE :query OR url LIKE :query");
+            list($where, $params) = keywords($_GET['query'], "post_attributes.value LIKE :query OR url LIKE :query", "posts");
 
             $results = Post::find(array("placeholders" => true,
                                         "where" => $where,
@@ -369,7 +366,7 @@
          * Function: view
          * Views a post.
          */
-        public function view($attrs = null) {
+        public function view($attrs = null, $args = array()) {
             if (isset($attrs))
                 $post = Post::from_url($attrs, array("drafts" => true));
             else
@@ -377,6 +374,11 @@
 
             if ($post->no_results)
                 return false;
+
+            if ((oneof(@$attrs["url"], @$attrs["clean"]) == "feed") and # do some checking to see if they're trying
+                (count(explode("/", trim($post_url, "/"))) > count($args) or              # to view the post or the post's feed.
+                 end($args) != "feed"))
+                $this->feed = false;
 
             if (!$post->theme_exists())
                 error(__("Error"), __("The feather theme file for this post does not exist. The post cannot be displayed."));
@@ -730,3 +732,4 @@
             return $instance = (empty($instance)) ? new self() : $instance ;
         }
     }
+

@@ -1226,24 +1226,31 @@
     }
 
     /**
+     * Function: datetimetotime
+     * Converts a DateTime to an integer time.
+     */
+    function datetimetotime($datetime) {
+        #$old = get_timezone();
+        #set_timezone($datetime->getTimezone()->getName());
+        $time = strtotime(strftime($datetime->format("F jS, Y, g:i A")));
+        #set_timezone($old);
+        return $time;
+    }
+
+    /**
      * Function: timezones
      * Returns an array of timezones that have unique offsets. Doesn't count deprecated timezones.
      */
     function timezones() {
-        require INCLUDES_DIR."/lib/timezones.php"; # $timezones
-
         $zones = array();
-        $offsets = array();
-        $undo = $timezones[get_timezone()];
-        foreach ($timezones as $timezone => $offset) {
-            if (!in_array($offset, $offsets))
-                $zones[] = array("offset" => ($offsets[] = $offset) / 3600,
-                                 "name" => $timezone,
-                                 "now" => time() - $undo + $offset);
-        }
+
+        foreach (DateTimeZone::listIdentifiers() as $zone)
+            if (substr($zone, 0, 4) != "Etc/" and !in_array($zone, array("GMT+0", "GMT-0", "Greenwich", "GMT0")))
+                $zones[] = array("name" => $zone,
+                                 "now" => datetimetotime(new DateTime("now", new DateTimeZone($zone))));
 
         function by_time($a, $b) {
-            return ($a["now"] < $b["now"]) ? -1 : 1;
+            return (int) ($a["now"] > $b["now"]);
         }
 
         usort($zones, "by_time");
@@ -1259,10 +1266,7 @@
      *     $timezone - The timezone to set.
      */
     function set_timezone($timezone) {
-        if (function_exists("date_default_timezone_set"))
-            date_default_timezone_set($timezone);
-        else
-            ini_set("date.timezone", $timezone);
+        date_default_timezone_set($timezone);
     }
 
     /**
@@ -1270,10 +1274,7 @@
      * Returns the current timezone.
      */
     function get_timezone() {
-        if (function_exists("date_default_timezone_set"))
-            return date_default_timezone_get();
-        else
-            return ini_get("date.timezone");
+        return date_default_timezone_get();
     }
 
     /**
@@ -1281,9 +1282,8 @@
      * Exits and states where the error occurred.
      */
     function error_panicker($errno, $message, $file, $line) {
-        if ($errno === 0)
-            return; # Suppressed error. A bug in 5.2.6 ignores this, however.
-                    # See http://bugs.php.net/bug.php?id=46374
+        if (error_reporting() === 0)
+            return; # Suppressed error.
 
         exit("ERROR: ".$message." (".$file." on line ".$line.")");
     }
@@ -1295,18 +1295,22 @@
      * Parameters:
      *     $query - The query to parse.
      *     $plain - WHERE syntax to search for non-keyword queries.
+     *     $table - If specified, the keywords will be checked against this table's columns for validity.
      *
      * Returns:
      *     An array containing the "WHERE" queries and the corresponding parameters.
      */
-    function keywords($query, $plain) {
+    function keywords($query, $plain, $table = null) {
         if (!trim($query))
             return array(array(), array());
 
-        $search = array();
+        $search  = array();
         $matches = array();
-        $where = array();
-        $params = array();
+        $where   = array();
+        $params  = array();
+
+        if ($table)
+            $columns = SQL::current()->select($table)->fetch();
 
         $queries = explode(" ", $query);
         foreach ($queries as $query)
@@ -1320,11 +1324,35 @@
         foreach ($matches as $match) {
             list($test, $equals,) = explode(":", $match);
 
-            if (in_array($test, $times))
-                $where[strtoupper($test)."(created_at)"] = $equals;
-            elseif ($test == "author") {
+            if ($equals[0] == '"') {
+                if (substr($equals, -1) != '"')
+                    foreach ($search as $index => $part) {
+                        $equals.= " ".$part;
+
+                        unset($search[$index]);
+
+                        if (substr($part, -1) == '"')
+                            break;
+                    }
+
+                $equals = ltrim(trim($equals, '"'), '"');
+            }
+
+            if (in_array($test, $times)) {
+                if ($equals == "today")
+                    $where["created_at like"] = date("%Y-m-d %");
+                elseif ($equals == "yesterday")
+                    $where["created_at like"] = date("%Y-m-d %", now("-1 day"));
+                elseif ($equals == "tomorrow")
+                    error(__("Error"), "Unfortunately our flux capacitor is currently having issues. Try again yesterday.");
+                else
+                    $where[strtoupper($test)."(created_at)"] = $equals;
+            } elseif ($test == "author") {
                 $user = new User(array("login" => $equals));
-                $where["user_id"] = $user->id;
+                if ($user->no_results and $equals == "me")
+                    $where["user_id"] = Visitor::current()->id;
+                else
+                    $where["user_id"] = $user->id;
             } elseif ($test == "group") {
                 $group = new Group(array("name" => $equals));
                 $test = "group_id";
@@ -1333,12 +1361,27 @@
                 $where[$test] = $equals;
         }
 
+        if ($table)
+            foreach ($where as $col => $val)
+                if (!isset($columns[$col])) {
+                    if ($table == "posts") {
+                        $where["post_attributes.name"] = $col;
+                        $where["post_attributes.value like"] = "%".$val."%";
+                    }
+
+                    unset($where[$col]);
+                }
+
         if (!empty($search)) {
             $where[] = $plain;
             $params[":query"] = "%".join(" ", $search)."%";
         }
 
-        return array($where, $params);
+        $keywords = array($where, $params);
+
+        Trigger::current()->filter($keywords, "keyword_search", $query, $plain);
+
+        return $keywords;
     }
 
     /**
@@ -1534,4 +1577,12 @@
         $function = "mail";
         Trigger::current()->filter($function, "send_mail");
         return call_user_func_array($function, func_get_args());
+    }
+
+    /**
+     * Function: now
+     * Alias to strtotime, for prettiness like now("+1 day").
+     */
+    function now($when) {
+        return strtotime($when);
     }
