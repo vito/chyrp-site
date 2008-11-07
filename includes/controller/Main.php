@@ -386,6 +386,9 @@
             if ($post->status == "draft")
                 Flash::message(__("This post is a draft."));
 
+            if ($post->groups() and !substr_count($post->status, "{".Visitor::current()->group->id."}"))
+                Flash::message(_f("This post is only visible by the following groups: %s.", $post->groups()));
+
             $this->display(array("pages/view", "pages/index"),
                            array("post" => $post, "posts" => array($post)),
                            $post->title());
@@ -473,7 +476,7 @@
                 if (empty($_POST['email']))
                     Flash::warning(__("E-mail address cannot be blank."));
                 elseif (!preg_match("/^[_A-z0-9-]+((\.|\+)[_A-z0-9-]+)*@[A-z0-9-]+(\.[A-z0-9-]+)*(\.[A-z]{2,4})$/", $_POST['email']))
-                    Flash::warning(__("Unsupported e-mail address."));
+                    Flash::warning(__("Invalid e-mail address."));
 
                 if (!Flash::exists("warning")) {
                     User::add($_POST['login'], $_POST['password1'], $_POST['email']);
@@ -627,7 +630,7 @@
                 if (strtotime($post->created_at) > $latest_timestamp)
                     $latest_timestamp = strtotime($post->created_at);
 
-            require "includes/feed.php";
+            require INCLUDES_DIR."/feed.php";
         }
 
         /**

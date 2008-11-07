@@ -56,6 +56,7 @@
             $tags = array();
             foreach ($values as $key =>&$value) {
                 $paragraphs = preg_split("/([\r\n]{2,4})/", $value);
+                $rejoin = ((strlen($value) - strlen(implode("", $paragraphs)) / count($paragraphs)) == 4) ? "\r\n\r\n" : "\n\n" ;
 
                 foreach ($paragraphs as $index => &$paragraph)
                     # Look for #spaced tags# that get removed only in the last paragraph.
@@ -71,7 +72,7 @@
                         $paragraph = preg_replace("/(\s|^)#([^ .,]+)(?!#)/", "\\1\\2", $paragraph);
                     }
 
-                $value = str_replace("\\#", "#", implode("\r\n", $paragraphs));
+                $value = str_replace("\\#", "#", implode($mode, $paragraphs));
             }
 
             $_POST['tags'] = implode(", ", $tags);
@@ -96,7 +97,7 @@
         }
 
         public function update_post($post) {
-            if (!isset($_POST['tags'])) return;
+            if (empty($_POST['tags'])) return;
 
             $tags = explode(",", $_POST['tags']); # Split at the comma
             $tags = array_map('trim', $tags); # Remove whitespace
@@ -503,7 +504,7 @@
             if (isset($struct['mt_tags']))
                 $_POST['tags'] = $struct['mt_tags'];
             else if (isset($post->tags))
-                $_POST['tags'] = $post->tags["unlinked"];
+                $_POST['tags'] = $post->unlinked_tags;
             else
                 $_POST['tags'] = '';
         }
@@ -590,8 +591,7 @@
             $tags = SQL::current()->select("post_attributes",
                                            "value",
                                            array("name" => "tags",
-                                                 "post_id" => $post->id),
-                                           "id DESC")->fetchColumn();
+                                                 "post_id" => $post->id))->fetchColumn();
             if (empty($tags)) return;
 
             $atom.= "       <chyrp:tags>".fix(implode(", ", array_keys(YAML::load($tags))))."</chyrp:tags>\r";

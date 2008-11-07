@@ -5,9 +5,12 @@
      */
 
     define('XML_RPC', true);
-    require 'common.php';
-    require INCLUDES_DIR.'/lib/ixr.php';
+    require_once 'common.php';
+    require_once INCLUDES_DIR.'/lib/ixr.php';
     if (!defined('XML_RPC_FEATHER')) define('XML_RPC_FEATHER', 'text');
+
+    # Use the Main controller for any Route calls.
+    Route::current(MainController::current());
 
     #
     # Class: XMLRPC
