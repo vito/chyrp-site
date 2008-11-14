@@ -72,7 +72,7 @@
                         $paragraph = preg_replace("/(\s|^)#([^ .,]+)(?!#)/", "\\1\\2", $paragraph);
                     }
 
-                $value = str_replace("\\#", "#", implode($mode, $paragraphs));
+                $value = str_replace("\\#", "#", implode($rejoin, $paragraphs));
             }
 
             $_POST['tags'] = implode(", ", $tags);
@@ -218,7 +218,7 @@
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
-                                       "value like" => "%: ".$_GET['name']."\n%"))->fetchAll() as $tag) { # TODO: Is this the correct search method?
+                                       "value like" => "%: \"".$_GET['name']."\"\n%"))->fetchAll() as $tag) {
                 $post_tags = YAML::load($tag["value"]);
 
                 $tags = array_merge($tags, $post_tags);
@@ -268,7 +268,7 @@
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
-                                       "value like" => "%\n".$_POST['original'].": %"))->fetchAll() as $tag) { # TODO: Is this the correct search method?
+                                       "value like" => "%\n".$_POST['original'].": \"%"))->fetchAll() as $tag) {
                 $tags = YAML::load($tag["value"]);
                 unset($tags[$_POST['original']]);
 
@@ -289,7 +289,7 @@
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
-                                       "value like" => "%: ".$_GET['clean']."\n%"))->fetchAll() as $tag)  { # TODO: Is this the correct search method?
+                                       "value like" => "%: \"".$_GET['clean']."\"\n%"))->fetchAll() as $tag)  {
                 $tags = YAML::load($tag["value"]);
                 unset($tags[$_GET['name']]);
 
@@ -347,7 +347,7 @@
 
             $likes = array();
             foreach ($tags as $name)
-                $likes[] = "%: ".$name."\n%";
+                $likes[] = "%: \"".$name."\"\n%";
 
             $attributes = $sql->select("post_attributes",
                                        array("value", "post_id"),
