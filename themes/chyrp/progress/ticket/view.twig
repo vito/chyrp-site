@@ -1,0 +1,71 @@
+{% extends "layouts/progress.twig" %}
+
+{% block content %}
+<h1><a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo; $ticket.title $ticket.edit_link $ticket.delete_link</h1>
+<p>$ticket.description</p>
+<br />
+<h2>Revisions</h2>
+<ul>
+    {% paginate revision in 25 ticket.revisions as revisions %}
+    <li id="revision_$revision.id">
+        <strong>$revision.user.login</strong>:
+        <ul>
+            {% for name, change in revision.changes | items %}
+            <li><strong>$name</strong> changed from "$change.from" to "$change.to"</li>
+            {% endfor %}
+        </ul>
+        <p>$revision.body</p>
+        $revision.edit_link $revision.delete_link
+    </li>
+    {% else %}
+    <li>(none)</li>
+    {% endpaginate %}
+</ul>
+
+${ revisions.next_link }
+${ revisions.prev_link }
+
+<br />
+<br />
+{% if visitor.group.can("add_revision") %}
+<h2>Revise Ticket</h2>
+<form action="{% url "progress/add_revision" %}" method="post" accept-charset="utf-8">
+    {% if ticket.editable %}
+    <p>
+        <label for="title">Ticket Title</label>
+        <input type="text" name="title" value="${ ticket.title | escape }" id="title" />
+    </p>
+    {% endif %}
+
+    <p>
+        <label for="body">Message</label>
+        <textarea name="body" rows="8" cols="100%"></textarea>
+    </p>
+
+    {% if ticket.editable %}
+    <p>
+        <label for="owner_id">Ticket Owner</label>
+        <select name="owner_id" id="owner_id">
+            <option value="0"></option>
+            {% for user in users %}
+            <option value="$user.id"${ user.id | option_selected(ticket.owner_id) }>${ (user.full_name | fallback(user.login)) | escape }</option>
+            {% endfor %}
+        </select>
+    </p>
+    <p>
+        <label for="milestone_id">Ticket Milestone</label>
+        <select name="milestone_id" id="milestone_id">
+            <option value="0"></option>
+            {% for milestone in milestones %}
+            <option value="$milestone.id"${ milestone.id | option_selected(ticket.milestone_id) }>${ milestone.name | escape }</option>
+            {% endfor %}
+        </select>
+    </p>
+    {% endif %}
+
+    <p><input type="submit" value="Continue &rarr;"></p>
+
+    <input type="hidden" name="ticket_id" value="$ticket.id" id="ticket_id" />
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "New Forum" | translate("discuss") }{% endblock %}
+
+{% block content %}
+            <h1>${ "Add Forum" | translate("discuss") | format(forum.name) }</h1>
+            <form id="new_forum" class="split" action="{% admin "add_forum" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <fieldset>
+                    <p>
+                        <label for="name">${ "Name" | translate("discuss") }</label>
+                        <input class="text" type="text" name="name" value="" id="name" />
+                    </p>
+                    <p>
+                        <label for="description">${ "Description" | translate("discuss") }</label>
+                        <textarea class="description" name="description" rows="9" cols="50" id="description"></textarea>
+                    </p>
+
+                    <br />
+
+                    <p>
+                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Add Forum" | translate }</button>
+                    </p>
+
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

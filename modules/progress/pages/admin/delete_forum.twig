@@ -1,0 +1,35 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Delete Forum &#8220;%s&#8221;?" | translate("discuss") | format(forum.name | escape) }{% endblock %}
+
+{% block content %}
+            <h1>${ "Are you sure you want to delete &#8220;%s&#8221;?" | translate("discuss") | format(forum.name) }</h1>
+            <form class="delete" action="{% admin "destroy_forum" %}" method="post" accept-charset="utf-8">
+                <fieldset>
+                    <blockquote>
+                        <h2>${ "Description" | translate("discuss") }</h2>
+                        ${ forum.description | truncate(500) }
+                        {% if forum.topics and forums %}
+                        <br />
+                        <h2 class="inline">${ "Move %d topic to:" | translate_plural("Move %d topics to:", forum.topic_count, "discuss") | format(forum.topic_count) }</h2>
+                        <select name="move_forum" id="move_forum" class="big2">
+                            {% for forum in forums %}
+                            <option value="$forum.id">${ forum.name | escape }</option>
+                            {% endfor %}
+                            <option value="0">${ "(orphan)" | translate("discuss") }</option>
+                        </select>
+                        <br />
+                        {% endif %}
+                    </blockquote>
+                    <br />
+
+                    <div class="center">
+                        <button name="destroy" value="indubitably" class="center boo">${ "DESTROY!" | translate }</button>
+                        <button name="destroy" value="bollocks" type="submit" class="yay">${ "Cancel" | translate }</button>
+                    </div>
+
+                    <input type="hidden" name="id" value="$forum.id" id="id" />
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

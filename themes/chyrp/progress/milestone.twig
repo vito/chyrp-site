@@ -1,0 +1,35 @@
+{% extends "layouts/progress.twig" %}
+
+{% block content %}
+<h1>$milestone.name</h1>
+<h2>Tickets</h2>
+<ul>
+    {% paginate ticket in 25 milestone.tickets as tickets %}
+    <li>
+        <a href="$ticket.url">${ ticket.title | escape }</a> by $ticket.user.login
+    </li>
+    {% else %}
+    <li>(none)</li>
+    {% endpaginate %}
+</ul>
+
+${ tickets.next_link }
+${ tickets.prev_link }
+
+<br />
+<br />
+{% if visitor.group.can("add_ticket") %}
+<h3>New Ticket</h3>
+<form action="{% url "progress/add_ticket" %}" method="post" accept-charset="utf-8">
+    <label for="title">Title</label>
+    <input type="text" name="title" value="" id="title" />
+    
+    <label for="title">Description</label>
+    <textarea name="description" rows="8" cols="100%"></textarea>
+
+    <p><input type="submit" value="Continue &rarr;"></p>
+
+    <input type="hidden" name="milestone_id" value="$milestone.id" id="milestone_id" />
+</form>
+{% endif %}
+{% endblock %}
