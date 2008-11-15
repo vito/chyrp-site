@@ -22,7 +22,7 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              title VARCHAR(100) DEFAULT '',
                              description LONGTEXT,
-                             status VARCHAR(100) DEFAULT 'new',
+                             state VARCHAR(100) DEFAULT 'new',
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT '',
                              milestone_id INTEGER DEFAULT 0,
@@ -94,8 +94,8 @@
         public function admin_head() {
             $config = Config::current();
 ?>
-        <script src="<?php echo $config->chyrp_url; ?>/modules/discuss/lib/tablednd.js" type="text/javascript"></script>
-        <script src="<?php echo $config->chyrp_url; ?>/modules/discuss/admin.js" type="text/javascript"></script>
+        <script src="<?php echo $config->chyrp_url; ?>/modules/progress/lib/tablednd.js" type="text/javascript"></script>
+        <script src="<?php echo $config->chyrp_url; ?>/modules/progress/admin.js" type="text/javascript"></script>
 <?php
         }
 
@@ -114,7 +114,7 @@
             if (!$visitor->group->can("edit_milestone", "delete_milestone"))
                 return $navs;
 
-            $navs["manage_milestones"] = array("title" => __("Milestones", "discuss"),
+            $navs["manage_milestones"] = array("title" => __("Milestones", "progress"),
                                            "selected" => array("new_milestone", "edit_milestone", "delete_milestone"));
 
             return $navs;
@@ -136,90 +136,90 @@
 
         public function admin_new_milestone($admin) {
             if (!Visitor::current()->group->can("add_milestone"))
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "progress"));
 
-            $admin->display("new_milestone", array(), __("New Milestone", "discuss"));
+            $admin->display("new_milestone", array(), __("New Milestone", "progress"));
         }
 
         public function admin_add_milestone() {
             if (!Visitor::current()->group->can("add_milestone"))
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "progress"));
 
             Milestone::add($_POST['name'], $_POST['description']);
-            Flash::notice(__("Milestone added.", "discuss"), "/admin/?action=manage_milestones");
+            Flash::notice(__("Milestone added.", "progress"), "/admin/?action=manage_milestones");
         }
 
         public function admin_edit_milestone($admin) {
             if (!isset($_GET['id']))
-                error(__("Error"), __("No milestone ID specified.", "discuss"));
+                error(__("Error"), __("No milestone ID specified.", "progress"));
 
             $milestone = new Milestone($_GET['id'], array("filter" => false));
             if ($milestone->no_results)
-                error(__("Error"), __("Invalid milestone ID specified.", "discuss"));
+                error(__("Error"), __("Invalid milestone ID specified.", "progress"));
 
             if (!$milestone->editable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "progress"));
 
             $admin->display("edit_milestone",
                             array("milestone" => $milestone),
-                            _f("Edit Milestone &#8220;%s&#8221;", array(fix($milestone->name)), "discuss"));
+                            _f("Edit Milestone &#8220;%s&#8221;", array(fix($milestone->name)), "progress"));
         }
 
         public function admin_update_milestone($admin) {
             if (!isset($_POST['milestone_id']))
-                error(__("Error"), __("No milestone ID specified.", "discuss"));
+                error(__("Error"), __("No milestone ID specified.", "progress"));
 
             if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
                 show_403(__("Access Denied"), __("Invalid security key."));
 
             $milestone = new Milestone($_POST['milestone_id']);
             if ($milestone->no_results)
-                error(__("Error"), __("Invalid milestone ID specified.", "discuss"));
+                error(__("Error"), __("Invalid milestone ID specified.", "progress"));
 
             if (!$milestone->editable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "progress"));
 
             $milestone->update($_POST['name'], $_POST['description']);
 
-            Flash::notice(__("Milestone updated.", "discuss"), "/admin/?action=manage_milestones");
+            Flash::notice(__("Milestone updated.", "progress"), "/admin/?action=manage_milestones");
         }
 
         public function admin_delete_milestone($admin) {
             if (!isset($_GET['id']))
-                error(__("Error"), __("No milestone ID specified.", "discuss"));
+                error(__("Error"), __("No milestone ID specified.", "progress"));
 
             $milestone = new Milestone($_GET['id']);
             if ($milestone->no_results)
-                error(__("Error"), __("Invalid milestone ID specified.", "discuss"));
+                error(__("Error"), __("Invalid milestone ID specified.", "progress"));
 
             if (!$milestone->deletable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this milestone.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this milestone.", "progress"));
 
             $admin->display("delete_milestone",
                             array("milestone" => $milestone,
                                   "milestones" => Milestone::find(array("where" => array("id not" => $milestone->id)))),
-                            _f("Delete Milestone &#8220;%s&#8221;", array(fix($milestone->name)), "discuss"));
+                            _f("Delete Milestone &#8220;%s&#8221;", array(fix($milestone->name)), "progress"));
         }
 
         public function admin_destroy_milestone() {
             if (!isset($_POST['id']))
-                error(__("Error"), __("No milestone ID specified.", "discuss"));
+                error(__("Error"), __("No milestone ID specified.", "progress"));
 
             if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
                 show_403(__("Access Denied"), __("Invalid security key."));
 
             $milestone = new Milestone($_POST['id']);
             if ($milestone->no_results)
-                error(__("Error"), __("Invalid milestone ID specified.", "discuss"));
+                error(__("Error"), __("Invalid milestone ID specified.", "progress"));
 
             if (!$milestone->deletable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this milestone.", "discuss"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this milestone.", "progress"));
 
             foreach ($milestone->tickets as $ticket)
                 $ticket->update(null, null, $_POST['move_milestone']);
 
             Milestone::delete($milestone->id);
 
-            Flash::notice(__("Milestone deleted.", "discuss"), "/admin/?action=manage_milestones");
+            Flash::notice(__("Milestone deleted.", "progress"), "/admin/?action=manage_milestones");
         }
     }

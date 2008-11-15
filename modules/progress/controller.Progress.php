@@ -90,7 +90,7 @@
             $ticket = new Ticket($_POST['ticket_id'], array("filter" => false));
             $old = clone $ticket;
 
-            $ticket->update($_POST['title'], null, $_POST['milestone_id'], $_POST['owner_id']);
+            $ticket->update($_POST['title'], null, $_POST['status'], $_POST['milestone_id'], $_POST['owner_id']);
 
             $changes = array();
             foreach ($ticket as $name => $val)
@@ -118,9 +118,11 @@
                                             "to" => $val);
                 }
 
-            if (empty($changes) and empty($_POST['body'])) {
-                $ticket->update(null, null, null, null, null, null, $old->updated_at);
-                Flash::warning(__("Please enter a message.", "progress"), $ticket->url());
+            if (empty($changes)) {
+                $ticket->update(null, null, null, null, null, null, null, $old->updated_at);
+
+                if (empty($_POST['body']))
+                    Flash::warning(__("Please enter a message.", "progress"), $ticket->url());
             }
 
             $revision = Revision::add($_POST['body'], $changes, $_POST['ticket_id']);

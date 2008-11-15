@@ -253,7 +253,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=edit_revision&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'revision_edit_link edit_link" id="revision_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=edit_revision&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'revision_edit_link edit_link" id="revision_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -272,6 +272,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=delete_revision&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'revision_delete_link delete_link" id="revision_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=delete_revision&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'revision_delete_link delete_link" id="revision_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

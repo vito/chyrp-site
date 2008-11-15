@@ -3,15 +3,32 @@
 {% block content %}
 <h1>$milestone.name</h1>
 <h2>Tickets</h2>
-<ul>
+<table width="100%">
+    <tr>
+        <th>#</th>
+        <th>State</th>
+        <th>Summary</th>
+        <th>Assigned to</th>
+        <th>Age</th>
+    </tr>
     {% paginate ticket in 25 milestone.tickets as tickets %}
-    <li>
-        <a href="$ticket.url">${ ticket.title | escape }</a> by $ticket.user.login
-    </li>
+    <tr>
+        <td>$ticket.id</td>
+        <td>{% if ticket.done %}&radic; {% endif %}$ticket.state</td>
+        <td>
+            <a href="$ticket.url">
+                {% if ticket.done %}<s>{% endif %}
+                    ${ ticket.title | escape }
+                {% if ticket.done %}</s>{% endif %}
+            </a>
+        </td>
+        <td>${ ticket.owner.full_name | fallback(ticket.owner.login) }</td>
+        <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
+    </tr>
     {% else %}
-    <li>(none)</li>
+    <tr><td colspan="4">(none)</li>
     {% endpaginate %}
-</ul>
+</table>
 
 ${ tickets.next_link }
 ${ tickets.prev_link }

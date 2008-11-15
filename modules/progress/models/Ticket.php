@@ -33,7 +33,9 @@
             if ($this->no_results)
                 return false;
 
-            $this->last_activity = max(strtotime($this->last_revision), strtotime($this->last_update));
+            $this->last_activity = max(strtotime($this->last_revision), strtotime($this->last_update), strtotime($this->created_at), strtotime($this->updated_at));
+
+            $this->done = in_array($this->state, array("resolved", "invalid", "declined"));
 
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
@@ -57,8 +59,8 @@
                                             "where" => "ticket_id = tickets.id");
 
             $options["select"][] = "tickets.*";
-            $options["select"][] = "COUNT(revisions.id) AS message_count";
-            $options["select"][] = "MAX(revisions.created_at) AS last_message";
+            $options["select"][] = "COUNT(revisions.id) AS revision_count";
+            $options["select"][] = "MAX(revisions.created_at) AS last_revision";
             $options["select"][] = "MAX(revisions.updated_at) AS last_update";
 
             $options["group"][] = "id";
@@ -84,7 +86,8 @@
          */
         static function add($title,
                             $description,
-                            $milestone,
+                            $state      = "new",
+                            $milestone  = 0,
                             $owner      = 0,
                             $user       = null,
                             $created_at = null,
@@ -100,6 +103,7 @@
             $sql->insert("tickets",
                          array("title"        => $title,
                                "description"  => $description,
+                               "state"        => $state,
                                "clean"        => sanitize($title),
                                "url"          => self::check_url(sanitize($title)),
                                "milestone_id" => $milestone_id,
@@ -125,6 +129,7 @@
          */
         public function update($title       = null,
                                $description = null,
+                               $state       = null,
                                $milestone   = null,
                                $owner       = null,
                                $user        = null,
@@ -138,19 +143,20 @@
 
             $old = clone $this;
 
-            foreach (array("title", "description", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
+            foreach (array("title", "description", "state", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
                 if (substr($attr, -3) == "_id") {
                     $arg = ${substr($attr, 0, -3)};
                     $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
-                } elseif ($attr == "updated_at" and $$attr !== false)
+                } elseif ($attr == "updated_at" and $$attr === null)
                     $this->$attr = $$attr = datetime();
                 else
-                    $this->$attr = fallback($$attr, $this->$attr);
+                    $this->$attr = $$attr = ($$attr !== null ? $$attr : $this->$attr);
 
             $sql->update("tickets",
                          array("id"           => $this->id),
                          array("title"        => $title,
                                "description"  => $description,
+                               "state"        => $state,
                                "milestone_id" => $milestone_id,
                                "owner_id"     => $owner_id,
                                "user_id"      => $user_id,

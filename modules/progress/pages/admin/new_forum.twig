@@ -1,17 +1,17 @@
 {% extends "layout.twig" %}
 
-{% block title %}${ "New Forum" | translate("discuss") }{% endblock %}
+{% block title %}${ "New Forum" | translate("progress") }{% endblock %}
 
 {% block content %}
-            <h1>${ "Add Forum" | translate("discuss") | format(forum.name) }</h1>
+            <h1>${ "Add Forum" | translate("progress") | format(forum.name) }</h1>
             <form id="new_forum" class="split" action="{% admin "add_forum" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <fieldset>
                     <p>
-                        <label for="name">${ "Name" | translate("discuss") }</label>
+                        <label for="name">${ "Name" | translate("progress") }</label>
                         <input class="text" type="text" name="name" value="" id="name" />
                     </p>
                     <p>
-                        <label for="description">${ "Description" | translate("discuss") }</label>
+                        <label for="description">${ "Description" | translate("progress") }</label>
                         <textarea class="description" name="description" rows="9" cols="50" id="description"></textarea>
                     </p>
 

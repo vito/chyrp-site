@@ -11,7 +11,7 @@
         <strong>$revision.user.login</strong>:
         <ul>
             {% for name, change in revision.changes | items %}
-            <li><strong>$name</strong> changed from "$change.from" to "$change.to"</li>
+            <li><strong>$name</strong> changed from "<code>$change.from</code>" to "<code>$change.to</code>"</li>
             {% endfor %}
         </ul>
         <p>$revision.body</p>
@@ -59,6 +59,16 @@ ${ revisions.prev_link }
             {% for milestone in milestones %}
             <option value="$milestone.id"${ milestone.id | option_selected(ticket.milestone_id) }>${ milestone.name | escape }</option>
             {% endfor %}
+        </select>
+    </p>
+    <p>
+        <label for="status">Ticket Status</label>
+        <select name="status" id="status">
+            <option value="new"${ ticket.status | option_selected("new") }>new</option>
+            <option value="open"${ ticket.status | option_selected("open") }>open</option>
+            <option value="resolved"${ ticket.status | option_selected("resolved") }>resolved</option>
+            <option value="invalid"${ ticket.status | option_selected("invalid") }>invalid</option>
+            <option value="declined"${ ticket.status | option_selected("declined") }>declined</option>
         </select>
     </p>
     {% endif %}
