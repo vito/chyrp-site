@@ -22,7 +22,7 @@
 
             $sql->query("CREATE TABLE IF NOT EXISTS __messages (
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
-                             body TEXT,
+                             body LONGTEXT,
                              topic_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
                              created_at DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -32,7 +32,7 @@
             $sql->query("CREATE TABLE IF NOT EXISTS __topics (
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              title VARCHAR(100) DEFAULT '',
-                             description TEXT,
+                             description LONGTEXT,
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT '',
                              forum_id INTEGER DEFAULT 0,
@@ -88,10 +88,6 @@
             Group::remove_permission("delete_own_message");
 
             Group::remove_permission("code_in_messages");
-        }
-
-        public function messages_get(&$options) {
-            $options["order"] = "created_at ASC, id ASC";
         }
 
         public function admin_head() {
