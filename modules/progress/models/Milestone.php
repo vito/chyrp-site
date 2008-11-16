@@ -75,12 +75,12 @@
          * See Also:
          *     <update>
          */
-        static function add($name, $description, $order = 0) {
+        static function add($name, $description, $due = "0000-00-00 00:00:00") {
             $sql = SQL::current();
             $sql->insert("milestones",
                          array("name" => $name,
                                "description" => $description,
-                               "order" => $order));
+                               "due" => $due));
 
             $milestone = new self($sql->latest());
 
@@ -97,22 +97,22 @@
          *     $name - The new name.
          *     $description - The new description.
          */
-        public function update($name = null, $description = null, $order = null) {
+        public function update($name = null, $description = null, $due = null) {
             if ($this->no_results)
                 return false;
 
             $old = clone $this;
 
-            $this->name        = fallback($name,        $this->name);
-            $this->description = fallback($description, $this->description);
-            $this->order       = fallback($order,       $this->order);
+            $this->name        = ($name === null ? $this->name : $name);
+            $this->description = ($description === null ? $this->description : $description);
+            $this->due         = ($due === null ? $this->due : $due);
 
             $sql = SQL::current();
             $sql->update("milestones",
                          array("id"          => $this->id),
                          array("name"        => $this->name,
                                "description" => $this->description,
-                               "order"       => $this->order));
+                               "due"         => $this->due));
 
             Trigger::current()->call("update_milestone", $this, $old);
         }
@@ -189,18 +189,12 @@
         }
 
         /**
-         * Function: message_count
-         * Returns the total messages of every ticket in the milestone.
-         *
-         * Parameters:
-         *     $inclusive - Count tickets as messages?
+         * Function: open_tickets
+         * Returns the total number of open tickets in the milestone.
          */
-        public function message_count($inclusive = false) {
-            $messages = 0;
-
-            foreach ($this->tickets as $ticket)
-                $messages += ($inclusive ? $ticket->message_count + 1 : $ticket->message_count);
-
-            return $messages;
+        public function open_tickets() {
+            return SQL::current()->count("tickets",
+                                         array("milestone_id" => $this->id,
+                                               "state" => array("new", "open")));
         }
     }

@@ -1,0 +1,35 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Delete Milestone &#8220;%s&#8221;?" | translate("progress") | format(milestone.name | escape) }{% endblock %}
+
+{% block content %}
+            <h1>${ "Are you sure you want to delete &#8220;%s&#8221;?" | translate("progress") | format(milestone.name) }</h1>
+            <form class="delete" action="{% admin "destroy_milestone" %}" method="post" accept-charset="utf-8">
+                <fieldset>
+                    <blockquote>
+                        <h2>${ "Description" | translate("progress") }</h2>
+                        ${ milestone.description | truncate(500) }
+                        {% if milestone.tickets and milestones %}
+                        <br />
+                        <h2 class="inline">${ "Move %d ticket to:" | translate_plural("Move %d tickets to:", milestone.ticket_count, "progress") | format(milestone.ticket_count) }</h2>
+                        <select name="move_milestone" id="move_milestone" class="big2">
+                            {% for milestone in milestones %}
+                            <option value="$milestone.id">${ milestone.name | escape }</option>
+                            {% endfor %}
+                            <option value="0">${ "(orphan)" | translate("progress") }</option>
+                        </select>
+                        <br />
+                        {% endif %}
+                    </blockquote>
+                    <br />
+
+                    <div class="center">
+                        <button name="destroy" value="indubitably" class="center boo">${ "DESTROY!" | translate }</button>
+                        <button name="destroy" value="bollocks" type="submit" class="yay">${ "Cancel" | translate }</button>
+                    </div>
+
+                    <input type="hidden" name="id" value="$milestone.id" id="id" />
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

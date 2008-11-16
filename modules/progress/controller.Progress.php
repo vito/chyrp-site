@@ -64,8 +64,11 @@
             if ($milestone->no_results)
                 exit; # TODO
 
+            $can_create = Visitor::current()->group()->can("add_ticket");
             $this->display("progress/milestone",
-                           array("milestone" => $milestone),
+                           array("milestone" => $milestone,
+                                 "users" => ($can_create ? User::find() : array()),
+                                 "milestones" => ($can_create ? Milestone::find() : array())),
                            $milestone->name);
         }
 
@@ -90,7 +93,7 @@
             $ticket = new Ticket($_POST['ticket_id'], array("filter" => false));
             $old = clone $ticket;
 
-            $ticket->update($_POST['title'], null, $_POST['status'], $_POST['milestone_id'], $_POST['owner_id']);
+            $ticket->update($_POST['title'], null, $_POST['status'], null, $_POST['milestone_id'], $_POST['owner_id']);
 
             $changes = array();
             foreach ($ticket as $name => $val)
@@ -119,13 +122,18 @@
                 }
 
             if (empty($changes)) {
-                $ticket->update(null, null, null, null, null, null, null, $old->updated_at);
+                $ticket->update(null, null, null, null, null, null, null, null, $old->updated_at);
 
                 if (empty($_POST['body']))
                     Flash::warning(__("Please enter a message.", "progress"), $ticket->url());
             }
 
-            $revision = Revision::add($_POST['body'], $changes, $_POST['ticket_id']);
+            if (!empty($_FILES['attachment']))
+                $filename = upload($_FILES['attachment'], null, "attachments");
+            else
+                $filename = "";
+
+            $revision = Revision::add($_POST['body'], $changes, $filename, $_POST['ticket_id']);
             Flash::notice(__("Revision added.", "progress"), $revision->url(true));
         }
 
@@ -133,7 +141,12 @@
             if (!Visitor::current()->group->can("add_ticket"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create tickets.", "progress"));
 
-            $ticket = Ticket::add($_POST['title'], $_POST['description'], $_POST['milestone_id']);
+            if (!empty($_FILES['attachment']))
+                $filename = upload($_FILES['attachment'], null, "attachments");
+            else
+                $filename = "";
+
+            $ticket = Ticket::add($_POST['title'], $_POST['description'], "new", $filename, $_POST['milestone_id'], $_POST['owner_id']);
             Flash::notice(__("Ticket added.", "progress"), $ticket->url());
         }
 

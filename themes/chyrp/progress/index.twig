@@ -4,7 +4,7 @@
 <h1>Index</h1>
     {% for milestone in milestones %}
     <h2><a href="$milestone.url">$milestone.name</a></h2>
-    (due ${ milestone.due | relative})
+    ($milestone.open_tickets open ${ "ticket" | pluralize(milestone.open_tickets) }, due ${ milestone.due | relative})
     <p>$milestone.description</p>
     {% endfor %}
 {% endblock %}

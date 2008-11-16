@@ -25,6 +25,7 @@
                              state VARCHAR(100) DEFAULT 'new',
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT '',
+                             attachment VARCHAR(100) DEFAULT '',
                              milestone_id INTEGER DEFAULT 0,
                              owner_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
@@ -36,6 +37,7 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              body LONGTEXT,
                              changes TEXT,
+                             attachment VARCHAR(100) DEFAULT '',
                              ticket_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
                              created_at DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -145,7 +147,7 @@
             if (!Visitor::current()->group->can("add_milestone"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "progress"));
 
-            Milestone::add($_POST['name'], $_POST['description']);
+            Milestone::add($_POST['name'], $_POST['description'], datetime($_POST['due']));
             Flash::notice(__("Milestone added.", "progress"), "/admin/?action=manage_milestones");
         }
 
@@ -179,7 +181,7 @@
             if (!$milestone->editable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "progress"));
 
-            $milestone->update($_POST['name'], $_POST['description']);
+            $milestone->update($_POST['name'], $_POST['description'], datetime($_POST['due']));
 
             Flash::notice(__("Milestone updated.", "progress"), "/admin/?action=manage_milestones");
         }

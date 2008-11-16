@@ -26,6 +26,8 @@
             $options["select"][] = "MAX(messages.created_at) AS last_message";
             $options["select"][] = "MAX(messages.updated_at) AS last_update";
 
+            $options["order"] = array("`last_message` DESC", "created_at DESC", "id DESC");
+
             $options["group"][] = "id";
 
             parent::grab($this, $topic_id, $options);
@@ -60,6 +62,8 @@
             $options["select"][] = "COUNT(messages.id) AS message_count";
             $options["select"][] = "MAX(messages.created_at) AS last_message";
             $options["select"][] = "MAX(messages.updated_at) AS last_update";
+
+            $options["order"] = array("`last_message` DESC", "created_at DESC", "id DESC");
 
             $options["group"][] = "id";
 

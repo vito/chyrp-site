@@ -1,7 +1,7 @@
 {% extends "layouts/progress.twig" %}
 
 {% block content %}
-<h1>$milestone.name</h1>
+<h1>$milestone.name $milestone.edit_link $milestone.delete_link</h1>
 <h2>Tickets</h2>
 <table width="100%">
     <tr>
@@ -37,12 +37,28 @@ ${ tickets.prev_link }
 <br />
 {% if visitor.group.can("add_ticket") %}
 <h3>New Ticket</h3>
-<form action="{% url "progress/add_ticket" %}" method="post" accept-charset="utf-8">
-    <label for="title">Title</label>
-    <input type="text" name="title" value="" id="title" />
-    
-    <label for="title">Description</label>
-    <textarea name="description" rows="8" cols="100%"></textarea>
+<form action="{% url "progress/add_ticket" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <p>
+        <label for="title">Title</label>
+        <input type="text" name="title" value="" id="title" />
+    </p>
+    <p>
+        <label for="title">Description</label>
+        <textarea name="description" rows="8" cols="100%"></textarea>
+    </p>
+    <p>
+        <label for="owner_id">Ticket Owner</label>
+        <select name="owner_id" id="owner_id">
+            <option value="0"></option>
+            {% for user in users %}
+            <option value="$user.id">${ user.full_name | fallback(user.login) | escape }</option>
+            {% endfor %}
+        </select>
+    </p>
+    <p>
+        <label for="attachment">Attachment</label>
+        <input type="file" name="attachment" id="attachment" />
+    </p>
 
     <p><input type="submit" value="Continue &rarr;"></p>
 

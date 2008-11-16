@@ -1,0 +1,32 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "New Milestone" | translate("progress") }{% endblock %}
+
+{% block content %}
+            <h1>${ "Add Milestone" | translate("progress") | format(milestone.name) }</h1>
+            <form id="new_milestone" class="split" action="{% admin "add_milestone" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <fieldset>
+                    <p>
+                        <label for="name">${ "Name" | translate("progress") }</label>
+                        <input class="text" type="text" name="name" value="" id="name" />
+                    </p>
+                    <p>
+                        <label for="description">${ "Description" | translate("progress") }</label>
+                        <textarea class="description" name="description" rows="9" cols="50" id="description"></textarea>
+                    </p>
+                    <p>
+                        <label for="due">${ "Due" | translate("progress") }</label>
+                        <input class="text code" type="text" name="due" value="" id="due" />
+                        <span class="sub">(<a href="http://php.net/strtotime">strtotime</a>-compatible)</span>
+                    </p>
+
+                    <br />
+
+                    <p>
+                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Add Milestone" | translate }</button>
+                    </p>
+
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

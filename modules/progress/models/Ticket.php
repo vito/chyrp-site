@@ -87,6 +87,7 @@
         static function add($title,
                             $description,
                             $state      = "new",
+                            $attachment = "",
                             $milestone  = 0,
                             $owner      = 0,
                             $user       = null,
@@ -106,6 +107,7 @@
                                "state"        => $state,
                                "clean"        => sanitize($title),
                                "url"          => self::check_url(sanitize($title)),
+                               "attachment"   => $attachment,
                                "milestone_id" => $milestone_id,
                                "owner_id"     => $owner_id,
                                "user_id"      => oneof($user_id, $visitor->id),
@@ -130,6 +132,7 @@
         public function update($title       = null,
                                $description = null,
                                $state       = null,
+                               $attachment  = null,
                                $milestone   = null,
                                $owner       = null,
                                $user        = null,
@@ -143,7 +146,7 @@
 
             $old = clone $this;
 
-            foreach (array("title", "description", "state", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
+            foreach (array("title", "description", "state", "attachment", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
                 if (substr($attr, -3) == "_id") {
                     $arg = ${substr($attr, 0, -3)};
                     $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
@@ -157,6 +160,7 @@
                          array("title"        => $title,
                                "description"  => $description,
                                "state"        => $state,
+                               "attachment"   => $attachment,
                                "milestone_id" => $milestone_id,
                                "owner_id"     => $owner_id,
                                "user_id"      => $user_id,
@@ -168,13 +172,21 @@
 
         /**
          * Function: delete
-         * Deletes the given ticket. Calls the "delete_ticket" trigger and passes the <Ticket> as an argument.
+         * Deletes the given ticket, including its revisions and attachment. Calls the "delete_ticket" trigger and passes the <Ticket> as an argument.
          *
          * Parameters:
          *     $id - The ticket to delete.
          */
         static function delete($id) {
+            $ticket = new self($id);
+
+            foreach ($ticket->revisions as $revision)
+                Revision::delete($revision->id);
+
             parent::destroy(get_class(), $id);
+
+            if ($ticket->attachment)
+                unlink(uploaded($ticket->attachment));
         }
 
         /**
