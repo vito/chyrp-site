@@ -189,7 +189,7 @@
             parent::destroy(get_class(), $id);
 
             if ($ticket->attachment)
-                unlink(uploaded($ticket->attachment));
+                unlink(uploaded($ticket->attachment, false));
         }
 
         /**

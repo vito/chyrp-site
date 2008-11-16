@@ -193,7 +193,13 @@
             if (!$revision->editable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this revision.", "progress"));
 
-            $revision->update($_POST['body']);
+            if ($_FILES['attachment']['error'] != 4) {
+                unlink(uploaded($revision->attachment, false));
+                $filename = upload($_FILES['attachment'], null, "attachments");
+            } else
+                $filename = $revision->attachment;
+
+            $revision->update($_POST['body'], null, $filename);
 
             Flash::notice(__("Revision updated.", "progress"), $revision->url(true));
         }

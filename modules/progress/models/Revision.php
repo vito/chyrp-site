@@ -153,7 +153,7 @@
             parent::destroy(get_class(), $id);
 
             if ($revision->attachment)
-                unlink(uploaded($this->attachment));
+                unlink(uploaded($this->attachment, false));
         }
 
         /**
