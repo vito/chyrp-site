@@ -63,6 +63,9 @@
             $options["select"][] = "MAX(revisions.created_at) AS last_revision";
             $options["select"][] = "MAX(revisions.updated_at) AS last_update";
 
+            if (!isset($options["done"]) or !$options["done"])
+                $options["where"]["state"] = array("new", "open", "on-hold");
+
             $options["group"][] = "id";
 
             return parent::search(get_class(), $options, $options_for_object);

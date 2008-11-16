@@ -15,8 +15,8 @@
                         <th>${ "Name" | translate("progress") }</th>
                         <th>${ "Description" | translate("progress") }</th>
                         <th>${ "Open Tickets" | translate("progress") }</th>
+                        <th>${ "Total Tickets" | translate("progress") }</th>
                         <th>${ "Due" | translate("progress") }</th>
-                        <th>${ "Last Activity" | translate("progress") }</th>
                         ${ trigger.call("manage_milestones_column_header") }
                         <th colspan="2">${ "Controls" | translate }</th>
                     </tr>
@@ -27,8 +27,8 @@
                         <td class="main"><a href="$milestone.url">$milestone.name</a></td>
                         <td>${ milestone.description | truncate(50) }</td>
                         <td>${ milestone.open_tickets }</td>
-                        <td>${ milestone.due | strftime }</td>
-                        <td>{% if milestone.last_activity %}${ milestone.last_activity | strftime }{% else %}<span class="sub">${ "never" | translate }</span>{% endif %}</td>
+                        <td>${ milestone.ticket_count }</td>
+                        <td>{% if milestone.due != "0000-00-00 00:00:00" %}${ milestone.due | strftime }{% else %}<span class="sub">${ "never" | translate }</span>{% endif %}</td>
                         ${ trigger.call("manage_milestones_column", milestone) }
                         {% if milestone.editable and milestone.deletable %}
                         <td class="controls">${ milestone.edit_link('<img src="images/icons/edit.png" alt="edit" />'~ ("edit" | translate)) }</td>

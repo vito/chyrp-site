@@ -1,0 +1,15 @@
+{% extends "layouts/progress.twig" %}
+
+{% block content %}
+<h1>Are you sure you want to delete this revision?</h1>
+<form action="{% url "progress/destroy_revision" %}" method="post" accept-charset="utf-8">
+    <fieldset>
+        <h3>Excerpt</h3>
+        ${ revision.body | truncate(500) }
+
+        <p><input type="submit" value="Continue &rarr;" /></p> or <a href="$revision.url">Cancel</a>
+
+        <input type="hidden" name="revision_id" value="$revision.id" id="revision_id" />
+    </fieldset>
+</form>
+{% endblock %}

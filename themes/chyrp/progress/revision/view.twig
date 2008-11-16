@@ -1,0 +1,22 @@
+{% extends "layouts/progress.twig" %}
+
+{% block content %}
+<h1><a href="$revision.ticket.milestone.url">$revision.ticket.milestone.name</a> &raquo; <a href="$revision.ticket.url">$revision.ticket.title</a> &rarr; Revision</h1>
+<strong>$revision.user.login</strong>:
+<ul>
+    {% for name, change in revision.changes | items %}
+    <li><strong>$name</strong> changed from "<code>$change.from</code>" to "<code>$change.to</code>"</li>
+    {% endfor %}
+</ul>
+<p>$revision.body</p>
+{% if revision.attachment %}
+<p>
+    <h5>Attachment</h5>
+    {% if (revision.attachment | split(".") | last) == "jpg" or (revision.attachment | split(".") | last) == "png" %}
+    <img src="$site.chyrp_url/includes/thumb.php?file=../uploads/$revision.attachment&max_width=25" style="vertical-align: middle; border: 1px solid black" alt="attachment" />
+    {% endif %}
+    <a href="${ revision.attachment | uploaded }">${ revision.attachment | replace("attachments/", "") }</a>
+</p>
+{% endif %}
+$revision.edit_link $revision.delete_link
+{% endblock %}

@@ -147,7 +147,8 @@
             if (!Visitor::current()->group->can("add_milestone"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to add milestones.", "progress"));
 
-            Milestone::add($_POST['name'], $_POST['description'], datetime($_POST['due']));
+            $due = (empty($_POST['due']) ? "0000-00-00 00:00:00" : datetime($_POST['due']));
+            Milestone::add($_POST['name'], $_POST['description'], $due);
             Flash::notice(__("Milestone added.", "progress"), "/admin/?action=manage_milestones");
         }
 
@@ -181,7 +182,8 @@
             if (!$milestone->editable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this milestone.", "progress"));
 
-            $milestone->update($_POST['name'], $_POST['description'], datetime($_POST['due']));
+            $due = (empty($_POST['due']) ? "0000-00-00 00:00:00" : datetime($_POST['due']));
+            $milestone->update($_POST['name'], $_POST['description'], $due);
 
             Flash::notice(__("Milestone updated.", "progress"), "/admin/?action=manage_milestones");
         }

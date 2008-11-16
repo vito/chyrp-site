@@ -106,7 +106,7 @@
                 } elseif ($attr == "updated_at")
                     $this->$attr = $$attr = datetime();
                 else
-                    $this->$attr = fallback($$attr, $this->$attr);
+                    $this->$attr = $$attr = ($$attr === null ? $this->$attr : $$attr);
 
             $sql = SQL::current();
             $sql->update("messages",

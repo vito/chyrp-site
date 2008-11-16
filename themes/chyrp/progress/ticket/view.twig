@@ -80,13 +80,13 @@ ${ revisions.prev_link }
         </select>
     </p>
     <p>
-        <label for="status">Ticket Status</label>
-        <select name="status" id="status">
-            <option value="new"${ ticket.status | option_selected("new") }>new</option>
-            <option value="open"${ ticket.status | option_selected("open") }>open</option>
-            <option value="resolved"${ ticket.status | option_selected("resolved") }>resolved</option>
-            <option value="invalid"${ ticket.status | option_selected("invalid") }>invalid</option>
-            <option value="declined"${ ticket.status | option_selected("declined") }>declined</option>
+        <label for="state">Ticket State</label>
+        <select name="state" id="state">
+            <option value="new"${ ticket.state | option_selected("new") }>new</option>
+            <option value="open"${ ticket.state | option_selected("open") }>open</option>
+            <option value="resolved"${ ticket.state | option_selected("resolved") }>resolved</option>
+            <option value="invalid"${ ticket.state | option_selected("invalid") }>invalid</option>
+            <option value="declined"${ ticket.state | option_selected("declined") }>declined</option>
         </select>
     </p>
     {% endif %}

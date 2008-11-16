@@ -93,7 +93,7 @@
             $ticket = new Ticket($_POST['ticket_id'], array("filter" => false));
             $old = clone $ticket;
 
-            $ticket->update($_POST['title'], null, $_POST['status'], null, $_POST['milestone_id'], $_POST['owner_id']);
+            $ticket->update($_POST['title'], null, $_POST['state'], null, $_POST['milestone_id'], $_POST['owner_id']);
 
             $changes = array();
             foreach ($ticket as $name => $val)
@@ -128,7 +128,7 @@
                     Flash::warning(__("Please enter a message.", "progress"), $ticket->url());
             }
 
-            if (!empty($_FILES['attachment']))
+            if ($_FILES['attachment']['error'] != 4)
                 $filename = upload($_FILES['attachment'], null, "attachments");
             else
                 $filename = "";
@@ -141,7 +141,7 @@
             if (!Visitor::current()->group->can("add_ticket"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create tickets.", "progress"));
 
-            if (!empty($_FILES['attachment']))
+            if ($_FILES['attachment']['error'] != 4)
                 $filename = upload($_FILES['attachment'], null, "attachments");
             else
                 $filename = "";
@@ -257,7 +257,10 @@
             if (!$revision->deletable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this revision.", "progress"));
 
-            Revision::delete($revision->id);
+            if (empty($revision->changes))
+                Revision::delete($revision->id);
+            else
+                $revision->update(""); # If changes were made, just clear the body instead of altering history.
 
             Flash::notice(__("Revision deleted.", "progress"), $revision->ticket->url());
         }
