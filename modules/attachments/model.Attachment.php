@@ -1,7 +1,10 @@
 <?php
     class Attachment extends Model {
+        public $belongs_to = array("entity" => array("model" => "(entity_type)",
+                                                     "where" => array("id" => "(entity_id)")));
+
         public function __construct($attachment_id, $options = array()) {
-            parent::grab($this, $page_id, $options);
+            parent::grab($this, $attachment_id, $options);
 
             if ($this->no_results)
                 return false;

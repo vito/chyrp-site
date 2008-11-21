@@ -8,6 +8,8 @@
      */
     class Revision extends Model {
         public $belongs_to = array("user", "ticket");
+        public $has_many = array("attachments" => array("where" => array("entity_type" => "ticket",
+                                                                         "entity_id" => "(id)")));
 
         /**
          * Function: __construct
