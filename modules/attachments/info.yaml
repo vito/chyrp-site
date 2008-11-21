@@ -1,0 +1,9 @@
+---
+name: Attachments Model
+description: Provides a basic model for attaching files to entities.
+version: 1.0
+author:
+  name: Alex Suraci
+  url: http://ecks.tc/
+confirm: Do you want to delete the attachments?
+

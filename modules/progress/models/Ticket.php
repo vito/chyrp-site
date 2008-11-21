@@ -7,8 +7,10 @@
      *     <Model>
      */
     class Ticket extends Model {
-        public $belongs_to = array("milestone", "user", "owner" => "user");
-        public $has_many   = "revisions";
+        public $belongs_to = array("milestone", "user", "owner" => array("model" => "user"));
+        public $has_many   = array("revisions",
+                                   "attachments" => array("where" => array("entity_type" => "ticket",
+                                                                           "entity_id" => "(id)")));
 
         /**
          * Function: __construct
