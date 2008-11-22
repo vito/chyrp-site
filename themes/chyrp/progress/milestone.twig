@@ -55,9 +55,9 @@ ${ tickets.prev_link }
             {% endfor %}
         </select>
     </p>
-    <p>
-        <label for="attachment">Attachment</label>
-        <input type="file" name="attachment" id="attachment" />
+    <p id="attachments">
+        <label for="attachment">Attachment(s)</label>
+        <input type="file" name="attachment[]" /> <a href="javascript:$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />')">[+]</a>
     </p>
 
     <p><input type="submit" value="Continue &rarr;"></p>

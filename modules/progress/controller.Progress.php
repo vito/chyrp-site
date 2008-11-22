@@ -122,18 +122,25 @@
                 }
 
             if (empty($changes)) {
-                $ticket->update(null, null, null, null, null, null, null, null, $old->updated_at);
+                $ticket->update(null, null, null, null, null, null, null, $old->updated_at);
 
                 if (empty($_POST['body']))
                     Flash::warning(__("Please enter a message.", "progress"), $ticket->url());
             }
 
-            if ($_FILES['attachment']['error'] != 4)
-                $filename = upload($_FILES['attachment'], null, "attachments");
-            else
-                $filename = "";
+            $revision = Revision::add($_POST['body'], $changes, $_POST['ticket_id']);
 
-            $revision = Revision::add($_POST['body'], $changes, $filename, $_POST['ticket_id']);
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "revision", $revision->id);
+                }
+
             Flash::notice(__("Revision added.", "progress"), $revision->url(true));
         }
 
@@ -141,12 +148,19 @@
             if (!Visitor::current()->group->can("add_ticket"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create tickets.", "progress"));
 
-            if ($_FILES['attachment']['error'] != 4)
-                $filename = upload($_FILES['attachment'], null, "attachments");
-            else
-                $filename = "";
+            $ticket = Ticket::add($_POST['title'], $_POST['description'], "new", $_POST['milestone_id'], $_POST['owner_id']);
 
-            $ticket = Ticket::add($_POST['title'], $_POST['description'], "new", $filename, $_POST['milestone_id'], $_POST['owner_id']);
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "ticket", $ticket->id);
+                }
+
             Flash::notice(__("Ticket added.", "progress"), $ticket->url());
         }
 
@@ -193,13 +207,18 @@
             if (!$revision->editable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this revision.", "progress"));
 
-            if ($_FILES['attachment']['error'] != 4) {
-                unlink(uploaded($revision->attachment, false));
-                $filename = upload($_FILES['attachment'], null, "attachments");
-            } else
-                $filename = $revision->attachment;
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
 
-            $revision->update($_POST['body'], null, $filename);
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "revision", $revision->id);
+                }
+
+            $revision->update($_POST['body']);
 
             Flash::notice(__("Revision updated.", "progress"), $revision->url(true));
         }
@@ -214,6 +233,17 @@
 
             if (!$ticket->editable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this ticket.", "progress"));
+
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "ticket", $ticket->id);
+                }
 
             $ticket->update($_POST['title'], $_POST['description']);
 

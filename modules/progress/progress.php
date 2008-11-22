@@ -25,7 +25,6 @@
                              state VARCHAR(100) DEFAULT 'new',
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT '',
-                             attachment VARCHAR(100) DEFAULT '',
                              milestone_id INTEGER DEFAULT 0,
                              owner_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
@@ -37,7 +36,6 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              body LONGTEXT,
                              changes TEXT,
-                             attachment VARCHAR(100) DEFAULT '',
                              ticket_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
                              created_at DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -47,7 +45,7 @@
             Group::add_permission("add_milestone", "Add Milestone");
             Group::add_permission("add_ticket", "Add Ticket");
             Group::add_permission("add_revision", "Add Revision");
-            
+
             Group::add_permission("edit_milestone", "Edit Milestone");
             Group::add_permission("edit_ticket", "Edit Ticket");
             Group::add_permission("edit_revision", "Edit Revision");
@@ -99,16 +97,6 @@
         <script src="<?php echo $config->chyrp_url; ?>/modules/progress/lib/tablednd.js" type="text/javascript"></script>
         <script src="<?php echo $config->chyrp_url; ?>/modules/progress/admin.js" type="text/javascript"></script>
 <?php
-        }
-
-        public function ajax() {
-            if ($_POST['action'] != "reorder_Milestones")
-                return;
-
-            foreach (explode(",", $_POST['order']) as $order => $id) {
-                $milestone = new Milestone($id, array("filter" => false));
-                $milestone->update(null, null, $order);
-            }
         }
 
         static function manage_nav($navs) {

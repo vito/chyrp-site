@@ -8,6 +8,8 @@
 
             if ($this->no_results)
                 return false;
+
+            $this->info = pathinfo($this->path);
         }
 
         static function find($options = array(), $options_for_object = array()) {
@@ -44,10 +46,10 @@
             $old = clone $this;
 
             foreach (array("filename", "path", "entity_type", "entity_id") as $attr)
-                if ($attr == "updated_at" and $updated_at !== false)
-                    $this->$attr = fallback($$attr, datetime());
+                if ($attr == "updated_at" and $updated_at === null)
+                    $this->updated_at = $updated_at = datetime();
                 else
-                    $this->$attr = fallback($$attr, $this->$attr);
+                    $this->$attr = $$attr = ($$attr === null ? $this->$attr : $$attr);
 
             $sql->update("attachments",
                          array("id" => $this->id),

@@ -92,7 +92,6 @@
         static function add($title,
                             $description,
                             $state      = "new",
-                            $attachment = "",
                             $milestone  = 0,
                             $owner      = 0,
                             $user       = null,
@@ -112,7 +111,6 @@
                                "state"        => $state,
                                "clean"        => sanitize($title),
                                "url"          => self::check_url(sanitize($title)),
-                               "attachment"   => $attachment,
                                "milestone_id" => $milestone_id,
                                "owner_id"     => $owner_id,
                                "user_id"      => oneof($user_id, $visitor->id),
@@ -137,7 +135,6 @@
         public function update($title       = null,
                                $description = null,
                                $state       = null,
-                               $attachment  = null,
                                $milestone   = null,
                                $owner       = null,
                                $user        = null,
@@ -151,7 +148,7 @@
 
             $old = clone $this;
 
-            foreach (array("title", "description", "state", "attachment", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
+            foreach (array("title", "description", "state", "milestone_id", "owner_id", "user_id", "created_at", "updated_at") as $attr)
                 if (substr($attr, -3) == "_id") {
                     $arg = ${substr($attr, 0, -3)};
                     $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
@@ -165,7 +162,6 @@
                          array("title"        => $title,
                                "description"  => $description,
                                "state"        => $state,
-                               "attachment"   => $attachment,
                                "milestone_id" => $milestone_id,
                                "owner_id"     => $owner_id,
                                "user_id"      => $user_id,
@@ -190,8 +186,8 @@
 
             parent::destroy(get_class(), $id);
 
-            if ($ticket->attachment)
-                unlink(uploaded($ticket->attachment, false));
+            foreach ($ticket->attachments as $attachment)
+                unlink(uploaded($attachment->path, false));
         }
 
         /**

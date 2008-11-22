@@ -8,7 +8,7 @@
      */
     class Revision extends Model {
         public $belongs_to = array("user", "ticket");
-        public $has_many = array("attachments" => array("where" => array("entity_type" => "ticket",
+        public $has_many = array("attachments" => array("where" => array("entity_type" => "revision",
                                                                          "entity_id" => "(id)")));
 
         /**
@@ -73,7 +73,6 @@
          */
         static function add($body,
                             $changes,
-                            $attachment = "",
                             $ticket,
                             $user       = null,
                             $created_at = null,
@@ -86,7 +85,6 @@
             $sql->insert("revisions",
                          array("body"       => $body,
                                "changes"    => YAML::dump($changes),
-                               "attachment" => $attachment,
                                "ticket_id"  => $ticket_id,
                                "user_id"    => fallback($user_id, $visitor->id),
                                "created_at" => fallback($created_at, datetime()),
@@ -109,7 +107,6 @@
          */
         public function update($body       = null,
                                $changes    = null,
-                               $attachment = null,
                                $ticket     = null,
                                $user       = null,
                                $created_at = null,
@@ -119,7 +116,7 @@
 
             $old = clone $this;
 
-            foreach (array("body", "changes", "attachment", "ticket_id", "user_id", "created_at", "updated_at") as $attr)
+            foreach (array("body", "changes", "ticket_id", "user_id", "created_at", "updated_at") as $attr)
                 if (substr($attr, -3) == "_id") {
                     $arg = ${substr($attr, 0, -3)};
                     $this->$attr = $$attr = oneof((($arg instanceof Model) ? $arg->id : $arg), $this->$attr);
@@ -133,7 +130,6 @@
                          array("id"         => $this->id),
                          array("body"       => $body,
                                "changes"    => YAML::dump($changes),
-                               "attachment" => $attachment,
                                "ticket_id"  => $ticket_id,
                                "user_id"    => $user_id,
                                "created_at" => $created_at,
@@ -154,8 +150,8 @@
 
             parent::destroy(get_class(), $id);
 
-            if ($revision->attachment)
-                unlink(uploaded($this->attachment, false));
+            foreach ($revision->attachments as $attachment)
+                unlink(uploaded($attachment->path, false));
         }
 
         /**

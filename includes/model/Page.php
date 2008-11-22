@@ -149,8 +149,8 @@
 
             foreach (array("title", "body", "user_id", "parent_id", "show_in_list",
                            "list_order", "clean", "url", "created_at", "updated_at") as $attr)
-                if ($attr == "updated_at" and $$attr === null)
-                    $this->$attr = $$attr = datetime();
+                if ($attr == "updated_at" and $updated_at === null)
+                    $this->updated_at = $updated_at = datetime();
                 else
                     $this->$attr = $$attr = ($$attr !== null ? $$attr : $this->$attr);
 

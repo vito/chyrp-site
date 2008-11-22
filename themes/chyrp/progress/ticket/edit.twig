@@ -9,6 +9,11 @@
     <label for="description">Description</label>
     <textarea name="description" rows="8" cols="100%">${ ticket.description | escape }</textarea>
 
+    <p id="attachments">
+        <label for="attachment">Attachment(s)</label>
+        <input type="file" name="attachment[]" /> <a href="javascript:$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />')">[+]</a>
+    </p>
+
     <p><input type="submit" value="Continue &rarr;"></p>
 
     <input type="hidden" name="ticket_id" value="$ticket.id" id="ticket_id" />
