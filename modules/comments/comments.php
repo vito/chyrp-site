@@ -620,13 +620,21 @@
 
         public function post_comment_count_attr($attr, $post) {
             if (isset($this->comment_counts))
-                return fallback($this->comment_counts[$post->id], 0);
+                return oneof(@$this->comment_counts[$post->id], 0);
 
             $counts = SQL::current()->select("comments",
-                                             array("COUNT(post_id) AS total", "post_id"),
+                                             array("COUNT(post_id) AS total", "post_id as post_id"),
+                                             array("status not" => "spam",
+                                                   "status != 'denied' OR (
+                                                                              (
+                                                                                  user_id != 0 AND
+                                                                                  user_id = :visitor_id
+                                                                              ) OR (
+                                                                                  id IN ".self::visitor_comments()."
+                                                                              )
+                                                                          )"),
                                              null,
-                                             null,
-                                             array(),
+                                             array(":visitor_id" => Visitor::current()->id),
                                              null,
                                              null,
                                              "post_id");
@@ -634,7 +642,7 @@
             foreach ($counts->fetchAll() as $count)
                 $this->comment_counts[$count["post_id"]] = (int) $count["total"];
 
-            return fallback($this->comment_counts[$post->id], 0);
+            return oneof(@$this->comment_counts[$post->id], 0);
         }
 
         public function post_latest_comment_attr($attr, $post) {
@@ -643,9 +651,17 @@
 
             $times = SQL::current()->select("comments",
                                             array("MAX(created_at) AS latest", "post_id"),
+                                            array("status not" => "spam",
+                                                  "status != 'denied' OR (
+                                                                             (
+                                                                                 user_id != 0 AND
+                                                                                 user_id = :visitor_id
+                                                                             ) OR (
+                                                                                 id IN ".self::visitor_comments()."
+                                                                             )
+                                                                         )"),
                                             null,
-                                            null,
-                                            array(),
+                                            array(":visitor_id" => Visitor::current()->id),
                                             null,
                                             null,
                                             "post_id");
@@ -697,7 +713,7 @@
                 if (!empty($comment->author_url))
                     $atom.= "               <uri>".fix($comment->author_url)."</uri>\r";
                 $atom.= "               <email>".fix($comment->author_email)."</email>\r";
-                $atom.= "               <chyrp:login>".fix(fallback($comment->user->login))."</chyrp:login>\r";
+                $atom.= "               <chyrp:login>".fix(@$comment->user->login)."</chyrp:login>\r";
                 $atom.= "               <chyrp:ip>".long2ip($comment->author_ip)."</chyrp:ip>\r";
                 $atom.= "               <chyrp:agent>".fix($comment->author_agent)."</chyrp:agent>\r";
                 $atom.= "           </author>\r";

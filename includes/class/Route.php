@@ -95,7 +95,7 @@
                 else
                     $call = false;
 
-                if ($call != "override" and method_exists($this->controller, $method))
+                if ($call !== true and method_exists($this->controller, $method))
                     $response = call_user_func_array(array($this->controller, $method), $args);
                 else
                     $response = false;
@@ -154,10 +154,8 @@
 
             $urls["/\/(.*?)\/$/"] = "/?action=$1";
 
-            return $config->url.preg_replace(
-                   array_keys($urls),
-                   array_values($urls),
-                   "/".$url, 1);
+            $base = !empty($this->controller->base) ? $config->url."/".$this->controller->base : $config->url ;
+            return $base.preg_replace(array_keys($urls), array_values($urls), "/".$url, 1);
         }
 
         /**

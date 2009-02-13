@@ -275,16 +275,26 @@
                                                array("YEAR(created_at)", "MONTH(created_at)"));
 
                 $archives = array();
+                $archive_hierarchy = array();
                 while ($time = $timestamps->fetchObject()) {
-                    $timestamp = mktime(0, 0, 0, $time->month + 1, 0, $time->year);
-                    $archives[$timestamp] = array("posts" => Post::find(array("where" => array("created_at like" => when("Y-m", $time->created_at)."%"))),
-                                                  "year" => $time->year,
-                                                  "month" => strftime("%B", $timestamp),
-                                                  "timestamp" => $timestamp,
-                                                  "url" => url("archive/".when("Y/m/", $time->created_at)));
+                    $year = mktime(0, 0, 0, 1, 0, $time->year);
+                    $month = mktime(0, 0, 0, $time->month + 1, 0, $time->year);
+
+                    $posts = Post::find(array("where" => array("created_at like" => when("Y-m", $time->created_at)."%")));
+
+                    $archives[$month] = array("posts" => $posts,
+                                              "year" => $time->year,
+                                              "month" => strftime("%B", $month),
+                                              "timestamp" => $month,
+                                              "url" => url("archive/".when("Y/m/", $time->created_at)));
+
+                   $archive_hierarchy[$year][$month] = $posts; 
                 }
 
-                $this->display("pages/archive", array("archives" => $archives), __("Archive"));
+                $this->display("pages/archive",
+                               array("archives" => $archives,
+                                     "archive_hierarchy" => $archive_hierarchy),
+                               __("Archive"));
             } else {
                 if (!is_numeric($_GET['year']) or !is_numeric($_GET['month']))
                     error(__("Error"), __("Please enter a valid year and month."));
@@ -296,7 +306,7 @@
                                array("posts" => $posts,
                                      "archive" => array("year" => $_GET['year'],
                                                         "month" => strftime("%B", $timestamp),
-                                                        "day" => strftime("%e", $timestamp),
+                                                        "day" => strftime("%d", $timestamp),
                                                         "timestamp" => $timestamp,
                                                         "depth" => $depth)),
                                _f("Archive of %s", array(strftime("%B %Y", $timestamp))));
@@ -579,8 +589,10 @@
         public function lost_password() {
             if (!empty($_POST)) {
                 $user = new User(array("login" => $_POST['login']));
-                if ($user->no_results)
-                    return Flash::warning(__("Invalid user specified."));
+                if ($user->no_results) {
+                    Flash::warning(__("Invalid user specified."));
+                    return $this->display("forms/user/lost_password", array(), __("Lost Password"));
+                }
 
                 $new_password = random(16);
 
@@ -594,7 +606,7 @@
                 $sent = email($user->email,
                               __("Lost Password Request"),
                               _f("%s,\n\nWe have received a request for a new password for your account at %s.\n\nPlease log in with the following password, and feel free to change it once you've successfully logged in:\n\t%s",
-                                 array($user->login, $config->name, $new_password)));
+                                 array($user->login, Config::current()->name, $new_password)));
 
                 if ($sent)
                     Flash::notice(_f("An e-mail has been sent to your e-mail address that contains a new password. Once you have logged in, you can change it at <a href=\"%s\">User Controls</a>.",

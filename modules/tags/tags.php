@@ -215,10 +215,11 @@
 
             $tags = array();
             $names = array();
+            
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
-                                       "value like" => "%: \"".$_GET['name']."\"\n%"))->fetchAll() as $tag) {
+                                       "value like" => self::yaml_match($_GET['name'])))->fetchAll() as $tag) {
                 $post_tags = YAML::load($tag["value"]);
 
                 $tags = array_merge($tags, $post_tags);
@@ -289,7 +290,7 @@
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
-                                       "value like" => "%: \"".$_GET['clean']."\"\n%"))->fetchAll() as $tag)  {
+                                       "value like" => self::yaml_match($_GET['clean'])))->fetchAll() as $tag)  {
                 $tags = YAML::load($tag["value"]);
                 unset($tags[$_GET['name']]);
 
@@ -347,7 +348,7 @@
 
             $likes = array();
             foreach ($tags as $name)
-                $likes[] = "%: \"".$name."\"\n%";
+                $likes[] = self::yaml_match($name);
 
             $attributes = $sql->select("post_attributes",
                                        array("value", "post_id"),
@@ -430,22 +431,6 @@
 
                 $main->display("pages/tags", array("tag_cloud" => $context), __("Tags", "tags"));
             }
-        }
-
-        public function import_chyrp_post($entry, $post) {
-            $chyrp = $entry->children("http://chyrp.net/export/1.0/");
-            if (!isset($chyrp->tags)) return;
-
-            $tags = array();
-            foreach (explode(", ", $chyrp->tags) as $tag)
-                if (!empty($tag))
-                    $tags[strip_tags(trim($tag))] = sanitize(strip_tags(trim($tag)));
-
-            if (!empty($tags) and !empty($cleaned))
-                SQL::current()->insert("post_attributes",
-                                       array("name" => "tags",
-                                             "value" => YAML::dump($tags),
-                                             "post_id" => $post->id));
         }
 
         public function import_wordpress_post($item, $post) {
@@ -587,15 +572,11 @@
             return ($limit) ? array_slice($list, 0, $limit) : $list ;
         }
 
-        public function posts_export($atom, $post) {
-            $tags = SQL::current()->select("post_attributes",
-                                           "value",
-                                           array("name" => "tags",
-                                                 "post_id" => $post->id))->fetchColumn();
-            if (empty($tags)) return;
+        public function yaml_match($name) {
+            $dumped = YAML::dump(array($name));
+            $quotes = preg_match("/- \"".preg_quote($name, "/")."\"/", $dumped);
 
-            $atom.= "       <chyrp:tags>".fix(implode(", ", array_keys(YAML::load($tags))))."</chyrp:tags>\r";
-            return $atom;
+            return ($quotes ? "%: \"".$name."\"\n%" : "%: ".$name."\n%");
         }
 
         public function cloudSelectorJS() {
@@ -613,11 +594,11 @@
 
                 scanTags()
 
-                $("#tags").livequery("keyup", scanTags)
+                $("#tags").live("keyup", scanTags)
 
-                $(".tag_cloud > span").livequery("mouseover", function(){
+                $(".tag_cloud > span").live("mouseover", function(){
                     $(this).find(".controls").css("opacity", 1)
-                }).livequery("mouseout", function(){
+                }).live("mouseout", function(){
                     $(this).find(".controls").css("opacity", 0)
                 })
             })
