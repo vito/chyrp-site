@@ -20,7 +20,7 @@ ${ topics.prev_link }
 <br />
 {% if visitor.group.can("add_topic") %}
 <h3>New Topic</h3>
-<form action="{% url "discuss/add_topic" %}" method="post" accept-charset="utf-8">
+<form action="{% url "add_topic" %}" method="post" accept-charset="utf-8">
     <label for="title">Title</label>
     <input type="text" name="title" value="" id="title" />
     

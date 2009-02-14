@@ -15,7 +15,7 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              name VARCHAR(100) DEFAULT '',
                              description TEXT,
-                             order INTEGER DEFAULT 0,
+                             `order` INTEGER DEFAULT 0,
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT ''
                          ) DEFAULT CHARSET=utf8");

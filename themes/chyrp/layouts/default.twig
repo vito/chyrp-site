@@ -11,7 +11,7 @@
         $theme.javascripts
 ${ trigger.call("head") }
     </head>
-    <body>
+    <body id="$route.action">
         {% if visitor.group.can("add_post", "add_draft", "add_page", "view_own_draft", "view_draft", "change_settings", "toggle_extensions") %}
         <div id="controls" {% if hide_admin %} style="display: none"{% endif %}>
             <ul>
@@ -33,40 +33,54 @@ ${ trigger.call("head") }
             </ul>
         </div>
         {% endif %}
-        {% if site.name %}
-        <div id="header">
-            <div class="header_box">
-                <h1><a href="$site.url">$site.name</a></h1>
-                {% if site.description %}
-                <h2>$site.description</h2>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
 
-        <div id="wrapper">
-{% include "content/sidebar.twig" %}
-            <div id="content">
-                {% for type, messages in flash.all | items %}
-                {% for message in messages %}
-                <div class="${ type | depluralize }">$message</div>
-                {% endfor %}
-                {% endfor %}
+        <ul id="navigation">
+            <li class="first selected">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="$site.url">Home</a>
+            </li>
+            <li class="second">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "download" %}">Download</a>
+            </li>
+            <li class="third">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "/discuss" %}">Discuss</a>
+            </li>
+            <li class="fourth">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "/progress" %}">Progress</a>
+            </li>
+            <li class="fifth">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "/extend" %}">Extend</a>
+            </li>
+            <li class="sixth">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "code" %}">Code</a>
+            </li>
+            <li class="seventh">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "blog" %}">Blog</a>
+            </li>
+        </ul>
+
+        <div id="content">
+            {% for type, messages in flash.all | items %}
+            {% for message in messages %}
+            <div class="${ type | depluralize }">$message</div>
+            {% endfor %}
+            {% endfor %}
 {% block content %}{% endblock %}
-                <div class="clear"></div>
-                $posts.prev_link
-                $posts.next_link
-                {% if posts.paginated and posts.pages > 1 %}
-                <span class="pages">${ "Page %d of %d" | translate | format(posts.page, posts.pages) }</span>
-                {% endif %}
-                <div id="footer">
-                    <p>Stardust theme &copy; 2008 <a href="http://lofisoami.com">Aaron MacDonald</a></p>
-                    <p>${ "Powered by <a class=\"chyrp\" href=\"http://chyrp.net/\">Chyrp</a>" | translate }</p>
-                    <a class="atom" href="{% url "feed" %}">atom</a>
-                </div>
-            </div>
-            <div class="clear"></div>
         </div>
+
+        <ul id="footer">
+            <li class="toogeneric"><a href="http://toogeneric.com/">*</a></li>
+            <li>Chyrp &copy; Alex Suraci 2007&mdash;</li>
+            <li>${ "Powered by <a class=\"chyrp\" href=\"http://chyrp.net/\">Chyrp</a>" | translate }</li>
+            <li><a class="atom" href="{% url "feed" %}">atom</a></li>
+        </ul>
+
         {% if debug and visitor.group.name == "Admin" %}
         <div id="debug">
             <h5>

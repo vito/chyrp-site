@@ -84,7 +84,9 @@
             $sql->insert("forums",
                          array("name" => $name,
                                "description" => $description,
-                               "order" => $order));
+                               "order" => $order,
+                               "clean" => sanitize($name),
+                               "url" => self::check_url($name)));
 
             $forum = new self($sql->latest());
 

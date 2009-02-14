@@ -18,7 +18,7 @@ $(function(){
             placeholder: "<?php echo __("Search...", "theme"); ?>"
         });
 
-    if ($("#debug").size())
+    if ($("#debug").size() && Cookie.get("hide_debug") != "true")
         $("#wrapper").css("padding-bottom", $("#debug").height());
 
     $("#debug .toggle").click(function(){
@@ -26,9 +26,11 @@ $(function(){
             Cookie.destroy("hide_debug");
             $("#debug h5:first span").remove();
             $("#debug").animate({ height: "33%" });
+            $("#debug").css("overflow-y", "scroll");
         } else {
             Cookie.set("hide_debug", "true", 30);
-            $("#debug").animate({ height: 15 });
+            $("#debug").animate({ height: 17 });
+            $("#debug").css("overflow-y", "hidden");
             $("#debug ul li").each(function(){
                 $("<span class=\"sub\"> | "+ $(this).html() +"</span>").appendTo("#debug h5:first");
             })
@@ -36,7 +38,8 @@ $(function(){
     })
 
     if (Cookie.get("hide_debug") == "true") {
-        $("#debug").height(15);
+        $("#debug").height(17);
+        $("#debug").css("overflow-y", "hidden");
         $("#debug ul li").each(function(){
             $("<span class=\"sub\"> | "+ $(this).html() +"</span>").appendTo("#debug h5:first");
         })

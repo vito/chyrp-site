@@ -2,7 +2,7 @@
     class DiscussController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.
-        public $urls = array('/\/discuss\/([^\/]+)\//' => '/discuss/?action=$1');
+        public $urls = array("|/forum/([^/]+)/|" => '/?action=forum&amp;url=$1');
 
         # Boolean: $displayed
         # Has anything been displayed?
@@ -29,6 +29,95 @@
                                           $cache ?
                                               INCLUDES_DIR."/caches" :
                                               null) ;
+        }
+
+        public function parse($route) {
+            $config = Config::current();
+
+            if (empty($route->arg[0]) and !isset($config->routes["discuss"]["/"]))
+                return $route->action = "index";
+
+            # Protect non-responder functions.
+            if (in_array($route->arg[0], array("__construct", "parse", "display", "current")))
+                show_404();
+
+            # Feed
+            if (preg_match("/\/feed\/?$/", $route->request)) {
+                $this->feed = true;
+                $this->post_limit = $config->feed_items;
+
+                if ($route->arg[0] == "feed") # Don't set $route->action to "feed" (bottom of this function).
+                    return $route->action = "index";
+            }
+
+            # Feed with a title parameter
+            if (preg_match("/\/feed\/([^\/]+)\/?$/", $route->request, $title)) {
+                $this->feed = true;
+                $this->post_limit = $config->feed_items;
+                $_GET['title'] = $title[1];
+
+                if ($route->arg[0] == "feed") # Don't set $route->action to "feed" (bottom of this function).
+                    return $route->action = "index";
+            }
+
+            # Paginator
+            if (preg_match_all("/\/((([^_\/]+)_)?page)\/([0-9]+)/", $route->request, $page_matches)) {
+                foreach ($page_matches[1] as $key => $page_var)
+                    $_GET[$page_var] = (int) $page_matches[4][$key];
+
+                if ($route->arg[0] == $page_matches[1][0]) # Don't fool ourselves into thinking we're viewing a page.
+                    return $route->action = (isset($config->routes["/"])) ? $config->routes["/"] : "index" ;
+            }
+
+            # Viewing a post by its ID
+            if ($route->arg[0] == "forum") {
+                $_GET['url'] = $route->arg[1];
+                return $route->action = "forum";
+            }
+
+            # Searching
+            if ($route->arg[0] == "search") {
+                if (isset($route->arg[1]))
+                    $_GET['query'] = $route->arg[1];
+
+                return $route->action = "search";
+            }
+
+            # Custom pages added by Modules, Feathers, Themes, etc.
+            foreach ($config->routes as $path => $action) {
+                if (is_numeric($action))
+                    $action = $route->arg[0];
+
+                preg_match_all("/\(([^\)]+)\)/", $path, $matches);
+
+                if ($path != "/")
+                    $path = trim($path, "/");
+
+                $escape = preg_quote($path, "/");
+                $to_regexp = preg_replace("/\\\\\(([^\)]+)\\\\\)/", "([^\/]+)", $escape);
+
+                if ($path == "/")
+                    $to_regexp = "\$";
+
+                if (preg_match("/^\/{$to_regexp}/", $route->request, $url_matches)) {
+                    array_shift($url_matches);
+
+                    if (isset($matches[1]))
+                        foreach ($matches[1] as $index => $parameter)
+                            $_GET[$parameter] = urldecode($url_matches[$index]);
+
+                    $params = explode(";", $action);
+                    $action = $params[0];
+
+                    array_shift($params);
+                    foreach ($params as $param) {
+                        $split = explode("=", $param);
+                        $_GET[$split[0]] = fallback($split[1], "", true);
+                    }
+
+                    $route->try[] = $action;
+                }
+            }
         }
 
         public function index() {
@@ -223,94 +312,6 @@
             Topic::delete($topic->id);
 
             Flash::notice(__("Topic deleted.", "discuss"), $topic->forum->url());
-        }
-
-        public function parse($route) {
-            $config = Config::current();
-
-            if ($this->feed)
-                $this->post_limit = $config->feed_items;
-            else
-                $this->post_limit = $config->posts_per_page;
-
-            if (empty($route->arg[0]) and !isset($config->routes["/"])) # If they're just at /, don't bother with all this.
-                return $route->action = "index";
-
-            # Protect non-responder functions.
-            if (in_array($route->arg[0], array("__construct", "parse", "display", "current")))
-                show_404();
-
-            # Feed
-            if (preg_match("/\/feed\/?$/", $route->request)) {
-                $this->feed = true;
-                $this->post_limit = $config->feed_items;
-
-                if ($route->arg[0] == "feed") # Don't set $route->action to "feed" (bottom of this function).
-                    return $route->action = "index";
-            }
-
-            # Feed with a title parameter
-            if (preg_match("/\/feed\/([^\/]+)\/?$/", $route->request, $title)) {
-                $this->feed = true;
-                $this->post_limit = $config->feed_items;
-                $_GET['title'] = $title[1];
-
-                if ($route->arg[0] == "feed") # Don't set $route->action to "feed" (bottom of this function).
-                    return $route->action = "index";
-            }
-
-            # Paginator
-            if (preg_match_all("/\/((([^_\/]+)_)?page)\/([0-9]+)/", $route->request, $page_matches)) {
-                foreach ($page_matches[1] as $key => $page_var)
-                    $_GET[$page_var] = (int) $page_matches[4][$key];
-
-                if ($route->arg[0] == $page_matches[1][0]) # Don't fool ourselves into thinking we're viewing a page.
-                    return $route->action = (isset($config->routes["/"])) ? $config->routes["/"] : "index" ;
-            }
-
-            # Searching
-            if ($route->arg[0] == "search") {
-                if (isset($route->arg[1]))
-                    $_GET['query'] = $route->arg[1];
-
-                return $route->action = "search";
-            }
-
-            # Custom pages added by Modules, Feathers, Themes, etc.
-            foreach ($config->routes as $path => $action) {
-                if (is_numeric($action))
-                    $action = $route->arg[0];
-
-                preg_match_all("/\(([^\)]+)\)/", $path, $matches);
-
-                if ($path != "/")
-                    $path = trim($path, "/");
-
-                $escape = preg_quote($path, "/");
-                $to_regexp = preg_replace("/\\\\\(([^\)]+)\\\\\)/", "([^\/]+)", $escape);
-
-                if ($path == "/")
-                    $to_regexp = "\$";
-
-                if (preg_match("/^\/{$to_regexp}/", $route->request, $url_matches)) {
-                    array_shift($url_matches);
-
-                    if (isset($matches[1]))
-                        foreach ($matches[1] as $index => $parameter)
-                            $_GET[$parameter] = urldecode($url_matches[$index]);
-
-                    $params = explode(";", $action);
-                    $action = $params[0];
-
-                    array_shift($params);
-                    foreach ($params as $param) {
-                        $split = explode("=", $param);
-                        $_GET[$split[0]] = fallback($split[1], "", true);
-                    }
-
-                    $route->try[] = $action;
-                }
-            }
         }
 
         /**

@@ -174,7 +174,7 @@
             if (!$config->clean_urls)
                 return $config->url."/progress/?action=milestone&amp;id=".$this->id;
 
-            return url("milestone/".$this->url);
+            return url("milestone/".$this->id);
         }
 
         /**

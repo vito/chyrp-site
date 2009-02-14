@@ -14,11 +14,12 @@ html {
     height: 100%;
 }
 body {
-    background-color: #fff;
-    color: #111;
+    background-color: #111;
+    color: #eee;
     font: normal 1.25em/1.75em Helvetica, Arial, Verdana, sans-serif;
-    margin: 0;
-    padding: 5em;
+    padding: 0;
+    margin: 0 auto;
+    width: 70em;
 }
 
 pre {
@@ -44,8 +45,8 @@ strong {
 
 a:link,
 a:visited {
-    color: blue;
-    text-decoration: underline;
+    color: white;
+    text-decoration: none;
 }
 
 h1,
@@ -53,15 +54,21 @@ h2 {
     letter-spacing: -.01em;
 }
 h1 {
-    font: bold 2.6em "palatino linotype", palatino, georgia, "times new roman", times, serif;
-    margin-bottom: .3em
+    /* font-weight: bold; */
+    font-size: 2.6em;
+    margin-bottom: .3em;
+    padding-bottom: .25em;
+    border-bottom: .07em solid #1c1c1c;
+    color: #fff;
 }
 h2 {
-    font: bold 2em "palatino linotype", palatino, georgia, "times new roman", times, serif;
+    font-weight: bold;
+    font-size: 2em;
     margin-bottom: .4em;
 }
 h3 {
-    font: bold 1.75em "palatino linotype", palatino, georgia, "times new roman", times, serif;
+    font-weight: bold;
+    font-size: 1.75em;
     margin-bottom: .5em;
 }
 h4 {
@@ -109,8 +116,152 @@ label {
 
 p {
     margin-bottom: 1em;
+    }
+    p a:link,
+    p a:visited {
+        border-bottom: 1px dotted #333;
+    }
+    p a:hover {
+        border-bottom-style: solid;
 }
 
+/* Navigation */
+#navigation {
+    margin: 0 0 5em;
+    padding: 0;
+    height: 10.75em;
+    }
+    #navigation li {
+        float: left;
+        list-style: none;
+        padding: 5em .625em .25em;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        }
+        #navigation li a {
+            text-decoration: none;
+            color: inherit;
+        }
+        #navigation li h1 {
+            border: none;
+            font-size: 3.5em;
+            font-weight: bold;
+            color: inherit;
+        }
+        #navigation li h1 a {
+            color: inherit;
+    }
+    #navigation li.selected.first,
+    #navigation li.first:hover {
+        background: #ff2e99;
+        color: #fff;
+    }
+    #navigation li.selected.second,
+    #navigation li.second:hover {
+        background: #ff8a2d;
+        color: #fff;
+    }
+    #navigation li.selected.third,
+    #navigation li.third:hover {
+        background: #ffe12a;
+        color: #fff;
+    }
+    #navigation li.selected.fourth,
+    #navigation li.fourth:hover {
+        background: #caff2a;
+        color: #fff;
+    }
+    #navigation li.selected.fifth,
+    #navigation li.fifth:hover {
+        background: #1fb5ff;
+        color: #fff;
+    }
+    #navigation li.selected.sixth,
+    #navigation li.sixth:hover {
+        background: #5931ff;
+        color: #fff;
+    }
+    #navigation li.selected.seventh,
+    #navigation li.seventh:hover {
+        background: #b848ff;
+        color: #fff;
+    }
+    #navigation li.first {
+        color: #ff2e99;
+        width: 2.75em;
+    }
+    #navigation li.second {
+        color: #ff8a2d;
+        width: 4.5em;
+        }
+        #navigation li.second h1 {
+            margin-left: -1.13em;
+    }
+    #navigation li.third {
+        color: #ffe12a;
+        width: 3.5em;
+        }
+        #navigation li.third h1 {
+            margin-left: -2.75em;
+    }
+    #navigation li.fourth {
+        color: #caff2a;
+        width: 4.1em;
+        }
+        #navigation li.fourth h1 {
+            margin-left: -4.11em;
+    }
+    #navigation li.fifth {
+        color: #1fb5ff;
+        width: 3.2em;
+        }
+        #navigation li.fifth h1 {
+            margin-left: -5.62em;
+    }
+    #navigation li.sixth {
+        color: #5931ff;
+        width: 2.45em;
+        }
+        #navigation li.sixth h1 {
+            margin-left: -6.87em;
+    }
+    #navigation li.seventh {
+        color: #b848ff;
+        width: 2.05em;
+        }
+        #navigation li.seventh h1 {
+            margin-left: -7.92em;
+}
+
+/* Footer */
+#footer {
+    background: #0c0c0c;
+    margin: 5em 0;
+    padding: 1em;
+    }
+    #footer li {
+        list-style: none;
+    }
+    #footer .toogeneric a {
+        float: right;
+        font-size: 13em;
+        position: relative;
+        bottom: -.375em;
+        color: #222;
+        height: 0;
+    }
+    #footer .toogeneric a:hover {
+        color: #fff;
+}
+
+/* Content */
+#home p.blurb {
+    font-size: 2em;
+    line-height: 1.25em;
+}
+
+/* Notification Messages */
 .flash {
     margin-bottom: 1em;
     padding: .5em .75em;
@@ -133,6 +284,7 @@ p {
     color: white;
 }
 
+/* Controls Bar */
 div#controls {
     background-color: #131313;
     border-bottom: .1em solid #0f0f0f;
@@ -174,10 +326,10 @@ div#controls ul li.close a:hover {
 
 /* Debugger */
 #debug {
-    background: #ffffdd;
-    color: #666;
-    padding: .4em .75em .5em .75em;
-    border-top: .1em solid #ddd;
+    background: #0c0c0c;
+    color: #555;
+    padding: 0 .75em .5em .75em;
+    border-top: .1em solid #000;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -185,14 +337,14 @@ div#controls ul li.close a:hover {
     max-height: 33%;
     overflow-y: scroll;
     overflow-x: hidden;
+    font-size: .9em;
 }
 #debug h5 {
     margin: 0;
-    font-size: 1.1em;
-    color: #a3a39a;
+    color: #555;
 }
 #debug h5 .sub {
-    color: #b3b3aa;
+    color: #333;
 }
 #debug ol.queries li {
     margin: 0 0 1em;
@@ -201,7 +353,6 @@ div#controls ul li.close a:hover {
     background: #fff;
     border: 1px solid #ddd;
     padding: 0 .5em;
-    xoverflow-x: scroll;
     word-wrap: break-word;
 }
 #debug .toggle {
