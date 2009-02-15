@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Edit Topic</h1>
-<form action="{% url "discuss/update_topic" %}" method="post" accept-charset="utf-8">
+<form action="{% url "update_topic" %}" method="post" accept-charset="utf-8">
     <label for="title">Title</label>
     <input type="text" name="title" value="${ topic.title | escape }" id="title" />
     

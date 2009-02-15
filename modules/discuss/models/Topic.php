@@ -26,7 +26,7 @@
             $options["select"][] = "MAX(messages.created_at) AS last_message";
             $options["select"][] = "MAX(messages.updated_at) AS last_update";
 
-            $options["order"] = array("`last_message` DESC", "created_at DESC", "id DESC");
+            fallback($options["order"], array("COALESCE(MAX(messages.created_at), topics.created_at) DESC", "id DESC"));
 
             $options["group"][] = "id";
 
@@ -63,7 +63,7 @@
             $options["select"][] = "MAX(messages.created_at) AS last_message";
             $options["select"][] = "MAX(messages.updated_at) AS last_update";
 
-            $options["order"] = array("`last_message` DESC", "created_at DESC", "id DESC");
+            fallback($options["order"], array("COALESCE(MAX(messages.created_at), topics.created_at) DESC", "id DESC"));
 
             $options["group"][] = "id";
 
@@ -276,5 +276,13 @@
             fallback($text, __("Delete"));
 
             echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=delete_topic&amp;id='.$this->id.'" title="Delete" class="topic_delete_link delete_link" id="'.($classes ? $classes." " : '').'topic_delete_'.$this->id.'">'.$text.'</a>'.$after;
+        }
+
+        /**
+         * Function: latest_message
+         * Returns the latest message in the topic.
+         */
+        public function latest_message() {
+        	return end($this->messages);
         }
     }

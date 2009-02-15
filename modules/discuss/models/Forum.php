@@ -183,6 +183,9 @@
          * Returns the latest message/updated message timestamp.
          */
         public function last_activity() {
+            if (isset($this->last_activity))
+                return $this->last_activity;
+
             $last_activity = 0;
 
             foreach ($this->topics as $topic) {
@@ -191,7 +194,7 @@
                     $last_activity = $timestamp;
             }
 
-            return $last_activity;
+            return $this->last_activity = $last_activity;
         }
 
         /**
@@ -202,11 +205,60 @@
          *     $inclusive - Count topics as messages?
          */
         public function message_count($inclusive = false) {
+            if (isset($this->message_count))
+                return $this->message_count;
+
             $messages = 0;
 
             foreach ($this->topics as $topic)
                 $messages += ($inclusive ? $topic->message_count + 1 : $topic->message_count);
 
-            return $messages;
+            return $this->message_count = $messages;
+        }
+
+        /**
+         * Function: topic_count
+         * Returns the number of topics in the forum.
+         */
+        public function topic_count() {
+            if (isset($this->topic_count))
+                return $this->topic_count;
+
+            return $this->topic_count = count($this->topics);
+        }
+
+        /**
+         * Function: latest_message
+         * Returns the latest message in the forum.
+         */
+        public function latest_message() {
+            if (isset($this->latest_message))
+                return $this->latest_message;
+
+            SQL::current()->query("SELECT NULL");
+            return new Message(null, array("left_join" => array(array("table" => "topics",
+                                                                      "where" => array("topics.id = messages.topic_id",
+                                                                                       "forum_id" => $this->id))),
+                                                                      "order" => array("created_at DESC", "id DESC")));
+        }
+
+        /**
+         * Function: latest_topic
+         * Returns the latest topic in the forum.
+         */
+        public function latest_topic() {
+            if (isset($this->latest_topic))
+                return $this->latest_topic;
+
+            return $this->latest_topic = new Topic(null, array("where" => array("forum_id" => $this->id),
+                                                               "order" => "created_at DESC, id DESC"));
+        }
+
+        /**
+         * Function: latest_activity
+         * Returns the most recently replied-to or created topic in the forum.
+         */
+        public function latest_activity() {
+            return $this->topics[0];
         }
     }

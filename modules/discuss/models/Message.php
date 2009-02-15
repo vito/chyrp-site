@@ -17,7 +17,7 @@
         public function __construct($message_id, $options = array()) {
             if (!isset($message_id) and empty($options)) return;
 
-            $options["order"] = "created_at ASC, id ASC";
+            fallback($options["order"], array("created_at ASC", "id ASC"));
 
             parent::grab($this, $message_id, $options);
 
@@ -44,7 +44,7 @@
          *     <Model::search>
          */
         static function find($options = array(), $options_for_object = array()) {
-            $options["order"] = "created_at ASC, id ASC";
+            fallback($options["order"], array("created_at ASC", "id ASC"));
             return parent::search(get_class(), $options, $options_for_object);
         }
 

@@ -23,7 +23,7 @@ ${ messages.prev_link }
 <br />
 <br />
 {% if visitor.group.can("add_message") %}
-<form action="{% url "discuss/add_message" %}" method="post" accept-charset="utf-8">
+<form action="{% url "add_message" %}" method="post" accept-charset="utf-8">
     <textarea name="body" rows="8" cols="100%"></textarea>
 
     <p><input type="submit" value="Continue &rarr;"></p>
