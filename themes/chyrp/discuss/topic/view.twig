@@ -1,21 +1,82 @@
 {% extends "layouts/discuss.twig" %}
 
 {% block content %}
-<h1><a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title $topic.edit_link $topic.delete_link</h1>
-<p>$topic.description</p>
-<br />
-<h2>Messages</h2>
-<ul>
-    {% paginate message in 25 topic.messages as messages %}
-    <li id="message_$message.id">
-        <strong>$message.user.login</strong>:
-        <p>$message.body</p>
-        $message.edit_link $message.delete_link
-    </li>
-    {% else %}
-    <li>(none)</li>
-    {% endpaginate %}
-</ul>
+<div id="breadcrumb">
+    <span class="right">
+        {% if visitor.logged_in %}
+        <a class="control" href="{% url "/logout" %}">Log Out</a>
+        <a class="control" href="{% url "/controls" %}">Controls</a>
+        {% else %}
+        <a href="{% url "/login" %}">Log In</a>
+        <a href="{% url "/register" %}">Register</a>
+        <a href="{% url "/lost_password" %}">Lost Password</a>
+        {% endif %}
+        <span>
+            Welcome,
+            {% if visitor.logged_in %}
+            <a href="$visitor.url">${ visitor.full_name | split(" ") | first | fallback(visitor.login) }</a>!
+            {% else %}
+            Guest!
+            {% endif %}
+        </span>
+    </span>
+    <a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title
+</div>
+<h1>$topic.title</h1>
+<div class="topic-post">
+    <div class="details">
+        <h3>$topic.user.login</h3>
+        <ul>
+            <li><strong>Posts:</strong> $topic.user.post_count</li>
+            <li><strong>Created:</strong> ${ topic.created_at | relative }</li>
+            {% if topic.updated %}
+            <li><strong>Updated:</strong> ${ topic.updated_at | relative }</li>
+            {% endif %}
+        </ul>
+        {% if topic.editable or topic.deletable %}
+        <ul class="controls">
+            {% if topic.editable %}
+            <li>$topic.edit_link</li>
+            {% endif %}
+            {% if topic.deletable %}
+            <li>$topic.delete_link</li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="message">
+        $topic.description
+    </div>
+    <div class="clear"></div>
+</div>
+{% paginate message in 1 topic.messages as messages %}
+<div id="message_$message.id" class="post">
+    <div class="details">
+        <h3>$message.user.login</h3>
+        <ul>
+            <li><strong>Posts:</strong> $message.user.post_count</li>
+            <li><strong>Created:</strong> ${ message.created_at | relative }</li>
+            {% if topic.updated %}
+            <li><strong>Updated:</strong> ${ message.updated_at | relative }</li>
+            {% endif %}
+        </ul>
+        {% if message.editable or message.deletable %}
+        <ul class="controls">
+            {% if message.editable %}
+            <li>$message.edit_link</li>
+            {% endif %}
+            {% if message.deletable %}
+            <li>$message.delete_link</li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="message">
+        $message.body
+    </div>
+    <div class="clear"></div>
+</div>
+{% endpaginate %}
 
 ${ messages.next_link }
 ${ messages.prev_link }

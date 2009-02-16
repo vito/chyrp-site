@@ -97,7 +97,7 @@
             $trigger = Trigger::current();
 
             $sql->insert("topics",
-                         array("title"       => $title,
+                         array("title"       => fix($title),
                                "description" => $description,
                                "clean"       => sanitize($title),
                                "url"         => self::check_url(sanitize($title)),

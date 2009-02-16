@@ -57,9 +57,10 @@ h1 {
     /* font-weight: bold; */
     font-size: 2.6em;
     margin-bottom: .3em;
-    padding-bottom: .25em;
+    /* padding-bottom: .25em; */
     border-bottom: .07em solid #1c1c1c;
     color: #fff;
+    line-height: 1.25em;
 }
 h2 {
     font-weight: bold;
@@ -178,38 +179,38 @@ p {
         #navigation li h1 a {
             color: inherit;
     }
-    /* #navigation li.selected, */
-    /* #navigation li:hover { */
-        /* color: #fff !important; */
-    /* } */
-    /* #navigation li.selected.first, */
-    /* #navigation li.first:hover { */
-        /* background: #ff2e99; */
-    /* } */
-    /* #navigation li.selected.second, */
-    /* #navigation li.second:hover { */
-        /* background: #ff8a2d; */
-    /* } */
-    /* #navigation li.selected.third, */
-    /* #navigation li.third:hover { */
-        /* background: #ffe12a; */
-    /* } */
-    /* #navigation li.selected.fourth, */
-    /* #navigation li.fourth:hover { */
-        /* background: #caff2a; */
-    /* } */
-    /* #navigation li.selected.fifth, */
-    /* #navigation li.fifth:hover { */
-        /* background: #1fb5ff; */
-    /* } */
-    /* #navigation li.selected.sixth, */
-    /* #navigation li.sixth:hover { */
-        /* background: #5931ff; */
-    /* } */
-    /* #navigation li.selected.seventh, */
-    /* #navigation li.seventh:hover { */
-        /* background: #b848ff; */
-    /* } */
+    #navigation li.selected,
+    #navigation li:hover {
+        color: #fff !important;
+    }
+    #navigation li.selected.first,
+    #navigation li.first:hover {
+        background: #ff2e99;
+    }
+    #navigation li.selected.second,
+    #navigation li.second:hover {
+        background: #ff8a2d;
+    }
+    #navigation li.selected.third,
+    #navigation li.third:hover {
+        background: #ffe12a;
+    }
+    #navigation li.selected.fourth,
+    #navigation li.fourth:hover {
+        background: #caff2a;
+    }
+    #navigation li.selected.fifth,
+    #navigation li.fifth:hover {
+        background: #1fb5ff;
+    }
+    #navigation li.selected.sixth,
+    #navigation li.sixth:hover {
+        background: #5931ff;
+    }
+    #navigation li.selected.seventh,
+    #navigation li.seventh:hover {
+        background: #b848ff;
+    }
     #navigation li.first {
         color: #ff2e99;
         width: 48px;
@@ -279,6 +280,24 @@ p {
 }
 
 /* Content */
+#breadcrumb {
+    padding: 0 0 0 .75em;
+    background: #0c0c0c;
+    margin: 0 0 2em;
+    color: #777;
+    line-height: 2.5em;
+    }
+    #breadcrumb .right span {
+        padding: 0 .75em;
+    }
+    #breadcrumb .control {
+        padding: 0 .75em;
+        border-left: .1em solid #111;
+        float: right;
+    }
+    #breadcrumb .control:hover {
+        background: #111;
+}
 #home {
    }
    #home p.blurb {
@@ -330,56 +349,88 @@ p {
                         font-weight: normal;
                         color: #fff;
     }
-    #discuss .topics {
-        margin: 0;
+    #discuss .topic {
+        min-height: 5em;
+        margin-bottom: 1em;
         }
-        #discuss .topic {
-            min-height: 5em;
-            margin-bottom: 1em;
+        #discuss .topic .title {
+            width: 30em;
+            margin-right: 1em;
+            float: left;
+            padding: .3em;
+            word-wrap: break-word;
             }
-            #discuss .topic .title {
-                width: 30em;
-                margin-right: 1em;
-                float: left;
-                padding: .3em;
-                word-wrap: break-word;
+            #discuss .topic .title h2 {
+                line-height: 1.125em;
+            }
+            #discuss .topic .title strong {
+                color: #555;
+                margin-top: -1em;
+                font-weight: normal;
+                font-size: .9em;
+                display: block;
+        }
+        #discuss .topic .info {
+            width: 18em;
+            float: right;
+}
+#discuss.topic {
+    }
+    #discuss.topic .topic-post {
+        margin: 0 0 3em;
+        background: #0c0c0c;
+    }
+    #discuss.topic .post {
+        margin: 0 0 1em;
+    }
+    #discuss.topic .details {
+        float: left;
+        padding: .5em 1em 0 0;
+        text-align: right;
+        width: 15em;
+        background: #111;
+        }
+        #discuss.topic .details ul {
+            margin: 1em 0 0;
+            color: #777;
+            font-size: .9em;
+            text-align: left;
+            line-height: 1.25em;
+            }
+            #discuss.topic .details ul li {
+                list-style: none;
                 }
-                #discuss .topic .title h2 {
-                    line-height: 1.125em;
-                }
-                #discuss .topic .title strong {
-                    color: #555;
-                    margin-top: -1em;
+                #discuss.topic .details ul li strong {
                     font-weight: normal;
-                    font-size: .9em;
-                    display: block;
-            }
-            #discuss .topic .info {
-                width: 18em;
-                float: right;
+                    color: #fff;
+
+    }
+    #discuss.topic .message {
+        padding: .5em .8125em;
+        margin: 0 0 0 16em;
 }
 
 /* Notification Messages */
 .flash {
     margin-bottom: 1em;
     padding: .5em .75em;
-}
-.flash .sub {
-    margin-left: .5em;
-    opacity: .5;
-    font-size: .9em;
-}
-.notice {
-    background: green;
-    color: white;
-}
-.warning {
-    background: red;
-    color: white;
-}
-.message {
-    background: blue;
-    color: white;
+    }
+    .flash .sub {
+        margin-left: .5em;
+        opacity: .5;
+        font-size: .9em;
+    }
+    .flash.notice {
+        background: green;
+        color: white;
+    }
+    .flash.warning {
+        background: red;
+        color: white;
+    }
+    .flash.message {
+        background: blue;
+        color: white;
 }
 
 /* Controls Bar */
@@ -465,3 +516,11 @@ div#controls ul li.close a:hover {
     color: #777;
 }
 .clear { clear: both }
+.left  { float: left }
+.right { float: right }
+.edit_link {
+    color: #1fb5ff !important;
+}
+.delete_link {
+    color: #ff2e99 !important;
+}

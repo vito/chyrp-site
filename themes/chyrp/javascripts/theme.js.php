@@ -6,7 +6,7 @@
 ?>
 <!-- --><script>
 $(function(){
-    $(".notice, .warning, .message").
+    $(".flash").
         append("<span class=\"sub\"><?php echo __("(click to hide)", "theme"); ?></span>").
         click(function(){
             $(this).fadeOut("fast");

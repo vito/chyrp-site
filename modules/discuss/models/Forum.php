@@ -235,7 +235,6 @@
             if (isset($this->latest_message))
                 return $this->latest_message;
 
-            SQL::current()->query("SELECT NULL");
             return new Message(null, array("left_join" => array(array("table" => "topics",
                                                                       "where" => array("topics.id = messages.topic_id",
                                                                                        "forum_id" => $this->id))),
