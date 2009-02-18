@@ -279,6 +279,18 @@
         }
 
         /**
+         * Function: view
+         * Updates the view count of the topic.
+         */
+        public function view() {
+            $this->view_count++;
+
+            SQL::current()->update("topics",
+                                   array("id" => $this->id),
+                                   array("view_count" => $this->view_count));
+        }
+
+        /**
          * Function: latest_message
          * Returns the latest message in the topic.
          */

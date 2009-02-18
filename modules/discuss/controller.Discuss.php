@@ -147,6 +147,8 @@
             $this->display("discuss/topic/view",
                            array("topic" => $topic),
                            $topic->title);
+
+            $topic->view();
         }
 
         public function forum() {

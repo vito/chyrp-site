@@ -4,6 +4,10 @@
 
     require "controller.Discuss.php";
 
+        # public function __init() {
+            # $this->addAlias("user_grab", "users_get");
+        # }
+
     /**
      * Discuss
      */
@@ -35,6 +39,7 @@
                              description LONGTEXT,
                              clean VARCHAR(100) DEFAULT '',
                              url VARCHAR(100) DEFAULT '',
+                             view_count INTEGER DEFAULT 0,
                              forum_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
                              created_at DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -220,5 +225,31 @@
             Forum::delete($forum->id);
 
             Flash::notice(__("Forum deleted.", "discuss"), "/admin/?action=manage_forums");
+        }
+
+        public function user_post_count_attr(&$attr, $user) {
+            if (isset($this->post_counts[$user->id]))
+                return $attr = $this->post_counts[$user->id];
+
+            $counts = SQL::current()->select("messages",
+                                             array("user_id", "COUNT(1) AS count"),
+                                             null,
+                                             null,
+                                             array(),
+                                             null,
+                                             null,
+                                             "user_id")->fetchAll();
+
+            foreach ($counts as $row)
+                $this->post_counts[$row["user_id"]] = $row["count"];
+
+        	return $attr = $this->post_counts[$user->id];
+        }
+
+        public function user_grab(&$options) {
+            $options["select"][] = "COUNT(posts.id) AS `post_count`";
+        	$options["left_join"][] = array("table" => "posts", "where" => array("users.id = posts.user_id"));
+            var_dump($options);
+            exit("Hello?");
         }
     }

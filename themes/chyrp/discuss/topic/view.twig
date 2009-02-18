@@ -1,36 +1,17 @@
 {% extends "layouts/discuss.twig" %}
 
+{% block crumb %}<a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title{% endblock %}
+
 {% block content %}
-<div id="breadcrumb">
-    <span class="right">
-        {% if visitor.logged_in %}
-        <a class="control" href="{% url "/logout" %}">Log Out</a>
-        <a class="control" href="{% url "/controls" %}">Controls</a>
-        {% else %}
-        <a href="{% url "/login" %}">Log In</a>
-        <a href="{% url "/register" %}">Register</a>
-        <a href="{% url "/lost_password" %}">Lost Password</a>
-        {% endif %}
-        <span>
-            Welcome,
-            {% if visitor.logged_in %}
-            <a href="$visitor.url">${ visitor.full_name | split(" ") | first | fallback(visitor.login) }</a>!
-            {% else %}
-            Guest!
-            {% endif %}
-        </span>
-    </span>
-    <a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title
-</div>
 <h1>$topic.title</h1>
 <div class="topic-post">
     <div class="details">
         <h3>$topic.user.login</h3>
         <ul>
             <li><strong>Posts:</strong> $topic.user.post_count</li>
-            <li><strong>Created:</strong> ${ topic.created_at | relative }</li>
+            <li><strong>Topic Created:</strong> ${ topic.created_at | relative }</li>
             {% if topic.updated %}
-            <li><strong>Updated:</strong> ${ topic.updated_at | relative }</li>
+            <li><strong>Topic Updated:</strong> ${ topic.updated_at | relative }</li>
             {% endif %}
         </ul>
         {% if topic.editable or topic.deletable %}

@@ -1,5 +1,7 @@
 {% extends "layouts/discuss.twig" %}
 
+{% block crumb %}$forum.name{% endblock %}
+
 {% block content %}
 <h1>$forum.name</h1>
     {% paginate topic in 25 forum.topics as topics %}

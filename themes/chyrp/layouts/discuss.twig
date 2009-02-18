@@ -66,6 +66,28 @@ ${ trigger.call("head") }
         </ul>
 
         <div id="content">
+            <div id="breadcrumb">
+                <span class="right">
+                    {% if visitor.logged_in %}
+                    <a class="control" href="{% url "/logout" %}">Log Out</a>
+                    <a class="control" href="{% url "/controls" %}">Controls</a>
+                    {% else %}
+                    <a class="control" href="{% url "/login" %}">Log In</a>
+                    <a class="control" href="{% url "/register" %}">Register</a>
+                    <a class="control" href="{% url "/lost_password" %}">Lost Password</a>
+                    {% endif %}
+                    <span>
+                        Welcome,
+                        {% if visitor.logged_in %}
+                        <a href="$visitor.url">${ visitor.full_name | split(" ") | first | fallback(visitor.login) }</a>!
+                        {% else %}
+                        Guest!
+                        {% endif %}
+                    </span>
+                </span>
+                {% block crumb %}Index{% endblock %}
+            </div>
+
             {% for type, messages in flash.all | items %}
             {% for message in messages %}
             <div class="flash ${ type | depluralize }">$message</div>

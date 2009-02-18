@@ -12,6 +12,7 @@ a { text-decoration: none; color: inherit; }
 html {
     font-size: 62.5%;
     height: 100%;
+    background-color: #111;
 }
 body {
     background-color: #111;
