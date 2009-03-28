@@ -393,7 +393,9 @@ p {
     }
     #discuss.topic .topic-post {
         margin: 0 0 3em;
-        background: #0c0c0c;
+        }
+        #discuss.topic .topic-post .message {
+            background: #0c0c0c;
     }
     #discuss.topic .post {
         margin: 0 0 1em;
@@ -423,6 +425,7 @@ p {
     #discuss.topic .message {
         padding: .5em .8125em;
         margin: 0 0 0 16em;
+        width: 52.3em;
 }
 
 /* Notification Messages */

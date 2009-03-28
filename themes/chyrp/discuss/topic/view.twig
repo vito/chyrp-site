@@ -46,7 +46,7 @@
     </div>
     <div class="clear"></div>
 </div>
-{% paginate message in 1 topic.messages as messages %}
+{% paginate message in 10 topic.messages as messages %}
 <div id="message_$message.id" class="post">
     <div class="details">
         <h3>$message.user.login</h3>
