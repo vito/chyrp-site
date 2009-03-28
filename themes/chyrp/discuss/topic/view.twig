@@ -27,6 +27,22 @@
     </div>
     <div class="message">
         $topic.description
+
+        {% if topic.attachments %}
+        <p>
+            <h5>Attachments</h5>
+            <ul>
+                {% for attachment in topic.attachments %}
+                <li>
+                    {% if attachment.info.extension == "jpg" or attachment.info.extension == "png" %}
+                    <img src="$site.chyrp_url/includes/thumb.php?file=../uploads/$attachment.path&amp;max_width=25" style="vertical-align: middle; border: 1px solid black" alt="attachment" />
+                    {% endif %}
+                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </p>
+        {% endif %}
     </div>
     <div class="clear"></div>
 </div>

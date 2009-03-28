@@ -192,6 +192,18 @@
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create topics.", "discuss"));
 
             $topic = Topic::add($_POST['title'], $_POST['description'], $_POST['forum_id']);
+
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "topic", $topic->id);
+                }
+
             Flash::notice(__("Topic added.", "discuss"), $topic->url());
         }
 

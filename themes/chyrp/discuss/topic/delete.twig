@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Are you sure you want to delete this topic?</h1>
-<form action="{% url "discuss/destroy_topic" %}" method="post" accept-charset="utf-8">
+<form action="{% url "destroy_topic" %}" method="post" accept-charset="utf-8">
     <fieldset>
         <h3>Title</h3>
         ${ topic.title | escape }

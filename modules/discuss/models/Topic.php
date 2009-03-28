@@ -8,7 +8,9 @@
      */
     class Topic extends Model {
         public $belongs_to = array("forum", "user");
-        public $has_many   = "messages";
+        public $has_many   = array("messages",
+                                   "attachments" => array("where" => array("entity_type" => "topic",
+                                                                           "entity_id" => "(id)")));
 
         /**
          * Function: __construct
@@ -164,7 +166,15 @@
          *     $id - The topic to delete.
          */
         static function delete($id) {
+            $topic = new self($id);
+
+            foreach ($topic->message as $message)
+                Message::delete($message->id);
+
             parent::destroy(get_class(), $id);
+
+            foreach ($topic->attachments as $attachment)
+                unlink(uploaded($attachment->path, false));
         }
 
         /**
