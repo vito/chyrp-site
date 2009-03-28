@@ -184,6 +184,18 @@
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to add messages.", "discuss"));
 
             $message = Message::add($_POST['body'], $_POST['topic_id']);
+
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "message", $message->id);
+                }
+
             Flash::notice(__("Message added.", "discuss"), $message->url(true));
         }
 

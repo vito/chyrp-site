@@ -29,19 +29,17 @@
         $topic.description
 
         {% if topic.attachments %}
-        <p>
+        <div class="attachments">
             <h5>Attachments</h5>
             <ul>
                 {% for attachment in topic.attachments %}
                 <li>
-                    {% if attachment.info.extension == "jpg" or attachment.info.extension == "png" %}
-                    <img src="$site.chyrp_url/includes/thumb.php?file=../uploads/$attachment.path&amp;max_width=25" style="vertical-align: middle; border: 1px solid black" alt="attachment" />
-                    {% endif %}
+                    $attachment.thumbnail
                     <a href="${ attachment.path | uploaded }">$attachment.filename</a>
                 </li>
                 {% endfor %}
             </ul>
-        </p>
+        </div>
         {% endif %}
     </div>
     <div class="clear"></div>
@@ -70,6 +68,20 @@
     </div>
     <div class="message">
         $message.body
+
+        {% if message.attachments %}
+        <div class="attachments">
+            <h5>Attachments</h5>
+            <ul>
+                {% for attachment in message.attachments %}
+                <li>
+                    $attachment.thumbnail
+                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
     <div class="clear"></div>
 </div>
@@ -78,11 +90,20 @@
 ${ messages.next_link }
 ${ messages.prev_link }
 
-<br />
-<br />
 {% if visitor.group.can("add_message") %}
-<form action="{% url "add_message" %}" method="post" accept-charset="utf-8">
-    <textarea name="body" rows="8" cols="100%"></textarea>
+<br />
+<br />
+<h1>${ "Reply" | translate("discuss") }</h1>
+<form action="{% url "add_message" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <p>
+        <label for="body">${ "Body" | translate("discuss") }</label>
+        <textarea name="body" rows="8" cols="100%"></textarea>
+    </p>
+
+    <p id="attachments">
+        <label for="attachment">Attachment(s)</label>
+        <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
+    </p>
 
     <p><input type="submit" value="Continue &rarr;"></p>
 

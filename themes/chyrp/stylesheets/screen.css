@@ -396,6 +396,12 @@ p {
         }
         #discuss.topic .topic-post .message {
             background: #0c0c0c;
+        }
+        #discuss.topic .topic-post .attachments h5 {
+            background: #0a0a0a;
+        }
+        #discuss.topic .topic-post .attachments ul li {
+            border-color: #111;
     }
     #discuss.topic .post {
         margin: 0 0 1em;
@@ -432,6 +438,7 @@ p {
 .flash {
     margin-bottom: 1em;
     padding: .5em .75em;
+    background: #0c0c0c;
     }
     .flash .sub {
         margin-left: .5em;
@@ -439,16 +446,37 @@ p {
         font-size: .9em;
     }
     .flash.notice {
-        background: green;
-        color: white;
+        color: #CAFF2A;
     }
     .flash.warning {
-        background: red;
-        color: white;
+        color: #FF2E99;
     }
     .flash.message {
-        background: blue;
-        color: white;
+        color: #1FB5FF;
+}
+
+/* Attachments List */
+.attachments {
+    }
+    .attachments h5 {
+        background: #0c0c0c;
+        display: block;
+        margin: 0;
+        padding: .125em .5em;
+        font-weight: normal;
+    }
+    .attachments ul {
+        margin: .5em 0 1em 1em;
+        }
+        .attachments ul li {
+            list-style: none;
+            line-height: 2em;
+            border-bottom: .1em solid #161616;
+            }
+            .attachments ul li .thumbnail {
+                vertical-align: middle;
+                border: .1em solid #000;
+                margin: -.25em .25em 0 0;
 }
 
 /* Controls Bar */

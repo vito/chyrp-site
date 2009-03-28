@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Are you sure you want to delete this message?</h1>
-<form action="{% url "discuss/destroy_message" %}" method="post" accept-charset="utf-8">
+<form action="{% url "destroy_message" %}" method="post" accept-charset="utf-8">
     <fieldset>
         <h3>Excerpt</h3>
         ${ message.body | truncate(500) }

@@ -4,14 +4,12 @@
 <h1><a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo; $ticket.title $ticket.edit_link $ticket.delete_link</h1>
 <p>$ticket.description</p>
 {% if ticket.attachments %}
-<p>
+<div class="attachments">
     <h5>Attachments</h5>
     <ul>
         {% for attachment in ticket.attachments %}
         <li>
-            {% if attachment.info.extension == "jpg" or attachment.info.extension == "png" %}
-            <img src="$site.chyrp_url/includes/thumb.php?file=../uploads/$attachment.path&amp;max_width=25" style="vertical-align: middle; border: 1px solid black" alt="attachment" />
-            {% endif %}
+            $attachment.thumbnail
             <a href="${ attachment.path | uploaded }">$attachment.filename</a>
         </li>
         {% endfor %}

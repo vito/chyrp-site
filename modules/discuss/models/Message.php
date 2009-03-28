@@ -8,6 +8,8 @@
      */
     class Message extends Model {
         public $belongs_to = array("user", "topic");
+        public $has_many   = array("attachments" => array("where" => array("entity_type" => "message",
+                                                                           "entity_id" => "(id)")));
 
         /**
          * Function: __construct
@@ -128,7 +130,12 @@
          *     $id - The message to delete.
          */
         static function delete($id) {
+            $message = new self($id);
+
             parent::destroy(get_class(), $id);
+
+            foreach ($message->attachments as $attachment)
+                unlink(uploaded($attachment->path, false));
         }
 
         /**

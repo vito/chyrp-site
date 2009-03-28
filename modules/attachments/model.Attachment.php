@@ -73,5 +73,13 @@
         static function exists($attachment_id) {
             return SQL::current()->count("attachments", array("id" => $attachment_id)) == 1;
         }
+
+        public function thumbnail($width = 20, $height = 20) {
+            if (!in_array(strtolower($this->info["extension"]),
+                          array("png", "jpg", "jpeg", "gif")))
+                return;
+
+            echo '<img src="'.Config::current()->chyrp_url.'/includes/thumb.php?file=../uploads/'.$this->path.'&amp;max_width='.$width.'&amp;max_height='.$height.'" class="thumbnail" alt="attachment" />';
+        }
     }
 
