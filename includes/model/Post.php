@@ -308,6 +308,9 @@
                                       oneof($updated_at, @$_POST['updated_at'], datetime())));
             fallback($options,    oneof(@$_POST['option'], array()));
 
+            if ($url != $this->url) # If they edited the slug, the clean URL should change too.
+                $clean = $url;
+
             $old = clone $this;
 
             # Update all values of this post.
@@ -762,5 +765,29 @@
             }
 
             return list_notate($names);
+        }
+
+        /**
+         * Function: edit_link
+         * Outputs an edit link for the model, if the visitor's <Group.can> edit_[model].
+         *
+         * Parameters:
+         *     $text - The text to show for the link.
+         *     $before - If the link can be shown, show this before it.
+         *     $after - If the link can be shown, show this after it.
+         *     $classes - Extra CSS classes for the link, space-delimited.
+         */
+        public function edit_link($text = null, $before = null, $after = null, $classes = "") {
+            if (!$this->editable())
+                return false;
+
+            fallback($text, __("Edit"));
+
+            $name = strtolower(get_class($this));
+
+            if (Feathers::$instances[$this->feather]->disable_ajax_edit)
+                $classes = empty($classes) ? "no_ajax" : $classes." no_ajax" ;
+
+            echo $before.'<a href="'.Config::current()->chyrp_url.'/admin/?action=edit_'.$name.'&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').$name.'_edit_link edit_link" id="'.$name.'_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }
