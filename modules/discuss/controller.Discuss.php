@@ -264,6 +264,17 @@
 
             $message->update($_POST['body']);
 
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "message", $message->id);
+                }
+
             Flash::notice(__("Message updated.", "discuss"), $message->url(true));
         }
 
@@ -279,6 +290,17 @@
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this topic.", "discuss"));
 
             $topic->update($_POST['title'], $_POST['description']);
+
+            $files = array();
+            foreach ($_FILES['attachment'] as $key => $val)
+                foreach ($val as $file => $attr)
+                    $files[$file][$key] = $attr;
+
+            foreach ($files as $attachment)
+                if ($attachment['error'] != 4) {
+                    $path = upload($attachment, null, "attachments");
+                    Attachment::add(basename($path), $path, "topic", $topic->id);
+                }
 
             Flash::notice(__("Topic updated.", "discuss"), $topic->url());
         }

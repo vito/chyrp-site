@@ -113,6 +113,9 @@ form {
     form p {
         clear: both;
     }
+    form .fields {
+        margin-left: 17em;
+    }
     form label {
         float: left;
         background: #0c0c0c;
@@ -477,6 +480,9 @@ p {
                 vertical-align: middle;
                 border: .1em solid #000;
                 margin: -.25em .25em 0 0;
+}
+form .attachments ul {
+    margin: 0 0 1em;
 }
 
 /* Controls Bar */

@@ -2,19 +2,42 @@
 
 {% block content %}
 <h1>Edit Topic</h1>
-<form action="{% url "update_topic" %}" method="post" accept-charset="utf-8">
-    <p>
-        <label for="title">Title</label>
-        <input type="text" name="title" value="${ topic.title | escape }" id="title" />
-    </p>
-    
-    <p>
-        <label for="description">Description</label>
-        <textarea name="description" rows="8" cols="100%">${ topic.description | escape }</textarea>
-    </p>
+<form action="{% url "update_topic" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <fieldset>
+        <p>
+            <label for="title">Title</label>
+            <input type="text" name="title" value="${ topic.title | escape }" id="title" />
+        </p>
 
-    <p><input type="submit" value="Continue &rarr;"></p>
+        <p>
+            <label for="description">Description</label>
+            <textarea name="description" rows="8" cols="100%">${ topic.description | escape }</textarea>
+        </p>
 
-    <input type="hidden" name="topic_id" value="$topic.id" id="topic_id" />
+        <div id="attachments">
+            <label for="attachment">${ "Attachments" | translate("discuss") }</label>
+
+            <div class="fields">
+                {% if topic.attachments %}
+                <div class="attachments">
+                    <ul>
+                        {% for attachment in topic.attachments %}
+                        <li>
+                            $attachment.thumbnail
+                            <a href="${ attachment.path | uploaded }">$attachment.filename</a> $attachment.delete_link
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
+            </div>
+        </div>
+
+        <p><input type="submit" value="Continue &rarr;"></p>
+
+        <input type="hidden" name="topic_id" value="$topic.id" id="topic_id" />
+    </fieldset>
 </form>
 {% endblock %}

@@ -95,19 +95,24 @@ ${ messages.prev_link }
 <br />
 <h1>${ "Reply" | translate("discuss") }</h1>
 <form action="{% url "add_message" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-    <p>
-        <label for="body">${ "Body" | translate("discuss") }</label>
-        <textarea name="body" rows="8" cols="100%"></textarea>
-    </p>
+    <fieldset>
+        <p>
+            <label for="body">${ "Body" | translate("discuss") }</label>
+            <textarea name="body" rows="8" cols="100%"></textarea>
+        </p>
 
-    <p id="attachments">
-        <label for="attachment">Attachment(s)</label>
-        <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
-    </p>
+        <div id="attachments">
+            <label for="attachment">Attachment(s)</label>
 
-    <p><input type="submit" value="Continue &rarr;"></p>
+            <div class="fields">
+                <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
+            </div>
+        </div>
 
-    <input type="hidden" name="topic_id" value="$topic.id" id="topic_id" />
+        <p><input type="submit" value="Continue &rarr;"></p>
+
+        <input type="hidden" name="topic_id" value="$topic.id" id="topic_id" />
+    </fieldset>
 </form>
 {% endif %}
 {% endblock %}
