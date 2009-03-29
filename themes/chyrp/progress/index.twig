@@ -1,10 +1,9 @@
 {% extends "layouts/progress.twig" %}
 
 {% block content %}
-    <h1>Index</h1>
     {% for milestone in milestones %}
     <h2><a href="$milestone.url">$milestone.name</a></h2>
-    ($milestone.open_tickets open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due ${ milestone.due | relative}{% endif %})
+    ($milestone.open_tickets open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due ${ milestone.due | relative }{% endif %})
     <p>$milestone.description</p>
     {% if milestone.ticket_count %}
     <div style="padding: 2px; border: 1px solid #ddd">

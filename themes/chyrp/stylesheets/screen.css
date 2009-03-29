@@ -125,6 +125,7 @@ form {
         line-height: 2.25em;
     }
     form input[type="text"],
+    form input[type="password"],
     form textarea {
         background: #1c1c1c;
         display: inline-block;
@@ -145,7 +146,7 @@ form {
     form input[type="submit"],
     form input[type="button"] {
         display: block;
-        width: 46em;
+        width: 46.7em;
         text-align: left;
         margin: 2em 0 0;
         background: #0c0c0c;
@@ -475,6 +476,9 @@ p {
             list-style: none;
             line-height: 2em;
             border-bottom: .1em solid #161616;
+            }
+            .attachments ul li a:hover {
+                text-decoration: underline;
             }
             .attachments ul li .thumbnail {
                 vertical-align: middle;

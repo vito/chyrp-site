@@ -57,58 +57,62 @@ ${ revisions.prev_link }
 <br />
 {% if visitor.group.can("add_revision") %}
 <h2>Revise Ticket</h2>
-<form action="{% url "progress/add_revision" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-    {% if ticket.editable %}
-    <p>
-        <label for="title">Ticket Title</label>
-        <input type="text" name="title" value="${ ticket.title | escape }" id="title" />
-    </p>
-    {% endif %}
+<form action="{% url "add_revision" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <fieldset>
+        {% if ticket.editable %}
+        <p>
+            <label for="title">Ticket Title</label>
+            <input type="text" name="title" value="${ ticket.title | escape }" id="title" />
+        </p>
+        {% endif %}
 
-    <p>
-        <label for="body">Message</label>
-        <textarea name="body" rows="8" cols="100%"></textarea>
-    </p>
+        <p>
+            <label for="body">Message</label>
+            <textarea name="body" rows="8" cols="100%"></textarea>
+        </p>
 
-    {% if ticket.editable %}
-    <p>
-        <label for="owner_id">Ticket Owner</label>
-        <select name="owner_id" id="owner_id">
-            <option value="0"></option>
-            {% for user in users %}
-            <option value="$user.id"${ user.id | option_selected(ticket.owner_id) }>${ (user.full_name | fallback(user.login)) | escape }</option>
-            {% endfor %}
-        </select>
-    </p>
-    <p>
-        <label for="milestone_id">Ticket Milestone</label>
-        <select name="milestone_id" id="milestone_id">
-            <option value="0"></option>
-            {% for milestone in milestones %}
-            <option value="$milestone.id"${ milestone.id | option_selected(ticket.milestone_id) }>${ milestone.name | escape }</option>
-            {% endfor %}
-        </select>
-    </p>
-    <p>
-        <label for="state">Ticket State</label>
-        <select name="state" id="state">
-            <option value="new"${ ticket.state | option_selected("new") }>new</option>
-            <option value="open"${ ticket.state | option_selected("open") }>open</option>
-            <option value="resolved"${ ticket.state | option_selected("resolved") }>resolved</option>
-            <option value="invalid"${ ticket.state | option_selected("invalid") }>invalid</option>
-            <option value="declined"${ ticket.state | option_selected("declined") }>declined</option>
-        </select>
-    </p>
-    {% endif %}
+        {% if ticket.editable %}
+        <p>
+            <label for="owner_id">Ticket Owner</label>
+            <select name="owner_id" id="owner_id">
+                <option value="0"></option>
+                {% for user in users %}
+                <option value="$user.id"${ user.id | option_selected(ticket.owner_id) }>${ (user.full_name | fallback(user.login)) | escape }</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label for="milestone_id">Ticket Milestone</label>
+            <select name="milestone_id" id="milestone_id">
+                <option value="0"></option>
+                {% for milestone in milestones %}
+                <option value="$milestone.id"${ milestone.id | option_selected(ticket.milestone_id) }>${ milestone.name | escape }</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label for="state">Ticket State</label>
+            <select name="state" id="state">
+                <option value="new"${ ticket.state | option_selected("new") }>new</option>
+                <option value="open"${ ticket.state | option_selected("open") }>open</option>
+                <option value="resolved"${ ticket.state | option_selected("resolved") }>resolved</option>
+                <option value="invalid"${ ticket.state | option_selected("invalid") }>invalid</option>
+                <option value="declined"${ ticket.state | option_selected("declined") }>declined</option>
+            </select>
+        </p>
+        {% endif %}
 
-    <p id="attachments">
-        <label for="attachment">Attachment(s)</label>
-        <input type="file" name="attachment[]" /> <a href="javascript:$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />')">[+]</a>
-    </p>
+        <div id="attachments">
+            <label for="attachment">Attachment(s)</label>
+            <div class="fields">
+                <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />')">[+]</a>
+            </div>
+        </div>
 
-    <p><input type="submit" value="Continue &rarr;"></p>
+        <p><input type="submit" value="Continue &rarr;"></p>
 
-    <input type="hidden" name="ticket_id" value="$ticket.id" id="ticket_id" />
+        <input type="hidden" name="ticket_id" value="$ticket.id" id="ticket_id" />
+    </fieldset>
 </form>
 {% endif %}
 {% endblock %}
