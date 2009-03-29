@@ -332,7 +332,7 @@ p {
             float: left;
             width: 10em;
             height: 5em;
-            padding: .3em;
+            padding: .3625em;
         }
         #discuss .forum p {
             background: #0d0d0d;
@@ -436,6 +436,52 @@ p {
         padding: .5em .8125em;
         margin: 0 0 0 16em;
         width: 52.3em;
+}
+#progress {
+    }
+    #progress .milestone {
+        margin: 0 0 2em;
+        }
+        #progress .milestone h2 {
+            float: left;
+            width: 10em;
+            height: 4em;
+            padding: .3625em;
+        }
+        #progress .milestone .info {
+            color: #555;
+            background: #0d0d0d;
+            display: block;
+            font-size: 1.25em;
+            padding-left: 26em;
+            padding: .6em;
+            }
+            #progress .milestone .info span {
+                color: #fff;
+            }
+            #progress .milestone .info span.bad {
+                color: #FF2E99;
+        }
+        #progress .milestone .description {
+            float: left;
+            width: 40em;
+            margin-bottom: 2em;
+        }
+        #progress .milestone .progress-bar {
+            background: #0c0c0c;
+            }
+            #progress .milestone .progress-bar div {
+                background: #CAFF2A;
+                line-height: 1.5em;
+                color: #111;
+                text-align: right;
+                }
+                #progress .milestone .progress-bar div span {
+                    margin: 0 .3em;
+                    font-size: .9em;
+    }
+    #progress .milestone.current {
+        background: #0f0f0f;
 }
 
 /* Notification Messages */

@@ -2,16 +2,24 @@
 
 {% block content %}
     {% for milestone in milestones %}
-    <h2><a href="$milestone.url">$milestone.name</a></h2>
-    ($milestone.open_tickets open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due ${ milestone.due | relative }{% endif %})
-    <p>$milestone.description</p>
-    {% if milestone.ticket_count %}
-    <div style="padding: 2px; border: 1px solid #ddd">
-        <div style="background: green; height: 20px; width: $milestone.percentage%; color: white; text-align: right">
-            <span style="margin-right: 3px">$milestone.percentage%</span>
+    <div class="milestone{% if loop.index == 1 %} current{% endif %}">
+        <h2><a href="$milestone.url">$milestone.name</a></h2>
+
+        <p class="info">
+            <span>$milestone.open_tickets</span> open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due <span class="{% if milestone.due | strtotime > now %}good{% else %}bad{% endif %}">${ milestone.due | relative }</span>{% endif %}
+        </p>
+
+        <div class="description">
+            $milestone.description
+
+            <div class="progress-bar">
+                <div style="width: $milestone.percentage%">
+                    <span>$milestone.percentage%</span>
+                </div>
+            </div>
         </div>
+
+        <div class="clear"></div>
     </div>
-    {% endif %}
-    <br />
     {% endfor %}
 {% endblock %}
