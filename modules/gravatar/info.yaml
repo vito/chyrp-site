@@ -1,0 +1,6 @@
+name: Gravatar
+description: Adds a "gravatar" attribute to the User model. The attribute is just a URL, "http://gravatar.com/avatar/(md5 of email)".
+author:
+  name: Alex Suraci
+  url: http://ecks.tc/
+version: 1.0

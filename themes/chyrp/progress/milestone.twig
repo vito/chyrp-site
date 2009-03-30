@@ -7,26 +7,29 @@ $milestone.name $milestone.edit_link $milestone.delete_link
 
 {% block content %}
 <h1>$milestone.name</h1>
-<table width="100%">
+<table class="tickets">
     <tr>
-        <th>#</th>
-        <th>State</th>
-        <th>Summary</th>
-        <th>Assigned to</th>
-        <th>Age</th>
+        <th width="3%"></th>
+        <th width="10%">State</th>
+        <th width="55%">Summary</th>
+        <th width="17%">Assigned to</th>
+        <th width="15%">Age</th>
     </tr>
     {% paginate 25 tickets in milestone.tickets as ticket %}
-    <tr>
-        <td>$ticket.id</td>
-        <td>{% if ticket.done %}&radic; {% endif %}$ticket.state</td>
-        <td>
+    <tr class="{% if loop.index | even %}even{% else %}odd{% endif %}">
+        <td class="center">#$ticket.id</td>
+        <td><span class="$ticket.state">{% if ticket.done %}&radic; {% endif %}$ticket.state</span></td>
+        <td class="main">
             <a href="$ticket.url">
-                {% if ticket.done %}<s>{% endif %}
+                {% if ticket.done %}<del>{% endif %}
                     ${ ticket.title | escape }
-                {% if ticket.done %}</s>{% endif %}
+                {% if ticket.done %}</del>{% endif %}
             </a>
         </td>
-        <td>${ ticket.owner.full_name | fallback(ticket.owner.login) }</td>
+        <td>
+            <img class="gravatar-emblem" src="$ticket.owner.gravatar?s=16&amp;d=identicon" alt="Gravatar" />
+            ${ ticket.owner.full_name | fallback(ticket.owner.login) }
+        </td>
         <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
     </tr>
     {% else %}
@@ -40,16 +43,16 @@ ${ tickets.prev_link }
 {% if visitor.group.can("add_ticket") %}
 <br />
 <br />
-<h3>New Ticket</h3>
+<h1>New Ticket</h1>
 <form action="{% url "add_ticket" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>
         <p>
-            <label for="title">Title</label>
+            <label for="title">Summary</label>
             <input type="text" name="title" value="" id="title" />
         </p>
         <p>
-            <label for="title">Description</label>
-            <textarea name="description" rows="8" cols="100%"></textarea>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="8" cols="100%"></textarea>
         </p>
         <p>
             <label for="owner_id">Ticket Owner</label>

@@ -121,8 +121,8 @@ form {
         background: #0c0c0c;
         width: 15em;
         margin-right: 1em;
-        padding: 0 .5em;
-        line-height: 2.25em;
+        padding: .5em;
+        line-height: 1.25em;
     }
     form input[type="text"],
     form input[type="password"],
@@ -417,6 +417,11 @@ p {
         width: 15em;
         background: #111;
         }
+        #discuss.topic .details .gravatar-emblem {
+            border: .1em solid #0a0a0a;
+            vertical-align: middle;
+            margin: -.2em .125em 0 0;
+        }
         #discuss.topic .details ul {
             margin: 1em 0 0;
             color: #777;
@@ -482,6 +487,42 @@ p {
     }
     #progress .milestone.current {
         background: #0f0f0f;
+    }
+    #progress table.tickets {
+        width: 100%;
+        }
+        #progress table.tickets th {
+            background: #0c0c0c;
+            padding: .25em .75em;
+            color: #aaa;
+        }
+        #progress table.tickets td {
+            padding: .25em .75em;
+        }
+        #progress table.tickets td.main {
+            background: #0e0e0e;
+            font-size: 1.25em;
+            padding: .5em .75em;
+        }
+        #progress table.tickets td .declined {
+            color: #ff2e99;
+        }
+        #progress table.tickets td .new {
+            color: #ff8a2d;
+        }
+        #progress table.tickets td .open {
+            color: #ffe12a;
+        }
+        #progress table.tickets td .resolved {
+            color: #caff2a;
+        }
+        #progress table.tickets td .invalid {
+            color: #1fb5ff;
+        }
+        #progress table.tickets td .gravatar-emblem {
+            border: .1em solid #000;
+            vertical-align: middle;
+            margin: -.15em .25em 0 0;
 }
 
 /* Notification Messages */
@@ -620,6 +661,7 @@ div#controls ul li.close a:hover {
 .clear { clear: both }
 .left  { float: left }
 .right { float: right }
+td.center { text-align: center }
 .edit_link {
     color: #1fb5ff !important;
 }

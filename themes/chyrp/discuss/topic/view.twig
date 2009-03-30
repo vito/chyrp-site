@@ -10,7 +10,10 @@ $topic.title
 <h1>$topic.title</h1>
 <div class="topic-post">
     <div class="details">
-        <h3>$topic.user.login</h3>
+        <h3>
+            <img class="gravatar-emblem" src="$topic.user.gravatar?s=24&amp;d=identicon" alt="Gravatar" />
+            $topic.user.login
+        </h3>
         <ul>
             <li><strong>Posts:</strong> $topic.user.post_count</li>
             <li><strong>Topic Created:</strong> ${ topic.created_at | relative }</li>
@@ -51,7 +54,10 @@ $topic.title
 {% paginate 10 messages in topic.messages as message %}
 <div id="message_$message.id" class="post">
     <div class="details">
-        <h3>$message.user.login</h3>
+        <h3>
+            <img class="gravatar-emblem" src="$message.user.gravatar?s=24&amp;d=identicon" alt="Gravatar" />
+            $message.user.login
+        </h3>
         <ul>
             <li><strong>Posts:</strong> $message.user.post_count</li>
             <li><strong>Created:</strong> ${ message.created_at | relative }</li>
