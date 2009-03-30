@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% paginate milestone in 25 milestones as milestones %}
+                    {% paginate 25 milestones in milestones as milestone %}
                     <tr id="milestone_$milestone.id" class="milestone {% if loop.last %} last{% endif %}">
                         <td class="main"><a href="$milestone.url">$milestone.name</a></td>
                         <td>${ milestone.description | truncate(50) }</td>

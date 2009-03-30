@@ -1,10 +1,13 @@
 {% extends "layouts/discuss.twig" %}
 
-{% block crumb %}$forum.name{% endblock %}
+{% block crumb %}
+<a href="{% url "/discuss" %}">Discuss</a> &raquo;
+$forum.name
+{% endblock %}
 
 {% block content %}
 <h1>$forum.name</h1>
-    {% paginate topic in 25 forum.topics as topics %}
+    {% paginate 25 topics in forum.topics as topic %}
     <div class="topic">
         <div class="title">
             <h2><a href="$topic.url">${ topic.title | escape }</a></h2>
@@ -48,12 +51,12 @@ ${ topics.prev_link }
     </p>
     
     <p>
-        <label for="title">Description</label>
+        <label for="description">Body</label>
         <textarea name="description" rows="10" cols="75"></textarea>
     </p>
 
     <p id="attachments">
-        <label for="attachment">Attachment(s)</label>
+        <label>Attachment(s)</label>
         <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
     </p>
 

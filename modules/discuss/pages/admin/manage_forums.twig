@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% paginate forum in 25 forums as forums %}
+                    {% paginate 25 forums in forums as forum %}
                     <tr id="forum_$forum.id" class="forum {% if loop.last %} last{% endif %}">
                         <td class="main"><a href="$forum.url">$forum.name</a></td>
                         <td>${ forum.description | truncate(50) }</td>

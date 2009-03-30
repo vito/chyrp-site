@@ -1,8 +1,12 @@
 {% extends "layouts/progress.twig" %}
 
+{% block crumb %}
+<a href="{% url "/progress" %}">Progress</a> &raquo;
+$milestone.name $milestone.edit_link $milestone.delete_link
+{% endblock %}
+
 {% block content %}
-<h1>$milestone.name $milestone.edit_link $milestone.delete_link</h1>
-<h2>Tickets</h2>
+<h1>$milestone.name</h1>
 <table width="100%">
     <tr>
         <th>#</th>
@@ -11,7 +15,7 @@
         <th>Assigned to</th>
         <th>Age</th>
     </tr>
-    {% paginate ticket in 25 milestone.tickets as tickets %}
+    {% paginate 25 tickets in milestone.tickets as ticket %}
     <tr>
         <td>$ticket.id</td>
         <td>{% if ticket.done %}&radic; {% endif %}$ticket.state</td>
@@ -33,9 +37,9 @@
 ${ tickets.next_link }
 ${ tickets.prev_link }
 
-<br />
-<br />
 {% if visitor.group.can("add_ticket") %}
+<br />
+<br />
 <h3>New Ticket</h3>
 <form action="{% url "add_ticket" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>

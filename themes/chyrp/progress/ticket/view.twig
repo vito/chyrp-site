@@ -1,7 +1,13 @@
 {% extends "layouts/progress.twig" %}
 
+{% block crumb %}
+<a href="{% url "/progress" %}">Progress</a> &raquo;
+<a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo;
+$ticket.title
+{% endblock %}
+
 {% block content %}
-<h1><a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo; $ticket.title $ticket.edit_link $ticket.delete_link</h1>
+<h1>$ticket.title $ticket.edit_link $ticket.delete_link</h1>
 <p>$ticket.description</p>
 {% if ticket.attachments %}
 <div class="attachments">
@@ -19,7 +25,7 @@
 <br />
 <h2>Revisions</h2>
 <ul>
-    {% paginate revision in 25 ticket.revisions as revisions %}
+    {% paginate 25 revisions in ticket.revisions as revision %}
     <li id="revision_$revision.id">
         <strong>$revision.user.login</strong>:
         <ul>
@@ -53,9 +59,9 @@
 ${ revisions.next_link }
 ${ revisions.prev_link }
 
-<br />
-<br />
 {% if visitor.group.can("add_revision") %}
+<br />
+<br />
 <h2>Revise Ticket</h2>
 <form action="{% url "add_revision" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>

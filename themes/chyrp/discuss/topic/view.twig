@@ -1,6 +1,10 @@
 {% extends "layouts/discuss.twig" %}
 
-{% block crumb %}<a href="$topic.forum.url">$topic.forum.name</a> &raquo; $topic.title{% endblock %}
+{% block crumb %}
+<a href="{% url "/discuss" %}">Discuss</a> &raquo;
+<a href="$topic.forum.url">$topic.forum.name</a> &raquo;
+$topic.title
+{% endblock %}
 
 {% block content %}
 <h1>$topic.title</h1>
@@ -44,7 +48,7 @@
     </div>
     <div class="clear"></div>
 </div>
-{% paginate message in 10 topic.messages as messages %}
+{% paginate 10 messages in topic.messages as message %}
 <div id="message_$message.id" class="post">
     <div class="details">
         <h3>$message.user.login</h3>
