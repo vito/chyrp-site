@@ -523,6 +523,33 @@ p {
             border: .1em solid #000;
             vertical-align: middle;
             margin: -.15em .25em 0 0;
+    }
+    #progress .ticket {
+        margin-bottom: 2em;
+        }
+        #progress .ticket h1 .number {
+            margin: -.15em 0 0 0;
+            float: left;
+            padding: .125em .625em;
+            vertical-align: middle;
+            font-size: .625em;
+            background: #0a0a0a;
+            float: right;
+        }
+        #progress .ticket .user-info {
+            float: right;
+            width: 64px;
+            padding: 1em;
+            background: #080808;
+            }
+            #progress .ticket .user-info span.name {
+                font-size: .9em;
+                display: block;
+                text-align: center;
+        }
+        #progress .ticket .description {
+            background: #0c0c0c;
+            padding: 1em;
 }
 
 /* Notification Messages */

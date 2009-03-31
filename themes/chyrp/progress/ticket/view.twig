@@ -3,27 +3,42 @@
 {% block crumb %}
 <a href="{% url "/progress" %}">Progress</a> &raquo;
 <a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo;
-$ticket.title
+$ticket.title &ndash; $ticket.edit_link $ticket.delete_link
 {% endblock %}
 
 {% block content %}
-<h1>$ticket.title $ticket.edit_link $ticket.delete_link</h1>
-<p>$ticket.description</p>
-{% if ticket.attachments %}
-<div class="attachments">
-    <h5>Attachments</h5>
-    <ul>
-        {% for attachment in ticket.attachments %}
-        <li>
-            $attachment.thumbnail
-            <a href="${ attachment.path | uploaded }">$attachment.filename</a>
-        </li>
-        {% endfor %}
-    </ul>
-</p>
-{% endif %}
-<br />
-<h2>Revisions</h2>
+<div class="ticket">
+    <h1>
+        <span class="number">#${ ticket.id }234</span>
+        $ticket.title
+    </h1>
+    <div class="description">
+        <div class="user-info">
+            <img src="$ticket.user.gravatar?s=64&amp;d=identicon" alt="Gravatar" />
+            <span class="name">${ ticket.user.full_name | fallback(ticket.user.login) }</span>
+        </div>
+
+        $ticket.description
+
+        {% if ticket.attachments %}
+        <div class="attachments">
+            <h5>Attachments</h5>
+            <ul>
+                {% for attachment in ticket.attachments %}
+                <li>
+                    $attachment.thumbnail
+                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+{% if ticket.revisions %}
 <ul>
     {% paginate 25 revisions in ticket.revisions as revision %}
     <li id="revision_$revision.id">
@@ -51,10 +66,9 @@ $ticket.title
         {% endif %}
         $revision.edit_link $revision.delete_link
     </li>
-    {% else %}
-    <li>(none)</li>
     {% endpaginate %}
 </ul>
+{% endif %}
 
 ${ revisions.next_link }
 ${ revisions.prev_link }
