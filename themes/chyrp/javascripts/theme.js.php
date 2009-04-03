@@ -32,7 +32,7 @@ $(function(){
             $("#debug").animate({ height: 17 });
             $("#debug").css("overflow-y", "hidden");
             $("#debug ul li").each(function(){
-                $("<span class=\"sub\"> | "+ $(this).html() +"</span>").appendTo("#debug h5:first");
+                $("<span class=\"sub\">&nbsp;&nbsp;|&nbsp;&nbsp;"+ $(this).html() +"</span>").appendTo("#debug h5:first");
             })
         }
     })
@@ -48,7 +48,7 @@ $(function(){
         $("#debug").height(17);
         $("#debug").css("overflow-y", "hidden");
         $("#debug ul li").each(function(){
-            $("<span class=\"sub\"> | "+ $(this).html() +"</span>").appendTo("#debug h5:first");
+            $("<span class=\"sub\">&nbsp;&nbsp;|&nbsp;&nbsp;"+ $(this).html() +"</span>").appendTo("#debug h5:first");
         })
     }
 })

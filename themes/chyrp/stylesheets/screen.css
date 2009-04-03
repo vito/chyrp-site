@@ -503,6 +503,13 @@ p {
             background: #0e0e0e;
             font-size: 1.25em;
             padding: .5em .75em;
+            }
+            #progress table.tickets td.main .sub {
+                display: block;
+                font-size: .7em;
+            }
+            #progress table.tickets td.main .gravatar-emblem {
+                margin: -.25em .1em 0 .25em;
         }
         #progress table.tickets td .declined {
             color: #ff2e99;
@@ -684,6 +691,10 @@ div#controls ul li.close a:hover {
 .sub {
     font-size: .9em;
     color: #777;
+    }
+    .sub strong {
+        color: #fff;
+        font-weight: normal;
 }
 .clear { clear: both }
 .left  { float: left }

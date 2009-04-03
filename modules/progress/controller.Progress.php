@@ -93,7 +93,7 @@
             $ticket = new Ticket($_POST['ticket_id'], array("filter" => false));
             $old = clone $ticket;
 
-            $ticket->update($_POST['title'], null, $_POST['state'], null, $_POST['milestone_id'], $_POST['owner_id']);
+            $ticket->update($_POST['title'], null, $_POST['state'], $_POST['milestone_id'], $_POST['owner_id']);
 
             $changes = array();
             foreach ($ticket as $name => $val)
@@ -106,7 +106,7 @@
                         $fromobj = new $model($from);
                         $obj     = new $model($val);
 
-                        if ($name == "milestone") {
+                        if ($name == "milestone_id") {
                             $from = $fromobj->name;
                             $val  = $obj->name;
                         } else {
