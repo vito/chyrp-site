@@ -11,10 +11,31 @@
     header("Content-type: text/html; charset=UTF-8");
 
     define('DEBUG',        true);
-    define('UPGRADING',    true);
+    define('CACHE_TWIG',   false);
+    define('JAVASCRIPT',   false);
+    define('ADMIN',        false);
+    define('AJAX',         false);
     define('XML_RPC',      false);
+    define('TRACKBACK',    false);
+    define('UPGRADING',    true);
+    define('INSTALLING',   false);
+    define('TESTER',       true);
+    define('INDEX',        false);
     define('MAIN_DIR',     dirname(__FILE__));
     define('INCLUDES_DIR', dirname(__FILE__)."/includes");
+    define('MODULES_DIR', MAIN_DIR."/modules");
+    define('FEATHERS_DIR', MAIN_DIR."/feathers");
+    define('THEMES_DIR', MAIN_DIR."/themes");
+
+    if (!AJAX and
+        extension_loaded("zlib") and
+        !ini_get("zlib.output_compression") and
+        isset($_SERVER['HTTP_ACCEPT_ENCODING']) and
+        substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+        ob_start("ob_gzhandler");
+        header("Content-Encoding: gzip");
+    } else
+        ob_start();
 
     /**
      * Function: config_file
@@ -404,6 +425,9 @@
      */
     function make_posts_safe() {
         if (!$posts = SQL::current()->query("SELECT * FROM __posts"))
+            return;
+
+        if (!SQL::current()->query("SELECT xml FROM __posts"))
             return;
 
         function clean_xml(&$input) {
@@ -962,6 +986,66 @@
             echo __("Removing `includes/bookmarklet.php` file...").
                  test(@unlink(INCLUDES_DIR."/bookmarklet.php"));
     }
+
+    /**
+     * Function: update_user_password_column
+     * Updates the @password@ column on the "users" table to have a length of 34.
+     *
+     * Versions: 2.0rc3 => 2.0
+     */
+    function update_user_password_column() {
+        $sql = SQL::current();
+        if (!$column = $sql->query("SHOW COLUMNS FROM __users WHERE Field = 'password'"))
+             return;
+
+        if ($column->fetchObject()->Type == "varchar(34)")
+            return;
+
+        echo __("Updating `password` column on `users` table...")."\n";
+
+        echo " - ".__("Backing up `users` table...").
+             test($backup = $sql->select("users"));
+        
+        if (!$backup)
+            return;
+
+        $backups = $backup->fetchAll();
+
+        echo " - ".__("Dropping `users` table...").
+             test($drop = $sql->query("DROP TABLE __users"));
+
+        if (!$drop)
+            return;
+
+        echo " - ".__("Creating `users` table...").
+             test($create = $sql->query("CREATE TABLE IF NOT EXISTS `users` (
+                                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                                            `login` varchar(64) DEFAULT '',
+                                            `password` varchar(34) DEFAULT NULL,
+                                            `full_name` varchar(250) DEFAULT '',
+                                            `email` varchar(128) DEFAULT '',
+                                            `website` varchar(128) DEFAULT '',
+                                            `group_id` int(11) DEFAULT '0',
+                                            `joined_at` datetime DEFAULT '0000-00-00 00:00:00',
+                                            PRIMARY KEY (`id`),
+                                            UNIQUE KEY `login` (`login`)
+                                        ) DEFAULT CHARSET=utf8"));
+
+        if (!$create) {
+            echo " -".test(false, _f("Backup written to %s.", array("./_users.bak.txt")));
+            return file_put_contents("./_users.bak.txt", var_export($backups, true));
+        }
+
+        foreach ($backups as $backup) {
+            echo " - "._f("Restoring user #%d...", array($backup["id"])).
+                 test($insert = $sql->insert("users", $backup), _f("Backup written to %s.", array("./_users.bak.txt")));
+
+            if (!$insert)
+                return file_put_contents("./_users.bak.txt", var_export($backups, true));
+        }
+
+        echo " -".test(true);
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -981,7 +1065,7 @@
                 font-size: 62.5%;
             }
             body {
-                font: 1.25em/1.5em normal "Verdana", Helvetica, Arial, sans-serif;
+                font: 1.25em/1.5em normal Verdana, Helvetica, Arial, sans-serif;
                 color: #626262;
                 background: #e8e8e8;
                 padding: 0 0 5em;
@@ -1016,12 +1100,14 @@
             pre.pane {
                 height: 15em;
                 overflow-y: auto;
-                margin: -2.5em -2.5em 4em;
+                margin: -2.68em -2.68em 4em;
                 padding: 2.5em;
                 background: #333;
                 color: #fff;
                 -webkit-border-top-left-radius: 2.5em;
                 -webkit-border-top-right-radius: 2.5em;
+                -moz-border-radius-topleft: 2.5em;
+                -moz-border-radius-topright: 2.5em;
             }
             span.yay { color: #0f0; }
             span.boo { color: #f00; }
@@ -1034,7 +1120,7 @@
                 padding: .75em 1em;
                 color: #777;
                 text-shadow: #fff .1em .1em 0;
-                font: 1em normal "Lucida Grande", "Verdana", Helvetica, Arial, sans-serif;
+                font: 1em normal "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
                 text-decoration: none;
                 border: 0;
                 cursor: pointer;
@@ -1145,6 +1231,8 @@
         group_permissions_to_db();
 
         remove_old_files();
+
+        update_user_password_column();
 
         # Perform Module/Feather upgrades.
 
