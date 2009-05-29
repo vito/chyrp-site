@@ -35,7 +35,7 @@
             if ($this->no_results)
                 return false;
 
-            $this->last_activity = max(strtotime($this->last_revision), strtotime($this->last_update), strtotime($this->created_at), strtotime($this->updated_at));
+            $this->last_activity = max(array_map("strtotime", array($this->last_revision, $this->last_update, $this->created_at, $this->updated_at)));
 
             $this->done = in_array($this->state, array("resolved", "invalid", "declined"));
 

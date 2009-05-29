@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Edit Ticket</h1>
-<form action="{% url "update_ticket" %}" method="post" accept-charset="utf-8">
+<form action="{% url "update_ticket" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>
         <p>
             <label for="title">Title</label>

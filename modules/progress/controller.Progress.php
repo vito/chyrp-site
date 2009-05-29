@@ -235,9 +235,10 @@
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this ticket.", "progress"));
 
             $files = array();
-            foreach ($_FILES['attachment'] as $key => $val)
-                foreach ($val as $file => $attr)
-                    $files[$file][$key] = $attr;
+            if (!empty($_FILES['attachment']))
+                foreach ($_FILES['attachment'] as $key => $val)
+                    foreach ($val as $file => $attr)
+                        $files[$file][$key] = $attr;
 
             foreach ($files as $attachment)
                 if ($attachment['error'] != 4) {

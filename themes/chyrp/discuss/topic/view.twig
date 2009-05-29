@@ -61,7 +61,7 @@ $topic.title
         <ul>
             <li><strong>Posts:</strong> $message.user.post_count</li>
             <li><strong>Created:</strong> ${ message.created_at | relative }</li>
-            {% if topic.updated %}
+            {% if message.updated %}
             <li><strong>Updated:</strong> ${ message.updated_at | relative }</li>
             {% endif %}
         </ul>

@@ -39,32 +39,45 @@ $ticket.title &ndash; $ticket.edit_link $ticket.delete_link
 </div>
 
 {% if ticket.revisions %}
-<ul>
+<ul class="revisions">
     {% paginate 25 revisions in ticket.revisions as revision %}
-    <li id="revision_$revision.id">
-        <strong>$revision.user.login</strong>:
-        <ul>
+    <li class="revision" id="revision_$revision.id">
+        <div class="user">
+            {% if revision.editable or revision.deletable %}
+            <span class="right">
+                ${ revision.edit_link("edit") }
+                ${ revision.delete_link("delete") }
+            </span>
+            {% endif %}
+            <img src="$ticket.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
+            <span class="name">$revision.user.login</span>
+        </div>
+
+        <ul class="changes">
             {% for name, change in revision.changes | items %}
-            <li><strong>$name</strong> changed from "<code>$change.from</code>" to "<code>$change.to</code>"</li>
+            <li class="{% if loop.index | odd %}odd{% else %}even{% endif %}">
+                <strong>$name</strong> changed from "<code>$change.from</code>" to "<code>$change.to</code>"
+            </li>
             {% endfor %}
         </ul>
-        <p>$revision.body</p>
+
+        <div class="body">
+            $revision.body
+        </div>
+
         {% if revision.attachments %}
-        <p>
+        <div class="attachments">
             <h5>Attachments</h5>
             <ul>
                 {% for attachment in revision.attachments %}
                 <li>
-                    {% if attachment.info.extension == "jpg" or attachment.info.extension == "png" %}
-                    <img src="$site.chyrp_url/includes/thumb.php?file=../uploads/$attachment.path&amp;max_width=25" style="vertical-align: middle; border: 1px solid black" alt="attachment" />
-                    {% endif %}
+                    $attachment.thumbnail
                     <a href="${ attachment.path | uploaded }">$attachment.filename</a>
                 </li>
                 {% endfor %}
             </ul>
-        </p>
+        </div>
         {% endif %}
-        $revision.edit_link $revision.delete_link
     </li>
     {% endpaginate %}
 </ul>

@@ -249,7 +249,5 @@
         public function user_grab(&$options) {
             $options["select"][] = "COUNT(posts.id) AS `post_count`";
         	$options["left_join"][] = array("table" => "posts", "where" => array("users.id = posts.user_id"));
-            var_dump($options);
-            exit("Hello?");
         }
     }

@@ -557,6 +557,40 @@ p {
         #progress .ticket .description {
             background: #0c0c0c;
             padding: 1em;
+    }
+    #progress .revisions {
+        margin: 0;
+        }
+        #progress .revisions li.revision {
+            list-style: none;
+            margin-bottom: 2em;
+            }
+            #progress .revisions li .user {
+                background: #0c0c0c;
+                padding: .25em .5em;
+                }
+                #progress .revisions li .user .gravatar-emblem {
+                    vertical-align: middle;
+                    margin: -.25em .125em 0 0;
+            }
+            #progress .revisions li .changes {
+                margin: 0 0 1em 2em;
+                }
+                #progress .revisions li .changes li {
+                    padding: .25em .5em;
+                    list-style: none;
+                }
+                #progress .revisions li .changes li.odd {
+                    background: #0f0f0f;
+                    border-bottom: .1em solid #171717;
+                }
+                #progress .revisions li .changes li.even {
+                    background: #131313;
+                    border-bottom: .1em solid #171717;
+            }
+            #progress .revisions li .body,
+            #progress .revisions li .attachments {
+                margin-left: 2em;
 }
 
 /* Notification Messages */
