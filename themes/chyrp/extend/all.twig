@@ -1,0 +1,19 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+{% if visitor.group.can("add_extension") %}
+<div class="add-extension">
+    <a href="{% url "new_extension" %}" class="toggle colorize">Add your own!</a>
+    <ul style="display: none">
+        {% for type in types %}
+        <li><a href="{% url "new_extension/" ~ type.textID %}" style="color: #$type.color" class="colorize">$type.name</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<h1>Latest Extensions</h1>
+{% paginate 25 extensions in extensions as extension %}
+{% include "partials/extension.twig" %}
+{% endpaginate %}
+{% endblock %}

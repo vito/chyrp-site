@@ -1,0 +1,31 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "New Type" | translate("extend") }{% endblock %}
+
+{% block content %}
+            <h1>${ "Add Type" | translate("extend") | format(type.name) }</h1>
+            <form id="new_type" class="split" action="{% admin "add_type" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <fieldset>
+                    <p>
+                        <label for="name">${ "Name" | translate("extend") }</label>
+                        <input class="text" type="text" name="name" value="" id="name" />
+                    </p>
+                    <p>
+                        <label for="description">${ "Description" | translate("extend") }</label>
+                        <textarea class="description" name="description" rows="9" cols="50" id="description"></textarea>
+                    </p>
+                    <p>
+                        <label for="color">${ "Color" | translate("extend") }</label>
+                        <input class="text" type="text" name="color" value="" id="color" size="3" maxlength="6" />
+                    </p>
+
+                    <br />
+
+                    <p>
+                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Add Type" | translate }</button>
+                    </p>
+
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

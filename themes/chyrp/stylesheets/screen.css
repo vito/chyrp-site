@@ -55,10 +55,8 @@ h2 {
     letter-spacing: -.01em;
 }
 h1 {
-    /* font-weight: bold; */
     font-size: 2.6em;
     margin-bottom: .3em;
-    /* padding-bottom: .25em; */
     border-bottom: .07em solid #1c1c1c;
     color: #fff;
     line-height: 1.25em;
@@ -76,21 +74,21 @@ h3 {
 h4 {
     font-size: 1.5em;
     font-weight: bold;
-    margin-bottom: .9em;
+    margin-bottom: .6em;
 }
 h5 {
     font-size: 1em;
     font-weight: bold;
-    margin-bottom: 1em;
+    margin-bottom: .7em;
 }
 h6 {
     font-size: .8em;
     font-weight: bold;
-    margin-bottom: 1.25em;
+    margin-bottom: .8em;
 }
 
 ul {
-    margin: 0 0 0 1.75em;
+    margin: 0 0 1em 1.75em;
 }
 ul li {
     list-style-type: square;
@@ -325,34 +323,41 @@ p {
 }
 #discuss {
     }
-    #discuss .forum {
+    #discuss .forum,
+    #extend .type {
         height: 12em;
+        clear: both;
         }
-        #discuss .forum h2 {
+        #discuss .forum h2,
+        #extend .type h2 {
             float: left;
             width: 10em;
             height: 5em;
             padding: .3625em;
         }
-        #discuss .forum p {
+        #discuss .forum p,
+        #extend .type p {
             background: #0d0d0d;
             padding: .75em;
             display: block;
         }
         #discuss .forum .info,
-        #discuss .topic .info {
+        #discuss .topic .info,
+        #extend .type .info {
             float: left;
             width: 20em;
             }
             #discuss .forum .info h4,
-            #discuss .topic .info h4 {
+            #discuss .topic .info h4,
+            #extend .type .info h4 {
                 display: block;
                 font-weight: normal;
                 font-size: 1em;
                 margin: 0 0 .5em;
             }
             #discuss .forum .info .content,
-            #discuss .topic .info .content {
+            #discuss .topic .info .content,
+            #extend .type .info .content {
                 font-size: .9em;
                 line-height: 1.4em;
                 color: #777;
@@ -360,11 +365,13 @@ p {
                 margin: 0;
                 }
                 #discuss .forum .info .content li,
-                #discuss .topic .info .content li {
+                #discuss .topic .info .content li,
+                #extend .type .info .content li {
                     list-style: none;
                     }
                     #discuss .forum .info .content li strong,
-                    #discuss .topic .info .content li strong {
+                    #discuss .topic .info .content li strong,
+                    #extend .type .info .content li strong {
                         font-weight: normal;
                         color: #fff;
     }
@@ -558,14 +565,17 @@ p {
             background: #0c0c0c;
             padding: 1em;
     }
-    #progress .revisions {
+    #progress .revisions,
+    #extend .notes {
         margin: 0;
         }
-        #progress .revisions li.revision {
+        #progress .revisions li.revision,
+        #extend .notes li.note {
             list-style: none;
             margin-bottom: 2em;
             }
-            #progress .revisions li .user {
+            #progress .revisions li .user,
+            #extend .notes li .user {
                 background: #0c0c0c;
                 padding: .25em .5em;
                 }
@@ -589,8 +599,78 @@ p {
                     border-bottom: .1em solid #171717;
             }
             #progress .revisions li .body,
-            #progress .revisions li .attachments {
+            #progress .revisions li .attachments,
+            #extend .notes li .body,
+            #extend .notes li .attachments {
                 margin-left: 2em;
+}
+#extend {
+    }
+    #extend .type p {
+        background: transparent;
+    }
+    #extend .extension {
+        margin-bottom: 3em;
+        }
+        #extend .extension h1 {
+            padding: .5em;
+            margin-bottom: .625em;
+            font-size: 1.5em;
+            margin: 0 0 .666em;
+            }
+            #extend .extension h1 .version {
+                float: right;
+                font-family: monospace;
+                font-weight: bold;
+                margin: 0 .3125em;
+            }
+            #extend .extension h1 .author {
+                line-height: 1em;
+                font-size: .75em;
+                font-style: italic;
+        }
+        #extend .extension .content {
+            margin-left: 3em;
+            }
+            #extend .extension .content .info {
+                background: #0a0a0a;
+                padding: .25em .75em;
+                margin: -1em 0 1em;
+                color: #555;
+                }
+                #extend .extension .content .info li {
+                    list-style: none;
+                    display: inline-block;
+                    margin-right: 2em;
+                    font-size: .9em;
+                    }
+                    #extend .extension .content .info li strong {
+                        font-weight: normal;
+                        color: #fff;
+            }
+            #extend .extension .content .preview {
+                margin: 0 0 1em 1em;
+                width: 20em;
+                height: 13.3em;
+                float: right;
+                background-position: center center;
+                background-repeat: none;
+            }
+            #extend .extension .content .buttons {
+                margin: 1em 0 0;
+                font-size: 1.25em;
+                background-color: #0d0d0d;
+                font-weight: bold;
+                }
+                #extend .extension .content .buttons a.button,
+                #extend .extension .content .buttons span.tags {
+                    width: 16.35em;
+                    float: left;
+                    padding: .5em .75em;
+                    display: block;
+                }
+                #extend .extension .content .buttons a.button:hover {
+                    background-color: #0f0f0f;
 }
 
 /* Notification Messages */
@@ -640,7 +720,8 @@ p {
                 border: .1em solid #000;
                 margin: -.25em .25em 0 0;
 }
-form .attachments ul {
+form #attachments {
+    min-height: 2.15em;
     margin: 0 0 1em;
 }
 
@@ -723,12 +804,30 @@ div#controls ul li.close a:hover {
 
 /* Miscellaneous */
 .sub {
-    font-size: .9em;
+    font-size: 11px;
+    line-height: 11px;
     color: #777;
+    font-weight: normal;
     }
     .sub strong {
         color: #fff;
         font-weight: normal;
+}
+.big {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1em;
+    }
+    .big a {
+        padding: .35em .5em;
+        background: #0a0a0a;
+        display: block;
+    }
+    .big a:hover {
+        background: #0d0d0d;
+    }
+    .big ul li {
+        list-style: none;
 }
 .clear { clear: both }
 .left  { float: left }

@@ -44,6 +44,18 @@ $(function(){
             $(this).css("background", "#ff2222")
     })
 
+    $(".colorize").bind("mouseenter", function(){
+        $(this).data("text", $(this).text());
+		$(this).html(colorize($(this).text()));
+	}).bind("mouseleave", function(){
+		$(this).html($(this).data("text"));
+	});
+
+    $(".add-extension a.toggle").click(function(){
+        $(".add-extension ul").slideToggle("fast");
+        return false;
+    });
+
     if (Cookie.get("hide_debug") == "true") {
         $("#debug").height(17);
         $("#debug").css("overflow-y", "hidden");
@@ -52,4 +64,21 @@ $(function(){
         })
     }
 })
+
+var colors = ["#ff2e99", "#ff8a2d", "#ffe12a", "#caff2a", "#1fb5ff", "#5931ff", "#b848ff"]
+
+function colorize(text) {
+    var colorized = ""
+    var bracket_color = ""
+    for (i = 0; i < text.length; i++) {
+        var index = Math.floor(Math.random()*5)
+        if (text[i] == "(")
+            bracket_color = colors[index]
+    
+        color = (bracket_color.length && (text[i] == "(" || text[i] == ")")) ? bracket_color : colors[index]
+        colorized = colorized + '<span style="color: '+color+' !important">' + text.charAt(i) + '</span>'
+    }
+    return colorized
+}
+
 <!-- --></script>

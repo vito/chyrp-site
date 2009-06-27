@@ -1,0 +1,13 @@
+{% extends "layouts/extend.twig" %}
+
+{% block title %}${ type.name | pluralize } &mdash; Chyrp: Extend{% endblock %}
+
+{% block crumb %}<a href="{% url "/extend" %}">Extend</a> &raquo; ${ type.name | pluralize }{% endblock %}
+
+{% block content %}
+<h1>${ type.name | pluralize }</h1>
+
+{% paginate 25 extensions in type.extensions as extension %}
+{% include "partials/extension.twig" %}
+{% endpaginate %}
+{% endblock %}

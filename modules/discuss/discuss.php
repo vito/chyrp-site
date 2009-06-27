@@ -4,10 +4,6 @@
 
     require "controller.Discuss.php";
 
-        # public function __init() {
-            # $this->addAlias("user_grab", "users_get");
-        # }
-
     /**
      * Discuss
      */
@@ -64,6 +60,7 @@
             Group::add_permission("delete_own_topic", "Delete Own Topic");
             Group::add_permission("delete_own_message", "Delete Own Message");
 
+            Group::add_permission("code_in_topics", "Can Use HTML In Topics");
             Group::add_permission("code_in_messages", "Can Use HTML In Messages");
         }
 

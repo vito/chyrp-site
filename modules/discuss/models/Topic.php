@@ -44,6 +44,11 @@
             $trigger = Trigger::current();
 
             if ($this->filtered) {
+                if (!$this->user->group->can("code_in_topics")) {
+                    $this->title = strip_tags($this->title);
+                    $this->description = strip_tags($this->description);
+                }
+
                 $trigger->filter($this->title, array("markup_title", "markup_topic_title"), $this);
                 $trigger->filter($this->description, array("markup_text", "markup_topic_text"), $this);
             }
@@ -99,7 +104,7 @@
             $trigger = Trigger::current();
 
             $sql->insert("topics",
-                         array("title"       => fix($title),
+                         array("title"       => $title,
                                "description" => $description,
                                "clean"       => sanitize($title),
                                "url"         => self::check_url(sanitize($title)),
@@ -298,13 +303,5 @@
             SQL::current()->update("topics",
                                    array("id" => $this->id),
                                    array("view_count" => $this->view_count));
-        }
-
-        /**
-         * Function: latest_message
-         * Returns the latest message in the topic.
-         */
-        public function latest_message() {
-        	return end($this->messages);
         }
     }

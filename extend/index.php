@@ -5,10 +5,10 @@
     require_once "../includes/common.php";
 
     # Prepare the controller.
-    $discuss = DiscussController::current();
+    $extend = ExtendController::current();
 
     # Parse the route.
-    $route = Route::current($discuss);
+    $route = Route::current($extend);
 
     # Execute the appropriate Controller responder.
     $route->init();
@@ -21,7 +21,7 @@
         $displayed = false;
 
         if (!$displayed and $theme->file_exists("pages/".$route->action))
-            $discuss->display("pages/discuss/".$route->action);
+            $extend->display("pages/extend/".$route->action);
         elseif (!$displayed)
             show_404();
     }

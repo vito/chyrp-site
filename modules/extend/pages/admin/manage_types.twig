@@ -1,0 +1,58 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Manage Types" | translate("extend") }{% endblock %}
+
+{% block content %}
+            {% if visitor.group.can("add_type") %}
+            <a href="{% admin "new_type" %}" class="button yay right">
+                <img src="images/icons/add.png" alt="add" /> ${ "Add Type" | translate("extend") }
+            </a>
+            {% endif %}
+            <h1>${ "Manage Types" | translate("extend") }</h1>
+            <table id="manage_types" border="0" cellspacing="0" cellpadding="0" class="wide">
+                <thead>
+                    <tr class="head">
+                        <th>${ "Name" | translate("extend") }</th>
+                        <th>${ "Description" | translate("extend") }</th>
+                        <th>${ "Color" | translate("extend") }</th>
+                        <th>${ "Total Extensions" | translate("extend") }</th>
+                        ${ trigger.call("manage_types_column_header") }
+                        <th colspan="2">${ "Controls" | translate }</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% paginate 25 types in types as type %}
+                    <tr id="type_$type.id" class="type {% if loop.last %} last{% endif %}">
+                        <td class="main"><a href="$type.url">$type.name</a></td>
+                        <td>${ type.description | truncate(50) }</td>
+                        <td><span style="color: #$type.color">#$type.color</span></td>
+                        <td>${ type.extension_count }</td>
+                        ${ trigger.call("manage_types_column", type) }
+                        {% if type.editable and type.deletable %}
+                        <td class="controls">${ type.edit_link('<img src="images/icons/edit.png" alt="edit" />'~ ("edit" | translate)) }</td>
+                        <td class="controls">${ type.delete_link('<img src="images/icons/delete.png" alt="delete" />'~ ("delete" | translate)) }</td>
+                        {% elseif type.editable or type.deletable %}
+                        {% if visitor.group.can("edit_aggregate") %}
+                        <td class="controls">${ type.edit_link('<img src="images/icons/edit.png" alt="edit" />'~ ("edit" | translate)) }</td>
+                        {% endif %}
+                        {% if visitor.group.can("delete_aggregate") %}
+                        <td class="controls">${ type.delete_link('<img src="images/icons/delete.png" alt="delete" />'~ ("delete" | translate)) }</td>
+                        {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% else %}
+                    <tr class="last">
+                        <td colspan="6" class="center"><span class="sub">${ "(none)" | translate }</span></td>
+                    </tr>
+                    {% endpaginate %}
+                </tbody>
+            </table>
+            {% if types.paginated and types.pages > 1 %}
+            <br />
+            <div class="pagination">
+                $types.next_link
+                $types.prev_link
+                <span class="pages">${ "Page %d of %d" | translate | format(types.page, types.pages) }</span>
+            </div>
+            {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+{% if visitor.group.can("add_extension") %}
+<div class="big">
+    <a href="{% url "new_extension" %}" class="toggle colorize">Add your own!</a>
+    <ul style="display: none">
+        {% for type in types %}
+        <li><a href="{% url "new_extension/" ~ type.textID %}" style="color: #$type.color" class="colorize">$type.name</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% for type in types %}
+<div class="type">
+    <h2><a href="$type.url">${ type.name | pluralize }</a></h2>
+    <div class="color-wrapper" style="background: #$type.color !important">
+        $type.description
+    </div>
+    <div class="info">
+        <h4>Latest Extension</h4>
+        <ul class="content">
+            {% if not type.latest_extension.no_results %}
+            <li><a href="$type.latest_extension.url">${ type.latest_extension.name | truncate(100) } v$type.latest_extension.latest_version.number</a></li>
+            <li>${ type.latest_extension.last_update | relative }</li>
+            <li>by <a href="$type.latest_extension.user.url">$type.latest_extension.user.login</a></li>
+            {% else %}
+            <li>none</li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="info">
+        <h4>Statistics</h4>
+        <ul class="content">
+            <li>Extensions: <strong>$type.extension_count</strong></li>
+        </ul>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

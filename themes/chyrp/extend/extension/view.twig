@@ -1,0 +1,130 @@
+{% extends "layouts/extend.twig" %}
+
+{% block crumb %}
+<a href="{% url "/extend" %}">Extend</a> &raquo;
+<a href="$extension.type.url">${ extension.type.name | pluralize }</a> &raquo;
+$extension.name
+{% endblock %}
+
+{% block content %}
+{% if visitor.id == extension.user.id %}
+<div class="big">
+    <a href="{% url "new_version/" ~ extension.textID %}" class="colorize">Add New Version</a>
+</div>
+{% endif %}
+
+<div class="extension">
+    <h1 style="background-color: #$extension.type.color">
+        <span class="version">$extension_version.number</span>
+        <strong><a href="$extension.url">$extension.name</a></strong>
+        <span class="author">by <strong>${ extension.user.full_name | fallback(extension.user.login) }</strong></span>
+    </h1>
+    <div class="content">
+        <ul class="info">
+            <li>Compatible with: <strong>${ extension_version.compatible | join("</strong>, <strong>") }</strong></li>
+            <li>Loves: <strong>$extension_version.loves</strong></li>
+            <li>Downloads: <strong>$extension_version.downloads</strong></li>
+            <li>Notes: <strong>$extension_version.note_count</strong></li>
+            <li>Last updated: <strong>${ extension_version.updated_at | fallback(extension_version.created_at) | relative }</strong></li>
+        </ul>
+
+        {% if extension_version.image %}
+        <a class="preview" href="${ extension_version.image | uploaded }" style="background-image: url('${ extension_version.image | uploaded }')"></a>
+        {% endif %}
+
+        $extension_version.description
+
+        {% if extension_version.attachments %}
+        <div class="attachments">
+            <h5>Attachments</h5>
+            <ul>
+                {% for attachment in extension_version.attachments %}
+                <li>
+                    $attachment.thumbnail
+                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="clear"></div>
+        <div class="buttons">
+            <a class="colorize button" href="{% url "download/" ~ extension.textID ~ "/" ~ extension_version.id %}">Download</a>
+            <a class="colorize button" href="{% url "love/" ~ extension.textID ~ "/" ~ extension_version.id %}">
+                {% if extension_version.loved %}
+                Delove
+                {% else %}
+                Love
+                {% endif %}
+            </a>
+            <span class="tags">Tags: ${ extension_version.linked_tags | join(", ") | fallback("<span class=\"sub\">(none)</span>") }</span>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+{% if extension_version.notes %}
+<h1>Notes</h1>
+<ul class="notes">
+    {% paginate 25 notes in extension_version.notes as note %}
+    <li class="note">
+        <div class="user">
+            {% if note.editable or note.deletable %}
+            <span class="right">
+                ${ note.edit_link("edit") }
+                ${ note.delete_link("delete") }
+            </span>
+            {% endif %}
+            <img src="$note.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
+            <span class="name">$note.user.login</span>
+        </div>
+
+        <div class="body">
+            $note.body
+        </div>
+
+        {% if note.attachments %}
+        <div class="attachments">
+            <h5>Attachments</h5>
+            <ul>
+                {% for attachment in note.attachments %}
+                <li>
+                    $attachment.thumbnail
+                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </li>
+    {% endpaginate %}
+</ul>
+{% endif %}
+
+{% if visitor.group.can("add_note") %}
+<br />
+<br />
+<h2>Add Note</h2>
+
+<form action="{% url "add_note" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <fieldset>
+        <p>
+            <label for="body">Message</label>
+            <textarea name="body" rows="8" cols="100%"></textarea>
+        </p>
+
+        <div id="attachments">
+            <label for="attachment">Attachment(s)</label>
+            <div class="fields">
+                <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />')">[+]</a>
+            </div>
+        </div>
+
+        <p><input type="submit" value="Continue &rarr;"></p>
+
+        <input type="hidden" name="version_id" value="$extension_version.id" id="version_id" />
+    </fieldset>
+</form>
+{% endif %}
+{% endblock %}

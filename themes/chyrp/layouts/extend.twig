@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="$theme.type; charset=utf-8" />
+        <title>{% block title %}{% if title %}${ title | escape } &mdash; {% endif %}$site.name: Extend{% endblock %}</title>
+        <meta name="generator" content="Chyrp" />
+        <link rel="pingback" href="$site.chyrp_url/includes/xmlrpc.php" />
+        <link rel="EditURI" type="application/rsd+xml" href="$site.chyrp_url/includes/rsd.php" />
+        $theme.feeds
+        $theme.stylesheets
+        $theme.javascripts
+${ trigger.call("head") }
+    </head>
+    <body id="extend" class="$route.action">
+        {% if visitor.group.can("add_post", "add_draft", "add_page", "view_own_draft", "view_draft", "change_settings", "toggle_extensions") %}
+        <div id="controls" {% if hide_admin %} style="display: none"{% endif %}>
+            <ul>
+                {% if visitor.group.can("add_post") %}
+                <li><a id="add_post" href="{% admin "write_post" %}">${ "Write" | translate }</a></li>
+                {% elseif visitor.group.can("add_draft") %}
+                <li><a id="add_draft" href="{% admin "write_post" %}">${ "Write Draft" | translate }</a></li>
+                {% endif %}
+                {% if visitor.group.can("add_page") %}
+                <li><a id="add_page" href="{% admin "write_page" %}">${ "Add Page" | translate }</a></li>
+                {% endif %}
+                {% if visitor.group.can("view_own_draft", "view_draft") %}
+                <li><a id="your_drafts" href="{% url "drafts" %}">${ "Your Drafts" | translate }</a></li>
+                {% endif %}
+                {% if visitor.group.can("change_settings", "toggle_extensions") %}
+                <li><a id="site_settings" href="$site.chyrp_url/admin/">${ "Admin" | translate }</a></li>
+                {% endif %}
+                <li class="close"><a class="toggle_admin" href="{% url "toggle_admin" %}">${ "Close" | translate }</a></li>
+            </ul>
+        </div>
+        {% endif %}
+
+        <ul id="navigation">
+            <li class="first">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="$site.url">Home</a>
+            </li>
+            <li class="second">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "download" %}">Download</a>
+            </li>
+            <li class="third">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "/discuss" %}">Discuss</a>
+            </li>
+            <li class="fourth">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "/progress" %}">Progress</a>
+            </li>
+            <li class="fifth selected">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "/extend" %}">Extend</a>
+            </li>
+            <li class="sixth">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "code" %}">Code</a>
+            </li>
+            <li class="seventh">
+                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+                <a href="{% url "blog" %}">Blog</a>
+            </li>
+        </ul>
+
+        <div id="content">
+            <div id="breadcrumb">
+                <span class="right">
+                    {% if visitor.logged_in %}
+                    <a class="control" href="{% url "/logout" %}">Log Out</a>
+                    <a class="control" href="{% url "/controls" %}">Controls</a>
+                    {% else %}
+                    <a class="control" href="{% url "/login" %}">Log In</a>
+                    <a class="control" href="{% url "/register" %}">Register</a>
+                    <a class="control" href="{% url "/lost_password" %}">Lost Password</a>
+                    {% endif %}
+                    <span>
+                        Welcome,
+                        {% if visitor.logged_in %}
+                        <a href="$visitor.url">${ visitor.full_name | split(" ") | first | fallback(visitor.login) }</a>!
+                        {% else %}
+                        Guest!
+                        {% endif %}
+                    </span>
+                </span>
+                {% block crumb %}Extend{% endblock %}
+            </div>
+
+            {% for type, messages in flash.all | items %}
+            {% for message in messages %}
+            <div class="flash ${ type | depluralize }">$message</div>
+            {% endfor %}
+            {% endfor %}
+{% block content %}{% endblock %}
+        </div>
+
+        <ul id="footer">
+            <li class="toogeneric"><a href="http://toogeneric.com/">*</a></li>
+            <li>Chyrp &copy; Alex Suraci 2007&mdash;</li>
+            <li>${ "Powered by <a class=\"chyrp\" href=\"http://chyrp.net/\">Chyrp</a>" | translate }</li>
+            <li><a class="atom" href="{% url "feed" %}">atom</a></li>
+        </ul>
+
+        {% if debug and visitor.group.name == "Admin" %}
+        <div id="debug">
+            <h5>
+                <a class="toggle" href="javascript:void(0)">${ "Toggle" | translate }</a>
+                ${ "Stats" | translate }
+            </h5>
+            <ul>
+                <li><strong>${ "Queries:" | translate }</strong> $sql_queries</li>
+                <li><strong>${ "Load Time:" | translate }</strong> $theme.load_time ${ "seconds" | translate }</li>
+            </ul>
+            <br />
+            <h5>${ "Queries" | translate }</h5>
+            <ol class="queries">
+                {% for debug in sql_debug %}
+                <li>
+                    <pre>${ debug.query | replace("\t", "    ") | escape }</pre>
+                    <em>${ "Called from <strong>%s</strong> on line <strong>%d</strong>." | translate | format(debug.file, debug.line) }</em>
+                </li>
+                {% endfor %}
+            </ol>
+            <div class="clear"></div>
+        </div>
+        {% endif %}
+${ trigger.call("end_content") }
+        <!-- Queries: $sql_queries | Load Time: $theme.load_time -->
+    </body>
+</html>
+

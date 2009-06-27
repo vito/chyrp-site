@@ -21,7 +21,7 @@
         $displayed = false;
 
         if (!$displayed and $theme->file_exists("pages/".$route->action))
-            $main->display("pages/progress/".$route->action);
+            $progress->display("pages/progress/".$route->action);
         elseif (!$displayed)
             show_404();
     }

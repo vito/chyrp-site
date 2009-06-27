@@ -49,7 +49,7 @@ $ticket.title &ndash; $ticket.edit_link $ticket.delete_link
                 ${ revision.delete_link("delete") }
             </span>
             {% endif %}
-            <img src="$ticket.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
+            <img src="$revision.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
             <span class="name">$revision.user.login</span>
         </div>
 
@@ -90,6 +90,7 @@ ${ revisions.prev_link }
 <br />
 <br />
 <h2>Revise Ticket</h2>
+
 <form action="{% url "add_revision" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>
         {% if ticket.editable %}
