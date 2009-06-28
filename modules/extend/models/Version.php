@@ -161,6 +161,13 @@
 
             $old = clone $this;
 
+            if (is_array($tags)) {
+                $tags = array_map("strip_tags", $tags);
+                $compatible = array_map("strip_tags", $compatible);
+
+                $tags = array_combine($tags, array_map("sanitize", $tags));
+            }
+
             foreach (array("number", "description", "compatible", "tags", "filename", "image", "loves", "downloads", "extension_id", "created_at", "updated_at") as $attr)
                 if (substr($attr, -3) == "_id") {
                     $arg = ${substr($attr, 0, -3)};

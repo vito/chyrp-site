@@ -115,7 +115,7 @@
             if (!isset($_GET['version']))
                 exit; # TODO
 
-            $version = new Version($_GET['version']);
+            $version = new Version($_GET['version'], array("filter" => false));
             if ($version->no_results)
                 exit; # TODO
 
@@ -131,7 +131,7 @@
             if (!isset($_GET['version']))
                 exit; # TODO
 
-            $version = new Version($_GET['version']);
+            $version = new Version($_GET['version'], array("filter" => false));
             if ($version->no_results)
                 exit; # TODO
 
@@ -195,7 +195,7 @@
             if ($type->no_results)
                 error(__("Error"), __("Invalid type specified.", "extend"));
 
-            $this->display("extend/new_extension", array("type" => $type), "Add ".$type->name);
+            $this->display("extend/extension/new", array("type" => $type), "Add ".$type->name);
         }
 
         public function new_version() {
@@ -220,7 +220,7 @@
                     return $this->add_version();
             }
 
-            $this->display("extend/new_version", array("extension" => $extension), __("New Version", "extend"));
+            $this->display("extend/version/new", array("extension" => $extension), __("New Version", "extend"));
         }
 
         public function add_note() {
@@ -434,20 +434,20 @@ EOF;
                            __("Edit Note", "extend"));
         }
 
-        public function edit_extension() {
+        public function edit_version() {
             if (!isset($_GET['id']))
-                error(__("Error"), __("No extension ID specified.", "extend"));
+                error(__("Error"), __("No version ID specified.", "extend"));
 
-            $extension = new Extension($_GET['id'], array("filter" => false));
-            if ($extension->no_results)
-                error(__("Error"), __("Invalid extension ID specified.", "extend"));
+            $version = new Version($_GET['id'], array("filter" => false));
+            if ($version->no_results)
+                error(__("Error"), __("Invalid version ID specified.", "extend"));
 
-            if (!$extension->editable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this extension.", "extend"));
+            if (!$version->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this version.", "extend"));
 
-            $this->display("extend/extension/edit",
-                           array("extension" => $extension),
-                           _f("Edit &#8220;%s&#8221;", array(fix($extension->title)), "extend"));
+            $this->display("extend/version/edit",
+                           array("ver" => $version),
+                           __("Edit Version", "extend"));
         }
 
         public function update_note() {
@@ -477,16 +477,16 @@ EOF;
             Flash::notice(__("Note updated.", "extend"), $note->url(true));
         }
 
-        public function update_extension() {
-            if (!isset($_POST['extension_id']))
-                error(__("Error"), __("No extension ID specified.", "extend"));
+        public function update_version() {
+            if (!isset($_POST['version_id']))
+                error(__("Error"), __("No version ID specified.", "extend"));
 
-            $extension = new Extension($_POST['extension_id']);
-            if ($extension->no_results)
-                error(__("Error"), __("Invalid extension ID specified.", "extend"));
+            $version = new Version($_POST['version_id'], array("filter" => false));
+            if ($version->no_results)
+                error(__("Error"), __("Invalid version ID specified.", "extend"));
 
-            if (!$extension->editable())
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this extension.", "extend"));
+            if (!$version->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this version.", "extend"));
 
             $files = array();
             if (!empty($_FILES['attachment']))
@@ -497,12 +497,72 @@ EOF;
             foreach ($files as $attachment)
                 if ($attachment['error'] != 4) {
                     $path = upload($attachment, null, "attachments");
-                    Attachment::add(basename($path), $path, "extension", $extension->id);
+                    Attachment::add(basename($path), $path, "version", $version->id);
                 }
 
-            $extension->update($_POST['title'], $_POST['description']);
+            $version->extension->update($_POST['name']);
 
-            Flash::notice(__("Extension updated.", "extend"), $extension->url());
+            if ($_FILES['extension']['error'] == 0) {
+                @unlink(uploaded($version->filename, true));
+
+                # Add the MIT license if no license is specified
+                $zip = new ZipArchive;
+                if ($zip->open($_FILES['extension']['tmp_name']) === true
+                    and $zip->locateName("LICENSE") === false) {
+                    $header = "Copyright (c) ".date("Y")." ".oneof($visitor->full_name, $visitor->login);
+                    $mit = <<<EOF
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+Except as contained in this notice, the name(s) of the above
+copyright holders shall not be used in advertising or otherwise
+to promote the sale, use or other dealings in this Software
+without prior written authorization.
+EOF;
+
+                    $zip->addFromString("LICENSE", $header."\n\n".$mit."\n");
+                    $zip->close();
+                }
+
+                $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($version->extension->type->url));
+                $filename = upload($_FILES['extension'], ".zip");
+            } else
+                $filename = $version->filename;
+
+            if ($_FILES['image']['error'] == 0) {
+                @unlink(uploaded($version->image, true));
+                $image = upload($_FILES['image'], null, "previews/".pluralize($version->extension->type->url));
+            } else
+                $image = $version->image;
+
+            $version->update(
+                $_POST['number'],
+                $_POST['description'],
+                comma_sep($_POST['compatible']),
+                comma_sep($_POST['tags']),
+                $filename,
+                $image
+            );
+
+            Flash::notice(__("Version updated.", "extend"), $version->url());
         }
 
         public function delete_note() {

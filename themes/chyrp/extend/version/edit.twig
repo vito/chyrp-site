@@ -1,22 +1,25 @@
 {% extends "layouts/extend.twig" %}
 
 {% block content %}
-<h1>Edit Note</h1>
-<form action="{% url "update_note" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+<h1>Editing version $ver.number of $ver.extension.name</h1>
+<form action="{% url "update_version" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>
         <p>
-            <label for="body">${ "Body" | translate("extend") }</label>
-            <textarea name="body" rows="8" cols="100%">${ note.body | escape }</textarea>
+            <label for="name">Extension Name</label>
+            <input type="text" name="name" value="${ POST.name | fallback(ver.extension.name) | escape }" id="name" />
         </p>
-
+        <p>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="8" cols="100%">${ POST.description | fallback(ver.description) | escape }</textarea>
+        </p>
         <div id="attachments">
             <label for="attachment">${ "Attachments" | translate("attachments") }</label>
 
             <div class="fields">
-                {% if message.attachments %}
+                {% if ver.attachments %}
                 <div class="attachments">
                     <ul>
-                        {% for attachment in message.attachments %}
+                        {% for attachment in ver.attachments %}
                         <li>
                             $attachment.thumbnail
                             <a href="${ attachment.path | uploaded }">$attachment.filename</a> $attachment.delete_link
@@ -29,10 +32,37 @@
                 <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
             </div>
         </div>
+        <p>
+            <label for="number">Version Number</label>
+            <input type="text" name="number" value="${ POST.number | fallback(ver.number) | escape }" id="number" size="4" />
+        </p>
+        <p>
+            <label for="compatible">Chyrp Compatibility</label>
+            <input type="text" name="compatible" value="${ POST.compatible | fallback(ver.compatible | join(", ")) | escape }" id="compatible" />
+            <br />
+            <span class="sub">Version numbers, comma-separated.</span>
+        </p>
+        <p>
+            <label for="extension">${ ver.extension.type.name | capitalize }</label>
+            <input type="file" name="extension" id="extension" />
+            <br />
+            <span class="sub">.zip files only.</span>
+        </p>
+        <p>
+            <label for="image">Preview Image</label>
+            <input type="file" name="image" id="image" />
+        </p>
+        <p>
+            <label for="compatible">Tags <span class="sub">(recommended)</span></label>
+            <input type="text" name="tags" value="${ POST.tags | fallback(ver.tags | keys | join(", ")) | escape }" id="tags" />
+            <br />
+            <span class="sub">Comma-seperated.</span>
+        </p>
 
         <p><input type="submit" value="Continue &rarr;"></p>
 
-        <input type="hidden" name="note_id" value="$note.id" id="note_id" />
+        <input type="hidden" name="version_id" value="$ver.id" id="version_id" />
     </fieldset>
 </form>
 {% endblock %}
+

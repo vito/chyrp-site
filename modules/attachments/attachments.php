@@ -23,7 +23,7 @@
         }
 
         public function parse_urls(&$urls) {
-            $urls["|/delete_attachment/([0-9]+)/|"] = '/?action=delete_attachment&amp;id=$1';
+            $urls["|/delete_attachment/([0-9]+)/|"] = '/?action=delete_attachment&id=$1';
         }
 
         public function parse_url($route) {
