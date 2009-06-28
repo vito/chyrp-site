@@ -647,6 +647,9 @@ p {
                     #extend .extension .content .info li strong {
                         font-weight: normal;
                         color: #fff;
+                }
+                #extend .extension .content .info li.right {
+                    margin: 0 0 0 1em;
             }
             #extend .extension .content .preview {
                 margin: 0 0 0 1em;

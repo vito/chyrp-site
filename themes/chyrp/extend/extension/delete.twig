@@ -1,0 +1,12 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+<h1>Are you sure you want to delete $extension.name?</h1>
+<form action="{% url "destroy_extension" %}" method="post" accept-charset="utf-8">
+    <fieldset>
+        <p><input type="submit" value="Yes, I'm sure." /></p> or <a href="$extension.url">Cancel</a>
+
+        <input type="hidden" name="extension_id" value="$extension.id" id="extension_id" />
+    </fieldset>
+</form>
+{% endblock %}

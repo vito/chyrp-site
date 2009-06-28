@@ -186,11 +186,7 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-            if (!$config->clean_urls)
-                return $config->url."/extend/?action=type&amp;id=".$this->clean;
-
-            return url("type/".$this->clean);
+            return url("type/".$this->url);
         }
 
         /**

@@ -1,5 +1,10 @@
 {% extends "layouts/extend.twig" %}
 
+{% block crumb %}
+<a href="{% url "/extend" %}">Extend</a> &raquo;
+New Extension
+{% endblock %}
+
 {% block content %}
 <h1>New ${ type.name | capitalize }</h1>
 <form action="{% url "new_extension/" ~ type.textID %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
@@ -42,8 +47,8 @@
             <input type="file" name="image" id="image" />
         </p>
         <p>
-            <label for="compatible">Tags <span class="sub">(recommended)</span></label>
-            <input type="text" name="compatible" value="${ POST.tags | escape }" id="compatible" />
+            <label for="tags">Tags <span class="sub">(recommended)</span></label>
+            <input type="text" name="tags" value="${ POST.tags | escape }" id="tags" />
             <br />
             <span class="sub">Comma-seperated.</span>
         </p>

@@ -7,7 +7,12 @@
             '|/view/([^/]+)/([0-9]+)/|' => '/?action=view&url=$1&version=$2',
             '|/view/([^/]+)/|' => '/?action=view&url=$1',
             '|/note/([0-9]+)/|' => '/?action=note&id=$1',
-            '|/new_version/([^/]+)/|' => '/?action=new_version&url=$1'
+            '|/new_version/([^/]+)/|' => '/?action=new_version&url=$1',
+            '|/edit_version/([^/]+)/|' => '/?action=edit_version&id=$1',
+            '|/delete_version/([^/]+)/|' => '/?action=delete_version&id=$1',
+            '|/new_extension/([^/]+)/|' => '/?action=new_extension&type=$1',
+            '|/edit_extension/([^/]+)/|' => '/?action=edit_extension&id=$1',
+            '|/delete_extension/([^/]+)/|' => '/?action=delete_extension&id=$1',
             '|/type/([^/]+)/|' => '/?action=type&url=$1'
         );
 
@@ -187,6 +192,9 @@
 
             $type = oneof(@$_GET['type'], "module");
             $type = new Type(array("url" => $type));
+            if ($type->no_results)
+                error(__("Error"), __("Invalid type specified.", "extend"));
+
             $this->display("extend/new_extension", array("type" => $type), "Add ".$type->name);
         }
 
@@ -258,10 +266,49 @@
 
             $type = new Type($_POST['type_id']);
 
+            $visitor = Visitor::current();
+
+            # Add the MIT license if no license is specified
+            $zip = new ZipArchive;
+            if ($zip->open($_FILES['extension']['tmp_name']) === true
+                and $zip->locateName("LICENSE") === false) {
+                $header = "Copyright (c) ".date("Y")." ".oneof($visitor->full_name, $visitor->login);
+                $mit = <<<EOF
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+Except as contained in this notice, the name(s) of the above
+copyright holders shall not be used in advertising or otherwise
+to promote the sale, use or other dealings in this Software
+without prior written authorization.
+EOF;
+
+                $zip->addFromString("LICENSE", $header."\n\n".$mit."\n");
+                $zip->close();
+            }
+
             $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($type->url));
             $image = upload($_FILES['image'], null, "previews/".pluralize($type->url));
 
-            $extension = Extension::add($_POST['name']);
+            $extension = Extension::add($_POST['name'], null, null, $type);
             $version = Version::add(
                 $_POST['number'],
                 $_POST['description'],
@@ -271,8 +318,7 @@
                 $image,
                 0,
                 0,
-                $extension,
-                $type
+                $extension
             );
 
             $files = array();
@@ -303,6 +349,45 @@
                 Flash::warning(__("Please list the Chyrp versions you know to be compatible with this extension.", "extend"), $_SESSION['redirect_to']);
 
             $extension = new Extension($_POST['extension_id']);
+
+            $visitor = Visitor::current();
+
+            # Add the MIT license if no license is specified
+            $zip = new ZipArchive;
+            if ($zip->open($_FILES['extension']['tmp_name']) === true
+                and $zip->locateName("LICENSE") === false) {
+                $header = "Copyright (c) ".date("Y")." ".oneof($visitor->full_name, $visitor->login);
+                $mit = <<<EOF
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+Except as contained in this notice, the name(s) of the above
+copyright holders shall not be used in advertising or otherwise
+to promote the sale, use or other dealings in this Software
+without prior written authorization.
+EOF;
+
+                $zip->addFromString("LICENSE", $header."\n\n".$mit."\n");
+                $zip->close();
+            }
 
             $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($extension->type->url));
             $image = upload($_FILES['image'], null, "previews/".pluralize($extension->type->url));
@@ -452,6 +537,22 @@
                            _f("Delete &#8220;%s&#8221;", array(fix($extension->title)), "extend"));
         }
 
+        public function delete_version() {
+            if (!isset($_GET['id']))
+                error(__("Error"), __("No version ID specified.", "extend"));
+
+            $version = new Version($_GET['id']);
+            if ($version->no_results)
+                error(__("Error"), __("Invalid extension ID specified.", "extend"));
+
+            if (!$version->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this extension.", "extend"));
+
+            $this->display("extend/version/delete",
+                           array("extension_version" => $version),
+                           __("Delete Version", "extend"));
+        }
+
         public function destroy_note() {
             if (!isset($_POST['note_id']))
                 error(__("Error"), __("No note ID specified.", "extend"));
@@ -482,6 +583,22 @@
             Extension::delete($extension->id);
 
             Flash::notice(__("Extension deleted.", "extend"), $extension->type->url());
+        }
+
+        public function destroy_version() {
+            if (!isset($_POST['version_id']))
+                error(__("Error"), __("No version ID specified.", "extend"));
+
+            $version = new Version($_POST['version_id']);
+            if ($version->no_results)
+                error(__("Error"), __("Invalid version ID specified.", "extend"));
+
+            if (!$version->deletable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this version.", "extend"));
+
+            Version::delete($version->id);
+
+            Flash::notice(__("Version deleted.", "extend"), $version->extension->url());
         }
 
         public function parse($route) {
@@ -564,6 +681,11 @@
             if ($route->arg[0] == "new_version") {
                 $_GET['url'] = $route->arg[1];
                 return $route->action = "new_version";
+            }
+
+            if (in_array($route->arg[0], array("edit_version", "delete_version"))) {
+                $_GET['id'] = $route->arg[1];
+                return $route->action = $route->arg[0];
             }
 
             # Searching

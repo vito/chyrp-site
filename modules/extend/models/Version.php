@@ -208,6 +208,9 @@
             foreach ($version->attachments as $attachment)
                 Attachment::delete($attachment->id);
 
+            @unlink(uploaded($this->filename, true));
+            @unlink(uploaded($this->preview, true));
+
             parent::destroy(get_class(), $id);
         }
 
@@ -221,8 +224,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group->can("delete_version")) or
-                   ($user->group->can("delete_own_version") and $this->user_id == $user->id);
+            return ($user->group->can("edit_extension")) or
+                   ($user->group->can("edit_own_extension") and $this->user_id == $user->id);
         }
 
         /**
@@ -235,8 +238,8 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group->can("edit_version")) or
-                   ($user->group->can("edit_own_version") and $this->user_id == $user->id);
+            return ($user->group->can("edit_extension")) or
+                   ($user->group->can("edit_own_extension") and $this->user_id == $user->id);
         }
 
         /**
@@ -300,7 +303,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=edit_version&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'version_edit_link edit_link" id="version_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("edit_version/".$this->id).'" title="Edit" class="'.($classes ? $classes." " : '').'version_edit_link edit_link" id="version_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -319,7 +322,7 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=delete_version&amp;id='.$this->id.'" title="Delete" class="version_delete_link delete_link" id="'.($classes ? $classes." " : '').'version_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("delete_version/".$this->id).'" title="Delete" class="version_delete_link delete_link" id="'.($classes ? $classes." " : '').'version_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         private static function link_tags($tags) {

@@ -51,8 +51,8 @@ $(function(){
 		$(this).html($(this).data("text"));
 	});
 
-    $(".add-extension a.toggle").click(function(){
-        $(".add-extension ul").slideToggle("fast");
+    $(".big a.toggle").click(function(){
+        $(".big ul").slideToggle("fast");
         return false;
     });
 

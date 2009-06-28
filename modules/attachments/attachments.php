@@ -42,7 +42,7 @@
                 error(__("Error"), __("Invalid attachment ID specified.", "attachments"));
 
             if (!$attachment->deletable())
-                error(__("Access Denied"), __("You cannot delete this attachment.", "attachments"));
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this attachment.", "attachments"));
 
             Attachment::delete($attachment->id);
 

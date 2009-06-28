@@ -21,6 +21,8 @@ $extension.name
     </h1>
     <div class="content">
         <ul class="info">
+            ${ extension.latest_version.delete_link("delete", '<li class="right">', '</li>') }
+            ${ extension.latest_version.edit_link("edit", '<li class="right">', '</li>') }
             <li>Compatible with: <strong>${ extension_version.compatible | join("</strong>, <strong>") }</strong></li>
             <li>Loves: <strong>$extension_version.loves</strong></li>
             <li>Downloads: <strong>$extension_version.downloads</strong></li>
