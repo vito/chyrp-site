@@ -2,8 +2,8 @@
     class ProgressController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.
-        public $urls = array("|/milestone/([^/]+)/|" => '/?action=milestone&amp;id=$1',
-                             "|/ticket/([^/]+)/|"    => '/?action=ticket&amp;url=$1');
+        public $urls = array("|/milestone/([^/]+)/|" => '/?action=milestone&id=$1',
+                             "|/ticket/([^/]+)/|"    => '/?action=ticket&url=$1');
 
         # Boolean: $displayed
         # Has anything been displayed?

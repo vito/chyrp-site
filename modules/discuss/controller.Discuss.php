@@ -2,8 +2,8 @@
     class DiscussController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.
-        public $urls = array("|/forum/([^/]+)/|" => '/?action=forum&amp;url=$1',
-                             "|/topic/([^/]+)/|" => '/?action=topic&amp;url=$1');
+        public $urls = array("|/forum/([^/]+)/|" => '/?action=forum&url=$1',
+                             "|/topic/([^/]+)/|" => '/?action=topic&url=$1');
 
         # Boolean: $displayed
         # Has anything been displayed?

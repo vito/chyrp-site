@@ -64,7 +64,7 @@
         static function delete($attachment_id, $file = true) {
             if ($file) {
                 $attachment = new self($attachment_id);
-                unlink(uploaded($attachment->path, true));
+                @unlink(uploaded($attachment->path, true));
             }
 
             parent::destroy(get_class(), $attachment_id);
@@ -80,6 +80,23 @@
                 return;
 
             echo '<img src="'.Config::current()->chyrp_url.'/includes/thumb.php?file=../uploads/'.$this->path.'&amp;max_width='.$width.'&amp;max_height='.$height.'" class="thumbnail" alt="attachment" />';
+        }
+
+        public function deletable($user = null) {
+            if ($this->no_results)
+                return false;
+
+            return $this->entity->editable($user);
+        }
+
+        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
+            if (!$this->deletable())
+                return false;
+
+            fallback($text, __("Delete"));
+
+            $name = strtolower(get_class($this));
+            echo $before.'<a href="'.url("delete_attachment/".$this->id, MainController::current()).'" title="Delete" class="'.($classes ? $classes." " : '').$name.'_delete_link delete_link" id="'.$name.'_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }
 

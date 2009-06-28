@@ -205,6 +205,9 @@
             foreach ($version->notes as $note)
                 Note::delete($note->id);
 
+            foreach ($version->attachments as $attachment)
+                Attachment::delete($attachment->id);
+
             parent::destroy(get_class(), $id);
         }
 

@@ -1,0 +1,38 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+<h1>Edit Note</h1>
+<form action="{% url "update_note" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <fieldset>
+        <p>
+            <label for="body">${ "Body" | translate("extend") }</label>
+            <textarea name="body" rows="8" cols="100%">${ note.body | escape }</textarea>
+        </p>
+
+        <div id="attachments">
+            <label for="attachment">${ "Attachments" | translate("attachments") }</label>
+
+            <div class="fields">
+                {% if message.attachments %}
+                <div class="attachments">
+                    <ul>
+                        {% for attachment in message.attachments %}
+                        <li>
+                            $attachment.thumbnail
+                            <a href="${ attachment.path | uploaded }">$attachment.filename</a> $attachment.delete_link
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments .fields').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
+            </div>
+        </div>
+
+        <p><input type="submit" value="Continue &rarr;"></p>
+
+        <input type="hidden" name="note_id" value="$note.id" id="note_id" />
+    </fieldset>
+</form>
+{% endblock %}

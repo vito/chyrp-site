@@ -175,8 +175,8 @@
         static function delete($id) {
             $extension = new self($id);
 
-            foreach ($extension->notes as $note)
-                Note::delete($note->id);
+            foreach ($extension->versions as $version)
+                Version::delete($version->id);
 
             parent::destroy(get_class(), $id);
         }

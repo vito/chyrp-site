@@ -3,11 +3,12 @@
         # Array: $urls
         # An array of clean URL => dirty URL translations.
         public $urls = array(
-            '|/view/([^/]+)/([0-9]+)/page/([0-9]+)/|' => '/?action=view&amp;url=$1&amp;version=$2&amp;page=$3',
-            '|/view/([^/]+)/([0-9]+)/|' => '/?action=view&amp;url=$1&amp;version=$2',
-            '|/view/([^/]+)/|' => '/?action=view&amp;url=$1',
-            '|/note/([0-9]+)/|' => '/?action=note&amp;id=$1',
+            '|/view/([^/]+)/([0-9]+)/page/([0-9]+)/|' => '/?action=view&url=$1&version=$2&page=$3',
+            '|/view/([^/]+)/([0-9]+)/|' => '/?action=view&url=$1&version=$2',
+            '|/view/([^/]+)/|' => '/?action=view&url=$1',
+            '|/note/([0-9]+)/|' => '/?action=note&id=$1',
             '|/new_version/([^/]+)/|' => '/?action=new_version&url=$1'
+            '|/type/([^/]+)/|' => '/?action=type&url=$1'
         );
 
         # Boolean: $displayed
@@ -462,12 +463,9 @@
             if (!$note->deletable())
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this note.", "extend"));
 
-            if (empty($note->changes))
-                Note::delete($note->id);
-            else
-                $note->update(""); # If changes were made, just clear the body instead of altering history.
+            Note::delete($note->id);
 
-            Flash::notice(__("Note deleted.", "extend"), $note->extension->url());
+            Flash::notice(__("Note deleted.", "extend"), $note->version->url());
         }
 
         public function destroy_extension() {
@@ -483,7 +481,7 @@
 
             Extension::delete($extension->id);
 
-            Flash::notice(__("Extension deleted.", "extend"), $extension->milestone->url());
+            Flash::notice(__("Extension deleted.", "extend"), $extension->type->url());
         }
 
         public function parse($route) {

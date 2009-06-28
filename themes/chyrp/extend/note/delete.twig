@@ -1,0 +1,15 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+<h1>Are you sure you want to delete this note?</h1>
+<form action="{% url "destroy_note" %}" method="post" accept-charset="utf-8">
+    <fieldset>
+        <h3>Excerpt</h3>
+        ${ note.body | truncate(500) }
+
+        <p><input type="submit" value="Continue &rarr;" /></p> or <a href="$note.url">Cancel</a>
+
+        <input type="hidden" name="note_id" value="$note.id" id="note_id" />
+    </fieldset>
+</form>
+{% endblock %}

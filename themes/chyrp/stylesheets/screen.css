@@ -649,7 +649,7 @@ p {
                         color: #fff;
             }
             #extend .extension .content .preview {
-                margin: 0 0 1em 1em;
+                margin: 0 0 0 1em;
                 width: 20em;
                 height: 13.3em;
                 float: right;
