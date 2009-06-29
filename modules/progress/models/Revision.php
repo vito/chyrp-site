@@ -222,8 +222,6 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-
             if ($ticket) {
                 $offset = 1;
                 foreach ($this->ticket->revisions as $revision)
@@ -233,15 +231,10 @@
                         break;
 
                 $page = ceil($offset / 25); # TODO: per-page config
-                return ($config->clean_urls) ?
-                           url("ticket/".$this->ticket->url."/page/".$page)."#revision_".$this->id :
-                           $config->url."/progress/?action=ticket&amp;url=".urlencode($this->ticket->url)
-                               ."&amp;page=".$page."#revision_".$this->id ;
+                return url("ticket/".$this->ticket->url."/page/".$page, ProgressController::current())."#revision_".$this->id;
             }
 
-            return ($config->clean_urls) ?
-                       url("revision/".$this->id) :
-                       $config->url."/progress/?action=revision&amp;id=".$this->id ;
+            return url("revision/".$this->id, ProgressController::current());
         }
 
         /**
@@ -260,7 +253,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=edit_revision&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'revision_edit_link edit_link" id="revision_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("edit_revision/".$this->id, ProgressController::current()).'" title="Edit" class="'.($classes ? $classes." " : '').'revision_edit_link edit_link" id="revision_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -279,6 +272,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=delete_revision&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'revision_delete_link delete_link" id="revision_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("delete_revision/".$this->id, ProgressController::current()).'" title="Delete" class="'.($classes ? $classes." " : '').'revision_delete_link delete_link" id="revision_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

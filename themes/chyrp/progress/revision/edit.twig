@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Edit Revision</h1>
-<form action="{% url "progress/update_revision" %}" method="post" accept-charset="utf-8" enctype="mulitpart/form-data">
+<form action="{% url "update_revision" %}" method="post" accept-charset="utf-8" enctype="mulitpart/form-data">
     <p>
         <label for="body">Body</label>
         <textarea name="body" rows="8" cols="100%">${ revision.body | escape }</textarea>

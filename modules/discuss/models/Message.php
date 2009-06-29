@@ -206,8 +206,6 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-
             if ($topic) {
                 $offset = 1;
                 foreach ($this->topic->messages as $message)
@@ -217,15 +215,10 @@
                         break;
 
                 $page = ceil($offset / 25); # TODO: per-page config
-                return ($config->clean_urls) ?
-                           url("topic/".$this->topic->url."/page/".$page)."#message_".$this->id :
-                           $config->url."/discuss/?action=topic&amp;url=".urlencode($this->topic->url)
-                               ."&amp;page=".$page."#message_".$this->id ;
+                return url("topic/".$this->topic->url."/page/".$page, DiscussController::current())."#message_".$this->id;
             }
 
-            return ($config->clean_urls) ?
-                       url("message/".$this->id) :
-                       $config->url."/discuss/?action=message&amp;id=".$this->id ;
+            return url("message/".$this->id, DiscussController::current());
         }
 
         /**
@@ -243,7 +236,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=edit_message&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("edit_message/".$this->id, DiscussController::current()).'" title="Edit" class="'.($classes ? $classes." " : '').'message_edit_link edit_link" id="message_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -261,6 +254,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/discuss/?action=delete_message&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("delete_message/".$this->id, DiscussController::current()).'" title="Delete" class="'.($classes ? $classes." " : '').'message_delete_link delete_link" id="message_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

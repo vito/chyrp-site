@@ -1,7 +1,11 @@
 {% extends "content/post.twig" %}
 
 {% block content %}
-                        ${ feathers['video'].embed_tag_for(post, 440) }
-                        <br />
-                        ${ post.caption | read_more }
+<div class="block">
+    ${ feathers['video'].embed_tag_for(post, 440) }
+    <div class="caption">
+        ${ post.caption | read_more }
+    </div>
+</div>
+<div class="clear"></div>
 {% endblock %}

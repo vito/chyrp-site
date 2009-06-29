@@ -1,7 +1,27 @@
-                    {% if post.first_of_day %}
-                    <div class="date">${ post.created_at | strftime("%B %d" | translate) }</div>
-                    {% endif %}
                     <div class="post $post.feather{% if post.pinned %} pinned{% endif %}" id="post_$post.id">
+                        <ul class="info">
+                            {% if post.first_of_day or post.pinned %}
+                            <li><h2>${ post.created_at | strftime("%B %d" | translate) }</h2></li>
+                            {% endif %}
+                            <li><span class="sub">at <strong><a href="$post.url">${ post.created_at | strftime("%I:%M %p" | translate) }</a></strong></span></li>
+                            {% if enabled_modules.categorize and post.category.id != 0 %}
+                            <li><a href="$post.category.url" rel="tag">$post.category.name</a></li>
+                            {% endif %}
+                            {% if enabled_modules.comments %}
+                            <li><a href="$post.url#comments">${ "%s Comment" | translate_plural("%s Comments", post.comment_count) | format(post.comment_count) }</a></li>
+                            {% endif %}
+                            {% if post.linked_tags | length > 0 %}
+                            <li>${ "Tags" | translate }: ${ post.linked_tags | join(", ") }</li>
+                            {% endif %}
+                            {% if post.editable or post.deletable %}
+                            <li>
+                                <span class="controls">
+                                    ${ post.edit_link("edit") }
+                                    ${ post.delete_link("delete" | translate, " | ") }
+                                </span>
+                            </li>
+                            {% endif %}
+                        </ul>
                         {% if post.pinned %}<span class="pinned_text">${ "!" | translate }</span>{% endif %}
                         {% block content %}{% endblock %}
                         {% if route.action == "view" and post.paginated and post.paginated.pages > 1 %}
@@ -12,29 +32,7 @@
                         {% endif %}
                         <div class="clear"></div>
                         <span class="info">
-                            {% if post.pinned %}
-                            <strong><a href="$post.url">${ post.created_at | strftime("%B %e @ %I:%M %p" | translate) }</a></strong>
-                            {% else %}
-                            <strong><a href="$post.url">${ post.created_at | strftime("%I:%M %p" | translate) }</a></strong>
-                            {% endif %}
-                            {% if enabled_modules.categorize and post.category.id != 0 %}
-                            |
-                            <a href="$post.category.url" rel="tag">$post.category.name</a>
-                            {% endif %}
-                            {% if enabled_modules.comments %}
-                            |
-                            <a href="$post.url#comments">${ "%s Comment" | translate_plural("%s Comments", post.comment_count) | format(post.comment_count) }</a>
-                            {% endif %}
-                            {% if post.linked_tags | length > 0 %}
-                            |
-                            ${ "Tags" | translate }: ${ post.linked_tags | join(", ") }
-                            {% endif %}
                         </span>
-                        {% if post.editable or post.deletable %}
-                        <span class="controls">
-                            $post.edit_link
-                            ${ post.delete_link("Delete" | translate, " | ") }
-                        </span>
-                        {% endif %}
                         <div class="clear"></div>
                     </div>
+                    <div class="clear"></div>

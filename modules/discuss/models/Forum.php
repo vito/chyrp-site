@@ -171,11 +171,7 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-            if (!$config->clean_urls)
-                return $config->url."/discuss/?action=forum&amp;url=".urlencode($this->url);
-
-            return url("forum/".$this->url);
+            return url("forum/".$this->url, DiscussController::current());
         }
 
         /**

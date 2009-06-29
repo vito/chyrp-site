@@ -211,10 +211,10 @@
                         break;
 
                 $page = ceil($offset / 25); # TODO: per-page config
-                return url("view/".$this->version->extension->url."/".$this->version->id."/page/".$page)."#note_".$this->id;
+                return url("view/".$this->version->extension->url."/".$this->version->id."/page/".$page, ExtendController::current())."#note_".$this->id;
             }
 
-            return url("note/".$this->id);
+            return url("note/".$this->id, ExtendController::current());
         }
 
         /**
@@ -233,7 +233,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=edit_note&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'note_edit_link edit_link" id="note_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("edit_note/".$this->id, ExtendController::current()).'" title="Edit" class="'.($classes ? $classes." " : '').'note_edit_link edit_link" id="note_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -252,6 +252,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=delete_note&amp;id='.$this->id.'" title="Delete" class="'.($classes ? $classes." " : '').'note_delete_link delete_link" id="note_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("delete_note/".$this->id, ExtendController::current()).'" title="Delete" class="'.($classes ? $classes." " : '').'note_delete_link delete_link" id="note_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

@@ -34,34 +34,39 @@ ${ trigger.call("head") }
         </div>
         {% endif %}
 
+        <form class="search" action="{% url "/" %}" method="get">
+            <input type="hidden" name="action" value="search" />
+            <input type="text" name="query" id="query" />
+        </form>
+
         <ul id="navigation">
-            <li class="first">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
+            <li class="first selected">
+                <h1><a href="$site.url">Chyrp</a></h1>
                 <a href="$site.url">Home</a>
             </li>
             <li class="second">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "download" %}">Download</a>
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "download" in Main %}">Download</a>
             </li>
             <li class="third">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "/discuss" %}">Discuss</a>
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "index" in Discuss %}">Discuss</a>
             </li>
             <li class="fourth">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "/progress" %}">Progress</a>
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "index" in Progress %}">Progress</a>
             </li>
-            <li class="fifth selected">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "/extend" %}">Extend</a>
+            <li class="fifth">
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "index" in Extend %}">Extend</a>
             </li>
             <li class="sixth">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "code" %}">Code</a>
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "code" in Main %}">Code</a>
             </li>
             <li class="seventh">
-                <h1><a href="$site.url">Chyrp:&nbsp;Extend</a></h1>
-                <a href="{% url "blog" %}">Blog</a>
+                <h1><a href="$site.url">Chyrp</a></h1>
+                <a href="{% url "blog" in Main %}">Blog</a>
             </li>
         </ul>
 

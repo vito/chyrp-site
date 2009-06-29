@@ -2,8 +2,15 @@
     class DiscussController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.
-        public $urls = array("|/forum/([^/]+)/|" => '/?action=forum&url=$1',
-                             "|/topic/([^/]+)/|" => '/?action=topic&url=$1');
+        public $urls = array(
+            "|/forum/([^/]+)/|" => '/?action=forum&url=$1',
+            "|/topic/([^/]+)/page/([0-9]+)/|" => '/?action=topic&url=$1&page=$2',
+            "|/topic/([^/]+)/|" => '/?action=topic&url=$1',
+            "|/edit_topic/([0-9]+)/|" => '/?action=edit_topic&id=$1',
+            "|/delete_topic/([0-9]+)/|" => '/?action=delete_topic&id=$1',
+            "|/edit_message/([0-9]+)/|" => '/?action=edit_message&id=$1',
+            "|/delete_message/([0-9]+)/|" => '/?action=delete_message&id=$1'
+        );
 
         # Boolean: $displayed
         # Has anything been displayed?
@@ -80,6 +87,11 @@
             if ($route->arg[0] == "topic") {
                 $_GET['url'] = $route->arg[1];
                 return $route->action = "topic";
+            }
+
+            if (in_array($route->arg[0], array("edit_topic", "delete_topic", "edit_message", "delete_message"))) {
+                $_GET['id'] = $route->arg[1];
+                return $route->action = $route->arg[0];
             }
 
             # Searching
@@ -458,7 +470,10 @@
                 return $this->twig->getTemplate($file.".twig")->display($this->context);
             } catch (Exception $e) {
                 $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
-                error(__("Error"), $prettify, debug_backtrace());
+                $trace = debug_backtrace();
+                $twig = array("file" => $e->filename, "line" => $e->lineno);
+                array_unshift($trace, $twig);
+                error(__("Error"), $prettify, $trace);
             }
         }
 

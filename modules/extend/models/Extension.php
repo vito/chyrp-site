@@ -251,44 +251,6 @@
 
             $config = Config::current();
 
-            return url("view/".$this->url);
-        }
-
-        /**
-         * Function: edit_link
-         * Outputs an edit link for the extension, if the <User.can> edit_extension.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         *     $classes - Extra CSS classes for the link, space-delimited.
-         */
-        public function edit_link($text = null, $before = null, $after = null, $classes = "") {
-            if (!$this->editable())
-                return false;
-
-            fallback($text, __("Edit"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=edit_extension&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'extension_edit_link edit_link" id="extension_edit_'.$this->id.'">'.$text.'</a>'.$after;
-        }
-
-        /**
-         * Function: delete_link
-         * Outputs a delete link for the extension, if the <User.can> delete_extension.
-         *
-         * Parameters:
-         *     $text - The text to show for the link.
-         *     $before - If the link can be shown, show this before it.
-         *     $after - If the link can be shown, show this after it.
-         *     $classes - Extra CSS classes for the link, space-delimited.
-         */
-        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
-            if (!$this->deletable())
-                return false;
-
-            fallback($text, __("Delete"));
-
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/extend/?action=delete_extension&amp;id='.$this->id.'" title="Delete" class="extension_delete_link delete_link" id="'.($classes ? $classes." " : '').'extension_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            return url("view/".$this->url, ExtendController::current());
         }
     }

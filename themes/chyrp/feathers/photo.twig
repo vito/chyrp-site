@@ -1,7 +1,9 @@
 {% extends "content/post.twig" %}
 
 {% block content %}
-                        ${ feathers['photo'].image_link(post, 434) }
-                        <div class="clear"></div>
-                        ${ post.caption | read_more }
+<div class="block">
+    ${ feathers['photo'].image_link(post, 434) }
+    ${ post.caption | read_more }
+</div>
+<div class="clear"></div>
 {% endblock %}

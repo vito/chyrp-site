@@ -2,8 +2,16 @@
     class ProgressController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.
-        public $urls = array("|/milestone/([^/]+)/|" => '/?action=milestone&id=$1',
-                             "|/ticket/([^/]+)/|"    => '/?action=ticket&url=$1');
+        public $urls = array(
+            "|/milestone/([0-9]+)/|" => '/?action=milestone&id=$1',
+            "|/ticket/([^/]+)/page/([0-9]+)/|" => '/?action=ticket&url=$1&page=$2',
+            "|/ticket/([^/]+)/|" => '/?action=ticket&url=$1',
+            "|/search/([^/]+)/|" => '/?action=search&query=$1',
+            "|/edit_ticket/([0-9]+)/|" => '/?action=edit_ticket&id=$1',
+            "|/delete_ticket/([0-9]+)/|" => '/?action=delete_ticket&id=$1',
+            "|/edit_revision/([0-9]+)/|" => '/?action=edit_revision&id=$1',
+            "|/delete_revision/([0-9]+)/|" => '/?action=delete_revision&id=$1'
+        );
 
         # Boolean: $displayed
         # Has anything been displayed?
@@ -71,9 +79,9 @@
             }
 
             # Viewing a milestone
-            if ($route->arg[0] == "milestone") {
+            if (in_array($route->arg[0], array("milestone", "edit_ticket", "delete_ticket", "edit_revision", "delete_revision"))) {
                 $_GET['id'] = $route->arg[1];
-                return $route->action = "milestone";
+                return $route->action = $route->arg[0];
             }
 
             # Viewing a ticket
@@ -180,6 +188,19 @@
             $this->display("progress/revision/view",
                            array("revision" => $revision),
                            __("Revision", "progress"));
+        }
+
+        public function search() {
+            fallback($_GET['query'], "");
+            $config = Config::current();
+
+            if ($config->clean_urls and
+                substr_count($_SERVER['REQUEST_URI'], "?") and
+                !substr_count($_SERVER['REQUEST_URI'], "%2F")) # Searches with / and clean URLs = server 404
+                redirect("search/".urlencode($_GET['query'])."/");
+
+            if (empty($_GET['query']))
+                return Flash::warning(__("Please enter a search term."));
         }
 
         public function add_revision() {
@@ -503,7 +524,10 @@
                 return $this->twig->getTemplate($file.".twig")->display($this->context);
             } catch (Exception $e) {
                 $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
-                error(__("Error"), $prettify, debug_backtrace());
+                $trace = debug_backtrace();
+                $twig = array("file" => $e->filename, "line" => $e->lineno);
+                array_unshift($trace, $twig);
+                error(__("Error"), $prettify, $trace);
             }
         }
 

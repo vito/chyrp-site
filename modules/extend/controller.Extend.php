@@ -743,7 +743,7 @@ EOF;
                 return $route->action = "new_version";
             }
 
-            if (in_array($route->arg[0], array("edit_version", "delete_version"))) {
+            if (in_array($route->arg[0], array("edit_version", "delete_version", "edit_note", "delete_note"))) {
                 $_GET['id'] = $route->arg[1];
                 return $route->action = $route->arg[0];
             }

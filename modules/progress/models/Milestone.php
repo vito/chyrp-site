@@ -170,11 +170,7 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-            if (!$config->clean_urls)
-                return $config->url."/progress/?action=milestone&amp;id=".$this->id;
-
-            return url("milestone/".$this->id);
+            return url("milestone/".$this->id, ProgressController::current());
         }
 
         /**

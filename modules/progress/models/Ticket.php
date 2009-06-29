@@ -258,11 +258,7 @@
             if ($this->no_results)
                 return false;
 
-            $config = Config::current();
-
-            return ($config->clean_urls) ?
-                       url("ticket/".$this->url) :
-                       $config->url."/progress/?action=ticket&amp;url=".urlencode($this->url) ;
+            return url("ticket/".$this->url, ProgressController::current());
         }
 
         /**
@@ -281,7 +277,7 @@
 
             fallback($text, __("Edit"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=edit_ticket&amp;id='.$this->id.'" title="Edit" class="'.($classes ? $classes." " : '').'ticket_edit_link edit_link" id="ticket_edit_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("edit_ticket/".$this->id, ProgressController::current()).'" title="Edit" class="'.($classes ? $classes." " : '').'ticket_edit_link edit_link" id="ticket_edit_'.$this->id.'">'.$text.'</a>'.$after;
         }
 
         /**
@@ -300,6 +296,6 @@
 
             fallback($text, __("Delete"));
 
-            echo $before.'<a href="'.Config::current()->chyrp_url.'/progress/?action=delete_ticket&amp;id='.$this->id.'" title="Delete" class="ticket_delete_link delete_link" id="'.($classes ? $classes." " : '').'ticket_delete_'.$this->id.'">'.$text.'</a>'.$after;
+            echo $before.'<a href="'.url("delete_ticket/".$this->id, ProgressController::current()).'" title="Delete" class="ticket_delete_link delete_link" id="'.($classes ? $classes." " : '').'ticket_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }
