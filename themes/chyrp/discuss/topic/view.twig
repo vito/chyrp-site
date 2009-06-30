@@ -51,12 +51,21 @@ $topic.title
     </div>
     <div class="clear"></div>
 </div>
+
 {% paginate 10 messages in topic.messages as message %}
 {% include "partials/message.twig" %}
 {% endpaginate %}
 
-${ messages.next_link }
-${ messages.prev_link }
+{% if messages.pages > 1 %}
+<div class="pagination">
+    $messages.prev_link
+    $messages.next_link
+    <span class="nums sub">
+        Page <strong>$messages.page</strong> of <strong>$messages.pages</strong>
+    </span>
+</div>
+{% endif %}
+
 
 {% if visitor.group.can("add_message") %}
 <br />

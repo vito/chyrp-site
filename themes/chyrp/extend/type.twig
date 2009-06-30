@@ -10,4 +10,14 @@
 {% paginate 25 extensions in type.extensions as extension %}
 {% include "partials/extension.twig" %}
 {% endpaginate %}
+
+{% if extensions.pages > 1 %}
+<div class="pagination">
+    $extensions.prev_link
+    $extensions.next_link
+    <span class="nums sub">
+        Page <strong>$extensions.page</strong> of <strong>$extensions.pages</strong>
+    </span>
+</div>
+{% endif %}
 {% endblock %}

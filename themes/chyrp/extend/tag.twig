@@ -11,6 +11,16 @@ Tag
 {% for ver in versions.paginated %}
 {% include "partials/version.twig" %}
 {% endfor %}
+
+{% if versions.pages > 1 %}
+<div class="pagination">
+    $versions.prev_link
+    $versions.next_link
+    <span class="nums sub">
+        Page <strong>$versions.page</strong> of <strong>$versions.pages</strong>
+    </span>
+</div>
+{% endif %}
 {% else %}
 <h1>${ "No Results" | translate }</h1>
 <p>${ "There are no versions tagged with \"%s\"." | translate | format(tag) }</p>

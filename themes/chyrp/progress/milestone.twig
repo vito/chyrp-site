@@ -22,8 +22,15 @@ $milestone.name{% if milestone.editable or milestone.deletable %} &ndash; $miles
     {% endpaginate %}
 </table>
 
-${ tickets.next_link }
-${ tickets.prev_link }
+{% if tickets.pages > 1 %}
+<div class="pagination">
+    $tickets.prev_link
+    $tickets.next_link
+    <span class="nums sub">
+        Page <strong>$tickets.page</strong> of <strong>$tickets.pages</strong>
+    </span>
+</div>
+{% endif %}
 
 {% if visitor.group.can("add_ticket") %}
 <h1>New Ticket</h1>

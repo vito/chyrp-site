@@ -22,6 +22,16 @@ Search
         {% include "partials/ticket.twig" %}
         {% endfor %}
     </table>
+
+    {% if tickets.pages > 1 %}
+    <div class="pagination">
+        $tickets.prev_link
+        $tickets.next_link
+        <span class="nums sub">
+            Page <strong>$tickets.page</strong> of <strong>$tickets.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if revisions.paginated %}
@@ -31,6 +41,16 @@ Search
         {% include "partials/revision.twig" %}
         {% endfor %}
     </ul>
+
+    {% if revisions.pages > 1 %}
+    <div class="pagination">
+        $revisions.prev_link
+        $revisions.next_link
+        <span class="nums sub">
+            Page <strong>$revisions.page</strong> of <strong>$revisions.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if milestones.paginated %}
@@ -38,6 +58,16 @@ Search
     {% for milestone in milestones.paginated %}
     {% include "partials/milestone.twig" %}
     {% endfor %}
+
+    {% if milestones.pages > 1 %}
+    <div class="pagination">
+        $milestones.prev_link
+        $milestones.next_link
+        <span class="nums sub">
+            Page <strong>$milestones.page</strong> of <strong>$milestones.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 {% else %}
     <h1>${ "No Results" | translate }</h1>

@@ -14,6 +14,16 @@ Search
     {% for extension in extensions.paginated %}
     {% include "partials/extension.twig" %}
     {% endfor %}
+
+    {% if extensions.pages > 1 %}
+    <div class="pagination">
+        $extensions.prev_link
+        $extensions.next_link
+        <span class="nums sub">
+            Page <strong>$extensions.page</strong> of <strong>$extensions.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if versions.paginated %}
@@ -21,6 +31,16 @@ Search
     {% for ver in versions.paginated %}
     {% include "partials/version.twig" %}
     {% endfor %}
+
+    {% if versions.pages > 1 %}
+    <div class="pagination">
+        $versions.prev_link
+        $versions.next_link
+        <span class="nums sub">
+            Page <strong>$versions.page</strong> of <strong>$versions.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if notes.paginated %}
@@ -30,6 +50,16 @@ Search
         {% include "partials/note.twig" %}
         {% endfor %}
     </ul>
+
+    {% if notes.pages > 1 %}
+    <div class="pagination">
+        $notes.prev_link
+        $notes.next_link
+        <span class="nums sub">
+            Page <strong>$notes.page</strong> of <strong>$notes.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 {% else %}
     <h1>${ "No Results" | translate }</h1>

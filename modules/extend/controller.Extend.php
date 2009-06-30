@@ -384,7 +384,7 @@ EOF;
             }
 
             $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($type->url));
-            $image = upload($_FILES['image'], null, "previews/".pluralize($type->url));
+            $image = ($_FILES['image']['error'] == 0) ? upload($_FILES['image'], null, "previews/".pluralize($type->url)) : "" ;
 
             $extension = Extension::add($_POST['name'], null, null, $type);
             $version = Version::add(

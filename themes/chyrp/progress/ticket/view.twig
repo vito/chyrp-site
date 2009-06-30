@@ -44,10 +44,17 @@ $ticket.title &ndash; $ticket.edit_link $ticket.delete_link
 {% include "partials/revision.twig" %}
     {% endpaginate %}
 </ul>
-{% endif %}
 
-${ revisions.next_link }
-${ revisions.prev_link }
+{% if revisions.pages > 1 %}
+<div class="pagination">
+    $revisions.prev_link
+    $revisions.next_link
+    <span class="nums sub">
+        Page <strong>$revisions.page</strong> of <strong>$revisions.pages</strong>
+    </span>
+</div>
+{% endif %}
+{% endif %}
 
 {% if visitor.group.can("add_revision") %}
 <h2>Revise Ticket</h2>

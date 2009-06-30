@@ -15,6 +15,16 @@ Search
     {% include "partials/forum.twig" %}
     {% endfor %}
     <div class="clear"></div>
+
+    {% if forums.pages > 1 %}
+    <div class="pagination">
+        $forums.prev_link
+        $forums.next_link
+        <span class="nums sub">
+            Page <strong>$forums.page</strong> of <strong>$forums.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if topics.paginated %}
@@ -25,6 +35,16 @@ Search
     {% for topic in topics.paginated %}
     {% include "partials/topic.twig" %}
     {% endfor %}
+
+    {% if topics.pages > 1 %}
+    <div class="pagination">
+        $topics.prev_link
+        $topics.next_link
+        <span class="nums sub">
+            Page <strong>$topics.page</strong> of <strong>$topics.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 
     {% if messages.paginated %}
@@ -38,6 +58,16 @@ Search
     {% for message in messages.paginated %}
     {% include "partials/message.twig" %}
     {% endfor %}
+
+    {% if messages.pages > 1 %}
+    <div class="pagination">
+        $messages.prev_link
+        $messages.next_link
+        <span class="nums sub">
+            Page <strong>$messages.page</strong> of <strong>$messages.pages</strong>
+        </span>
+    </div>
+    {% endif %}
     {% endif %}
 {% else %}
     <h1>${ "No Results" | translate }</h1>

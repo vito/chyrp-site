@@ -938,6 +938,23 @@ div#controls ul li.close a:hover {
 .add-attachment:active {
     background: #0a0a0a;
 }
+.pagination {
+    margin-bottom: 3em;
+    }
+    .pagination a {
+        padding: .5em;
+        background: #0f0f0f;
+    }
+    .pagination a.prev_link {
+        float: left;
+    }
+    .pagination a.next_link {
+        float: right;
+    }
+    .pagination .nums {
+        margin-left: .75em;
+        font-size: 1em;
+}
 .big {
     font-size: 1.5em;
     font-weight: bold;
