@@ -406,52 +406,50 @@ form.search {
         #discuss .topic .info {
             width: 18em;
             float: right;
-}
-#discuss.topic {
     }
-    #discuss.topic .topic-post {
+    #discuss .topic-post {
         margin: 0 0 3em;
         }
-        #discuss.topic .topic-post .message {
+        #discuss .topic-post .message {
             background: #0c0c0c;
         }
-        #discuss.topic .topic-post .attachments h5 {
+        #discuss .topic-post .attachments h5 {
             background: #0a0a0a;
         }
-        #discuss.topic .topic-post .attachments ul li {
+        #discuss .topic-post .attachments ul li {
             border-color: #111;
     }
-    #discuss.topic .post {
+    #discuss .post {
         margin: 0 0 1em;
     }
-    #discuss.topic .details {
+    #discuss .details {
         float: left;
         padding: .5em 1em 0 0;
         text-align: right;
         width: 15em;
         background: #111;
         }
-        #discuss.topic .details .gravatar-emblem {
+        #discuss .details .gravatar-emblem {
             border: .1em solid #0a0a0a;
             vertical-align: middle;
             margin: -.2em .125em 0 0;
         }
-        #discuss.topic .details ul {
+        #discuss .details ul {
             margin: 1em 0 0;
             color: #777;
             font-size: .9em;
             text-align: left;
             line-height: 1.25em;
             }
-            #discuss.topic .details ul li {
+            #discuss .details ul li {
                 list-style: none;
                 }
-                #discuss.topic .details ul li strong {
+                #discuss .details ul li strong {
                     font-weight: normal;
                     color: #fff;
 
     }
-    #discuss.topic .message {
+    #discuss .message {
         padding: .5em .8125em;
         margin: 0 0 0 16em;
         width: 52.3em;

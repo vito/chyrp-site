@@ -2,28 +2,6 @@
 
 {% block content %}
 {% for forum in forums %}
-<div class="forum">
-    <h2><a href="$forum.url">$forum.name</a></h2>
-    $forum.description
-    <div class="info">
-        <h4>Last Activity</h4>
-        <ul class="content">
-            {% if forum.last_activity %}
-            <li><a href="$forum.latest_activity.url" title="${ forum.latest_activity.title | escape(true) }">${ forum.latest_activity.title | truncate(100) }</a></li>
-            <li>${ forum.last_activity | relative }</li>
-            <li>by <a href="$forum.latest_activity.user.url">$forum.latest_activity.user.login</a></li>
-            {% else %}
-            <li>never</li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="info">
-        <h4>Statistics</h4>
-        <ul class="content">
-            <li>Topics: <strong>$forum.topic_count</strong></li>
-            <li>Messages: <strong>$forum.message_count</strong></li>
-        </ul>
-    </div>
-</div>
+{% include "partials/forum.twig" %}
 {% endfor %}
 {% endblock %}

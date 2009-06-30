@@ -11,6 +11,14 @@
         public $has_many   = array("messages",
                                    "attachments" => array("where" => array("entity_type" => "topic",
                                                                            "entity_id" => "(id)")));
+        public $has_one = array(
+            "latest_message" => array(
+                "model" => "message",
+                "where" => array("topic_id" => "(id)"),
+                "order" => array("created_at DESC", "id DESC"),
+                "limit" => 1
+            )
+        );
 
         /**
          * Function: __construct

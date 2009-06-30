@@ -1,0 +1,41 @@
+{% extends "layouts/discuss.twig" %}
+
+{% block content %}
+{% if forums.paginated or topics.paginated or messages.paginated %}
+    <h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>
+
+    {% if forums.paginated %}
+    <h2>Forums</h2>
+    {% for forum in forums.paginated %}
+    {% include "partials/forum.twig" %}
+    {% endfor %}
+    <div class="clear"></div>
+    {% endif %}
+
+    {% if topics.paginated %}
+    {% if forums.paginated %}
+    <br />
+    {% endif %}
+    <h2>Topics</h2>
+    {% for topic in topics.paginated %}
+    {% include "partials/topic.twig" %}
+    {% endfor %}
+    {% endif %}
+
+    {% if messages.paginated %}
+    {% if topics.paginated %}
+    <br />
+    <br />
+    {% elseif forums.paginated %}
+    <br />
+    {% endif %}
+    <h2>Messages</h2>
+    {% for message in messages.paginated %}
+    {% include "partials/message.twig" %}
+    {% endfor %}
+    {% endif %}
+{% else %}
+    <h1>${ "No Results" | translate }</h1>
+    <p>${ "Your search did not return any results." | translate }</p>
+{% endif %}
+{% endblock %}

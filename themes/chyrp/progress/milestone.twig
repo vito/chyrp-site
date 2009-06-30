@@ -16,27 +16,7 @@ $milestone.name{% if milestone.editable or milestone.deletable %} &ndash; $miles
         <th width="15%">Age</th>
     </tr>
     {% paginate 25 tickets in milestone.tickets as ticket %}
-    <tr class="{% if loop.index | even %}even{% else %}odd{% endif %}">
-        <td class="center">#$ticket.id</td>
-        <td><span class="$ticket.state">{% if ticket.done %}&radic; {% endif %}$ticket.state</span></td>
-        <td class="main">
-            <a href="$ticket.url">
-                {% if ticket.done %}<del>{% endif %}
-                    ${ ticket.title | escape }
-                {% if ticket.done %}</del>{% endif %}
-                <span class="sub">by <img class="gravatar-emblem" src="$ticket.user.gravatar?s=12&amp;d=identicon" alt="Gravatar" /> <strong>${ ticket.user.full_name | fallback(ticket.user.login) }</strong></span>
-            </a>
-        </td>
-        <td>
-            {% if not ticket.owner.no_results %}
-            <img class="gravatar-emblem" src="$ticket.owner.gravatar?s=16&amp;d=identicon" alt="Gravatar" />
-            ${ ticket.owner.full_name | fallback(ticket.owner.login) }
-            {% else %}
-            <span class="sub">(no one)</span>
-            {% endif %}
-        </td>
-        <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
-    </tr>
+    {% include "partials/ticket.twig" %}
     {% else %}
     <tr><td colspan="4">(none)</li>
     {% endpaginate %}

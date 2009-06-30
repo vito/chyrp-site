@@ -191,6 +191,60 @@
                            __("Message", "discuss"));
         }
 
+        public function search() {
+            fallback($_GET['query'], "");
+            $config = Config::current();
+
+            if ($config->clean_urls and
+                substr_count($_SERVER['REQUEST_URI'], "?") and
+                !substr_count($_SERVER['REQUEST_URI'], "%2F")) # Searches with / and clean URLs = server 404
+                redirect("search/".urlencode($_GET['query'])."/");
+
+            if (empty($_GET['query']))
+                return Flash::warning(__("Please enter a search term."));
+
+            list($where, $params) = keywords($_GET['query'], "name LIKE :query OR url LIKE :query", "forums");
+
+            $forums = Forum::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            list($where, $params) = keywords($_GET['query'], "title LIKE :query OR description LIKE :query OR url LIKE :query", "topics");
+
+            $topics = Topic::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            list($where, $params) = keywords($_GET['query'], "body LIKE :query", "messages");
+
+            $messages = Message::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            $this->display(
+                "discuss/search",
+                array(
+                    "forums" => new Paginator($forums, 25, "forums_page"),
+                    "topics" => new Paginator($topics, 25, "topics_pave"),
+                    "messages" => new Paginator($messages, 25, "messages_page"),
+                    "search" => $_GET['query']
+                ),
+                fix(_f("Search results for \"%s\"", $_GET['query']))
+            );
+        }
+
         public function add_message() {
             if (!Visitor::current()->group->can("add_message"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to add messages.", "discuss"));

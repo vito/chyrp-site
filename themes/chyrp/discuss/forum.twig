@@ -7,35 +7,11 @@ $forum.name
 
 {% block content %}
 <h1>$forum.name</h1>
-    {% paginate 25 topics in forum.topics as topic %}
-    <div class="topic">
-        <div class="title">
-            <h2><a href="$topic.url">${ topic.title | escape }</a></h2>
-            <strong>by <a href="$topic.user.url">$topic.user.login</a></strong>
-        </div>
-        <div class="info">
-            <h4>Last Message</h4>
-            <ul class="content">
-                {% if topic.last_message %}
-                <li><a href="$forum.latest_message.url" title="${ topic.latest_message.created_at | relative }">${ topic.latest_message.created_at | relative }</a></li>
-                <li>by <a href="$topic.latest_message.user.url">$topic.latest_message.user.login</a></li>
-                {% else %}
-                <li>never</li>
-                {% endif %}
-            </ul>
-        </div>
-        <div class="info">
-            <h4>Statistics</h4>
-            <ul class="content">
-                <li>Messages: <strong>$topic.message_count</strong></li>
-                <li>Views: <strong>$topic.view_count</strong></li>
-            </ul>
-        </div>
-        <div class="clear"></div>
-    </div>
-    {% else %}
-    <li>(none)</li>
-    {% endpaginate %}
+{% paginate 25 topics in forum.topics as topic %}
+{% include "partials/topic.twig" %}
+{% else %}
+<span class="sub">(none)</span>
+{% endpaginate %}
 
 ${ topics.next_link }
 ${ topics.prev_link }

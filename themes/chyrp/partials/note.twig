@@ -1,0 +1,30 @@
+        <li class="note">
+            <div class="user">
+                <span class="right">
+                    <a href="${ note.url(true) }">{% if route.action == "view" %}permalink{% else %}context{% endif %}</a>
+                    ${ note.edit_link("edit") }
+                    ${ note.delete_link("delete") }
+                </span>
+                <img src="$note.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
+                <span class="name">$note.user.login</span>
+            </div>
+
+            <div class="body">
+                $note.body
+            </div>
+
+            {% if note.attachments %}
+            <div class="attachments">
+                <h5>Attachments</h5>
+                <ul>
+                    {% for attachment in note.attachments %}
+                    <li>
+                        $attachment.thumbnail
+                        <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </li>
+
