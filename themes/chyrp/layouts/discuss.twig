@@ -34,7 +34,7 @@ ${ trigger.call("head") }
         </div>
         {% endif %}
 
-        <form class="search" action="{% url "/" %}" method="get">
+        <form class="search" action="{% url "/discuss" %}" method="get">
             <input type="hidden" name="action" value="search" />
             <input type="text" name="query" id="query" />
         </form>

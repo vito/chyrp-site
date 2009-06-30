@@ -13,71 +13,19 @@ $extension.name
 </div>
 {% endif %}
 
-<div class="extension">
-    <h1 style="background-color: #$extension.type.color">
-        <span class="version">$extension_version.number</span>
-        <strong><a href="$extension.url">$extension.name</a></strong>
-        <span class="author">by <strong>${ extension.user.full_name | fallback(extension.user.login) }</strong></span>
-    </h1>
-    <div class="content">
-        <ul class="info">
-            ${ extension.latest_version.delete_link("delete", '<li class="right">', '</li>') }
-            ${ extension.latest_version.edit_link("edit", '<li class="right">', '</li>') }
-            <li>Compatible with: <strong>${ extension_version.compatible | join("</strong>, <strong>") }</strong></li>
-            <li>Loves: <strong>$extension_version.loves</strong></li>
-            <li>Downloads: <strong>$extension_version.downloads</strong></li>
-            <li>Notes: <strong>$extension_version.note_count</strong></li>
-            <li>Last updated: <strong>${ extension_version.updated_at | fallback(extension_version.created_at) | relative }</strong></li>
-        </ul>
+{% include "partials/version.twig" %}
 
-        {% if extension_version.image %}
-        <a class="preview" href="${ extension_version.image | uploaded }" style="background-image: url('${ extension_version.image | uploaded }')"></a>
-        {% endif %}
-
-        $extension_version.description
-
-        {% if extension_version.attachments %}
-        <div class="attachments">
-            <h5>Attachments</h5>
-            <ul>
-                {% for attachment in extension_version.attachments %}
-                <li>
-                    $attachment.thumbnail
-                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-        <div class="clear"></div>
-        <div class="buttons">
-            <a class="colorize button" href="{% url "download/" ~ extension.textID ~ "/" ~ extension_version.id %}">Download</a>
-            <a class="colorize button" href="{% url "love/" ~ extension.textID ~ "/" ~ extension_version.id %}">
-                {% if extension_version.loved %}
-                Delove
-                {% else %}
-                Love
-                {% endif %}
-            </a>
-            <span class="tags">Tags: ${ extension_version.linked_tags | join(", ") | fallback("<span class=\"sub\">(none)</span>") }</span>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-    </div>
-</div>
-
-{% if extension_version.notes %}
+{% if ver.notes %}
 <h1>Notes</h1>
 <ul class="notes">
-    {% paginate 25 notes in extension_version.notes as note %}
+    {% paginate 25 notes in ver.notes as note %}
     <li class="note">
         <div class="user">
-            {% if note.editable or note.deletable %}
             <span class="right">
+                <a href="${ note.url(true) }">permalink</a>
                 ${ note.edit_link("edit") }
                 ${ note.delete_link("delete") }
             </span>
-            {% endif %}
             <img src="$note.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
             <span class="name">$note.user.login</span>
         </div>
@@ -125,7 +73,7 @@ $extension.name
 
         <p><input type="submit" value="Continue &rarr;"></p>
 
-        <input type="hidden" name="version_id" value="$extension_version.id" id="version_id" />
+        <input type="hidden" name="version_id" value="$ver.id" id="version_id" />
     </fieldset>
 </form>
 {% endif %}

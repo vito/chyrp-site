@@ -1,0 +1,29 @@
+<div class="extension">
+    <h1 style="background-color: #$ver.extension.type.color">
+        <span class="version">$ver.number</span>
+        <strong><a href="$ver.extension.url">$ver.extension.name</a></strong>
+        <span class="author">by <strong>${ ver.extension.user.full_name | fallback(ver.extension.user.login) }</strong></span>
+    </h1>
+    <div class="content">
+        <ul class="info">
+            ${ ver.delete_link("delete", '<li class="right">', '</li>') }
+            ${ ver.edit_link("edit", '<li class="right">', '</li>') }
+            <li>Compatible with: <strong>${ ver.compatible | join("</strong>, <strong>") }</strong></li>
+            <li>Loves: <strong>$ver.loves</strong></li>
+            <li>Downloads: <strong>$ver.downloads</strong></li>
+            <li>Notes: <strong>$ver.note_count</strong></li>
+            <li>Last updated: <strong>${ ver.updated_at | fallback(ver.created_at) | relative }</strong></li>
+        </ul>
+        <a class="preview" href="${ ver.image | uploaded }" style="background-image: url('${ ver.image | uploaded }')"></a>
+        $ver.description
+        <div class="clear"></div>
+        <div class="buttons">
+            <a class="colorize button" href="{% url "download/" ~ ver.extension.textID ~ "/" ~ ver.id %}">Download</a>
+            <a class="colorize button" href="{% url "love/" ~ ver.extension.textID ~ "/" ~ ver.id %}">Love</a>
+            <span class="tags">Tags: ${ ver.linked_tags | join(", ") | fallback("<span class=\"sub\">(none)</span>") }</span>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+

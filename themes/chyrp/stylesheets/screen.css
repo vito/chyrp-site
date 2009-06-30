@@ -585,9 +585,10 @@ form.search {
             #progress .revisions li .user,
             #extend .notes li .user {
                 background: #0c0c0c;
-                padding: .25em .5em;
+                padding: .25em .75em .25em .5em;
                 }
-                #progress .revisions li .user .gravatar-emblem {
+                #progress .revisions li .user .gravatar-emblem,
+                #extend .notes li .user .gravatar-emblem {
                     vertical-align: middle;
                     margin: -.25em .125em 0 0;
             }
@@ -682,6 +683,10 @@ form.search {
                 }
                 #extend .extension .content .buttons a.button:hover {
                     background-color: #0f0f0f;
+    }
+    #extend .notes li .user .right a {
+        margin-left: 1em;
+        font-size: .9em;
 }
 
 /* Blog area */

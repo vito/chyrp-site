@@ -90,7 +90,7 @@
 
             $this->display("extend/extension/view",
                            array("extension" => $extension,
-                                 "extension_version" => $version),
+                                 "ver" => $version),
                            $extension->name);
         }
 
@@ -167,6 +167,60 @@
 
                 Flash::notice(__("Extension deloved.", "extend"), $version->url());
             }
+        }
+
+        public function search() {
+            fallback($_GET['query'], "");
+            $config = Config::current();
+
+            if ($config->clean_urls and
+                substr_count($_SERVER['REQUEST_URI'], "?") and
+                !substr_count($_SERVER['REQUEST_URI'], "%2F")) # Searches with / and clean URLs = server 404
+                redirect("search/".urlencode($_GET['query'])."/");
+
+            if (empty($_GET['query']))
+                return Flash::warning(__("Please enter a search term."));
+
+            list($where, $params) = keywords($_GET['query'], "name LIKE :query OR url LIKE :query", "extensions");
+
+            $extensions = Extension::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            list($where, $params) = keywords($_GET['query'], "description LIKE :query OR tags LIKE :query", "versions");
+
+            $versions = Version::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            list($where, $params) = keywords($_GET['query'], "body LIKE :query", "notes");
+
+            $notes = Note::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            $this->display(
+                "extend/search",
+                array(
+                    "extensions" => new Paginator($extensions, 25, "extensions_page"),
+                    "versions" => new Paginator($versions, 25, "versions_page"),
+                    "notes" => new Paginator($notes, 25, "notes_page"),
+                    "search" => $_GET['query']
+                ),
+                fix(_f("Search results for \"%s\"", $_GET['query']))
+            );
         }
 
         public function new_extension() {
@@ -609,7 +663,7 @@ EOF;
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to delete this extension.", "extend"));
 
             $this->display("extend/version/delete",
-                           array("extension_version" => $version),
+                           array("ver" => $version),
                            __("Delete Version", "extend"));
         }
 

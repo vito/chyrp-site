@@ -1,19 +1,19 @@
 {% extends "layouts/extend.twig" %}
 
 {% block content %}
-<h1>Are you sure you want to delete version $extension_version.number of $extension_version.extension.name?</h1>
-{% if extension_version.extension.deletable %}
-<p class="sub">Or did you want to ${ extension_version.extension.delete_link("delete the entire extension") }?</p>
+<h1>Are you sure you want to delete version $ver.number of $ver.extension.name?</h1>
+{% if ver.extension.deletable %}
+<p class="sub">Or did you want to ${ ver.extension.delete_link("delete the entire extension") }?</p>
 <br />
 {% endif %}
 <form action="{% url "destroy_version" %}" method="post" accept-charset="utf-8">
     <fieldset>
         <h2>Excerpt</h2>
-        ${ extension_version.description | truncate(500) }
+        ${ ver.description | truncate(500) }
 
-        <p><input type="submit" value="Yes, I'm sure." /></p> or <a href="$extension_version.url">Cancel</a>
+        <p><input type="submit" value="Yes, I'm sure." /></p> or <a href="$ver.url">Cancel</a>
 
-        <input type="hidden" name="version_id" value="$extension_version.id" id="version_id" />
+        <input type="hidden" name="version_id" value="$ver.id" id="version_id" />
     </fieldset>
 </form>
 {% endblock %}

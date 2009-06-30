@@ -1,0 +1,61 @@
+{% extends "layouts/extend.twig" %}
+
+{% block content %}
+{% if extensions.paginated or versions.paginated or notes.paginated %}
+    <h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>
+
+    {% if extensions.paginated %}
+    <h2>Extensions</h2>
+    {% for extension in extensions.paginated %}
+{% include "partials/extension.twig" %}
+    {% endfor %}
+    {% endif %}
+
+    {% if versions.paginated %}
+    <h2>Versions</h2>
+    {% for ver in versions.paginated %}
+{% include "partials/version.twig" %}
+    {% endfor %}
+    {% endif %}
+
+    {% if notes.paginated %}
+    <h2>Notes</h2>
+    <ul class="notes">
+        {% for note in notes.paginated %}
+        <li class="note">
+            <div class="user">
+                <span class="right">
+                    <a href="${ note.url(true) }">context</a>
+                    ${ note.edit_link("edit") }
+                    ${ note.delete_link("delete") }
+                </span>
+                <img src="$note.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
+                <span class="name">$note.user.login</span>
+            </div>
+
+            <div class="body">
+                $note.body
+            </div>
+
+            {% if note.attachments %}
+            <div class="attachments">
+                <h5>Attachments</h5>
+                <ul>
+                    {% for attachment in note.attachments %}
+                    <li>
+                        $attachment.thumbnail
+                        <a href="${ attachment.path | uploaded }">$attachment.filename</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% else %}
+    <h1>${ "No Results" | translate }</h1>
+    <p>${ "Your search did not return any results." | translate }</p>
+{% endif %}
+{% endblock %}
