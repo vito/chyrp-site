@@ -575,7 +575,7 @@ form.search {
     }
     #progress .revisions,
     #extend .notes {
-        margin: 0;
+        margin: 0 0 4em;
         }
         #progress .revisions li.revision,
         #extend .notes li.note {

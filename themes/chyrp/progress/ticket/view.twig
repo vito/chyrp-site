@@ -50,8 +50,6 @@ ${ revisions.next_link }
 ${ revisions.prev_link }
 
 {% if visitor.group.can("add_revision") %}
-<br />
-<br />
 <h2>Revise Ticket</h2>
 
 <form action="{% url "add_revision" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">

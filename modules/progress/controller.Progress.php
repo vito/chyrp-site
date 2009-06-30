@@ -222,11 +222,22 @@
                 )
             );
 
+            list($where, $params) = keywords($_GET['query'], "name LIKE :query", "milestones");
+
+            $milestones = Milestone::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
             $this->display(
                 "progress/search",
                 array(
                     "tickets" => new Paginator($tickets, 25, "tickets_page"),
                     "revisions" => new Paginator($revisions, 25, "revisions_page"),
+                    "milestones" => new Paginator($milestones, 25, "milestones_page"),
                     "search" => $_GET['query']
                 ),
                 fix(_f("Search results for \"%s\"", $_GET['query']))

@@ -1,56 +1,81 @@
 {% extends "layouts/progress.twig" %}
 
 {% block content %}
-{% if tickets.paginated or revisions.paginated %}
-<h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>
-{% if tickets.paginated %}
-<h2>Tickets</h2>
-<table class="tickets">
-    <tr>
-        <th width="3%"></th>
-        <th width="10%">State</th>
-        <th width="55%">Summary</th>
-        <th width="17%">Assigned to</th>
-        <th width="15%">Age</th>
-    </tr>
-    {% for ticket in tickets.paginated %}
-    <tr class="{% if loop.index | even %}even{% else %}odd{% endif %}">
-        <td class="center">#$ticket.id</td>
-        <td><span class="$ticket.state">{% if ticket.done %}&radic; {% endif %}$ticket.state</span></td>
-        <td class="main">
-            <a href="$ticket.url">
-                {% if ticket.done %}<del>{% endif %}
-                    ${ ticket.title | escape }
-                {% if ticket.done %}</del>{% endif %}
-                <span class="sub">by <img class="gravatar-emblem" src="$ticket.user.gravatar?s=12&amp;d=identicon" alt="Gravatar" /> <strong>${ ticket.user.full_name | fallback(ticket.user.login) }</strong></span>
-            </a>
-        </td>
-        <td>
-            {% if not ticket.owner.no_results %}
-            <img class="gravatar-emblem" src="$ticket.owner.gravatar?s=16&amp;d=identicon" alt="Gravatar" />
-            ${ ticket.owner.full_name | fallback(ticket.owner.login) }
-            {% else %}
-            <span class="sub">(no one)</span>
-            {% endif %}
-        </td>
-        <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
-    </tr>
-    {% else %}
-    <tr><td colspan="4">(none)</li>
-    {% endfor %}
-</table>
-{% endif %}
+{% if tickets.paginated or revisions.paginated or milestones.paginated %}
+    <h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>
+    {% if tickets.paginated %}
+    <h2>Tickets</h2>
+    <table class="tickets">
+        <tr>
+            <th width="3%"></th>
+            <th width="10%">State</th>
+            <th width="55%">Summary</th>
+            <th width="17%">Assigned to</th>
+            <th width="15%">Age</th>
+        </tr>
+        {% for ticket in tickets.paginated %}
+        <tr class="{% if loop.index | even %}even{% else %}odd{% endif %}">
+            <td class="center">#$ticket.id</td>
+            <td><span class="$ticket.state">{% if ticket.done %}&radic; {% endif %}$ticket.state</span></td>
+            <td class="main">
+                <a href="$ticket.url">
+                    {% if ticket.done %}<del>{% endif %}
+                        ${ ticket.title | escape }
+                    {% if ticket.done %}</del>{% endif %}
+                    <span class="sub">by <img class="gravatar-emblem" src="$ticket.user.gravatar?s=12&amp;d=identicon" alt="Gravatar" /> <strong>${ ticket.user.full_name | fallback(ticket.user.login) }</strong></span>
+                </a>
+            </td>
+            <td>
+                {% if not ticket.owner.no_results %}
+                <img class="gravatar-emblem" src="$ticket.owner.gravatar?s=16&amp;d=identicon" alt="Gravatar" />
+                ${ ticket.owner.full_name | fallback(ticket.owner.login) }
+                {% else %}
+                <span class="sub">(no one)</span>
+                {% endif %}
+            </td>
+            <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">(none)</li>
+        {% endfor %}
+    </table>
+    {% endif %}
 
-{% if revisions.paginated %}
-<h2>Revisions</h2>
-<ul class="revisions">
-    {% for revision in revisions.paginated %}
-{% include "partials/revision.twig" %}
+    {% if revisions.paginated %}
+    <h2>Revisions</h2>
+    <ul class="revisions">
+        {% for revision in revisions.paginated %}
+    {% include "partials/revision.twig" %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if milestones.paginated %}
+    <h2>Milestones</h2>
+    {% for milestone in milestones.paginated %}
+    <div class="milestone{% if loop.index == 1 %} current{% endif %}">
+        <h2><a href="$milestone.url">$milestone.name</a></h2>
+
+        <p class="info">
+            <span>$milestone.open_tickets</span> open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due <span class="{% if milestone.due | strtotime > now %}good{% else %}bad{% endif %}">${ milestone.due | relative }</span>{% endif %}
+        </p>
+
+        <div class="description">
+            $milestone.description
+
+            <div class="progress-bar">
+                <div style="width: $milestone.percentage%">
+                    <span>$milestone.percentage%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
     {% endfor %}
-</ul>
-{% endif %}
+    {% endif %}
 {% else %}
-<h1>${ "No Results" | translate }</h1>
-<p>${ "Your search did not return any results." | translate }</p>
+    <h1>${ "No Results" | translate }</h1>
+    <p>${ "Your search did not return any results." | translate }</p>
 {% endif %}
 {% endblock %}
