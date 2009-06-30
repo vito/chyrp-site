@@ -1,0 +1,18 @@
+{% extends "layouts/extend.twig" %}
+
+{% block crumb %}
+<a href="{% url "/extend" %}">Extend</a> &raquo;
+Tag
+{% endblock %}
+
+{% block content %}
+{% if versions.paginated %}
+<h1>$title</h1>
+{% for ver in versions.paginated %}
+{% include "partials/version.twig" %}
+{% endfor %}
+{% else %}
+<h1>${ "No Results" | translate }</h1>
+<p>${ "There are no versions tagged with \"%s\"." | translate | format(tag) }</p>
+{% endif %}
+{% endblock %}

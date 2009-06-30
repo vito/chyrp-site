@@ -13,7 +13,8 @@
             '|/new_extension/([^/]+)/|' => '/?action=new_extension&type=$1',
             '|/edit_extension/([^/]+)/|' => '/?action=edit_extension&id=$1',
             '|/delete_extension/([^/]+)/|' => '/?action=delete_extension&id=$1',
-            '|/type/([^/]+)/|' => '/?action=type&url=$1'
+            '|/type/([^/]+)/|' => '/?action=type&url=$1',
+            '|/tag/([^/]+)/|' => '/?action=tag&url=$1'
         );
 
         # Boolean: $displayed
@@ -170,7 +171,9 @@
         }
 
         public function search() {
-            fallback($_GET['query'], "");
+            if (empty($_GET['query']))
+                exit; # TODO
+
             $config = Config::current();
 
             if ($config->clean_urls and
@@ -220,6 +223,27 @@
                     "search" => $_GET['query']
                 ),
                 fix(_f("Search results for \"%s\"", $_GET['query']))
+            );
+        }
+
+        public function tag() {
+            if (empty($_GET['url']))
+                exit; # TODO
+            
+            $versions = Version::find(
+                array(
+                    "placeholders" => true,
+                    "where" => array("tags like" => "%: \"".$_GET['url']."\"\n%")
+                )
+            );
+
+            $this->display(
+                "extend/tag",
+                array(
+                    "versions" => new Paginator($versions, 25),
+                    "tag" => fix($_GET['url'])
+                ),
+                fix(_f("Versions tagged with \"%s\"", $_GET['url'], "extend"))
             );
         }
 
@@ -808,6 +832,12 @@ EOF;
                     $_GET['query'] = $route->arg[1];
 
                 return $route->action = "search";
+            }
+
+            # Viewing a tag
+            if ($route->arg[0] == "tag") {
+                $_GET['url'] = $route->arg[1];
+                return $route->action = "tag";
             }
 
             # Custom pages added by Modules, Feathers, Themes, etc.

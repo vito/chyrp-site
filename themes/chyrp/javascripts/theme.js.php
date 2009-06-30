@@ -76,7 +76,7 @@ function colorize(text) {
     var colorized = ""
     var bracket_color = ""
     for (i = 0; i < text.length; i++) {
-        var index = Math.floor(Math.random()*5)
+        var index = Math.floor(Math.random()*7)
         if (text[i] == "(")
             bracket_color = colors[index]
     
