@@ -41,44 +41,7 @@ $ticket.title &ndash; $ticket.edit_link $ticket.delete_link
 {% if ticket.revisions %}
 <ul class="revisions">
     {% paginate 25 revisions in ticket.revisions as revision %}
-    <li class="revision" id="revision_$revision.id">
-        <div class="user">
-            {% if revision.editable or revision.deletable %}
-            <span class="right">
-                ${ revision.edit_link("edit") }
-                ${ revision.delete_link("delete") }
-            </span>
-            {% endif %}
-            <img src="$revision.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
-            <span class="name">$revision.user.login</span>
-        </div>
-
-        <ul class="changes">
-            {% for name, change in revision.changes | items %}
-            <li class="{% if loop.index | odd %}odd{% else %}even{% endif %}">
-                <strong>$name</strong> changed from "<code>$change.from</code>" to "<code>$change.to</code>"
-            </li>
-            {% endfor %}
-        </ul>
-
-        <div class="body">
-            $revision.body
-        </div>
-
-        {% if revision.attachments %}
-        <div class="attachments">
-            <h5>Attachments</h5>
-            <ul>
-                {% for attachment in revision.attachments %}
-                <li>
-                    $attachment.thumbnail
-                    <a href="${ attachment.path | uploaded }">$attachment.filename</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-    </li>
+{% include "partials/revision.twig" %}
     {% endpaginate %}
 </ul>
 {% endif %}

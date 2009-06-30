@@ -504,6 +504,7 @@ form.search {
     }
     #progress table.tickets {
         width: 100%;
+        margin-bottom: 3em;
         }
         #progress table.tickets th {
             background: #0c0c0c;

@@ -46,8 +46,6 @@ ${ tickets.next_link }
 ${ tickets.prev_link }
 
 {% if visitor.group.can("add_ticket") %}
-<br />
-<br />
 <h1>New Ticket</h1>
 <form action="{% url "add_ticket" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <fieldset>

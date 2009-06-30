@@ -201,6 +201,36 @@
 
             if (empty($_GET['query']))
                 return Flash::warning(__("Please enter a search term."));
+
+            list($where, $params) = keywords($_GET['query'], "title LIKE :query OR description LIKE :query OR url LIKE :query", "tickets");
+
+            $tickets = Ticket::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            list($where, $params) = keywords($_GET['query'], "body LIKE :query", "revisions");
+
+            $revisions = Revision::find(
+                array(
+                    "placeholders" => true,
+                    "where" => $where,
+                    "params" => $params
+                )
+            );
+
+            $this->display(
+                "progress/search",
+                array(
+                    "tickets" => new Paginator($tickets, 25, "tickets_page"),
+                    "revisions" => new Paginator($revisions, 25, "revisions_page"),
+                    "search" => $_GET['query']
+                ),
+                fix(_f("Search results for \"%s\"", $_GET['query']))
+            );
         }
 
         public function add_revision() {
