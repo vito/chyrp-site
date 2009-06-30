@@ -19,7 +19,7 @@
         <div class="clear"></div>
         <div class="buttons">
             <a class="colorize button" href="{% url "download/" ~ ver.extension.textID ~ "/" ~ ver.id %}">Download</a>
-            <a class="colorize button" href="{% url "love/" ~ ver.extension.textID ~ "/" ~ ver.id %}">Love</a>
+            <a class="colorize button" href="{% url "love/" ~ ver.extension.textID ~ "/" ~ ver.id %}">{% if ver.loved %}Delove{% else %}Love{% endif %}</a>
             <span class="tags">Tags: ${ ver.linked_tags | join(", ") | fallback("<span class=\"sub\">(none)</span>") }</span>
             <div class="clear"></div>
         </div>

@@ -19,7 +19,7 @@
         <div class="clear"></div>
         <div class="buttons">
             <a class="colorize button" href="{% url "download/" ~ extension.textID ~ "/" ~ extension.latest_version.id %}">Download</a>
-            <a class="colorize button" href="{% url "love/" ~ extension.textID ~ "/" ~ extension.latest_version.id %}">Love</a>
+            <a class="colorize button" href="{% url "love/" ~ extension.textID ~ "/" ~ extension.latest_version.id %}">{% if extension.latest_version.loved %}Delove{% else %}Love{% endif %}</a>
             <span class="tags">Tags: ${ extension.latest_version.linked_tags | join(", ") | fallback("<span class=\"sub\">(none)</span>") }</span>
             <div class="clear"></div>
         </div>
