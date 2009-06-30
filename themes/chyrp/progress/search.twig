@@ -1,5 +1,10 @@
 {% extends "layouts/progress.twig" %}
 
+{% block crumb %}
+<a href="{% url "/progress" %}">Progress</a> &raquo;
+Search
+{% endblock %}
+
 {% block content %}
 {% if tickets.paginated or revisions.paginated or milestones.paginated %}
     <h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>

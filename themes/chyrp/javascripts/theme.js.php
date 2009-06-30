@@ -56,6 +56,11 @@ $(function(){
         return false;
     });
 
+    $(".add-attachment").click(function(){
+        $("#attachments .fields").append("<br /><input type=\"file\" name=\"attachment[]\" />");
+        return false;
+    });
+
     if (Cookie.get("hide_debug") == "true") {
         $("#debug").height(17);
         $("#debug").css("overflow-y", "hidden");

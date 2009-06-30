@@ -923,6 +923,21 @@ div#controls ul li.close a:hover {
         color: #fff;
         font-weight: normal;
 }
+.add-attachment {
+    font-size: 1.5em;
+    line-height: .666em;
+    padding: .3em .3125em;
+    background: #1d1d1d;
+    margin-left: .5em;
+    margin-top: .1em;
+    display: inline-block;
+}
+.add-attachment:hover {
+    background-color: #222;
+}
+.add-attachment:active {
+    background: #0a0a0a;
+}
 .big {
     font-size: 1.5em;
     font-weight: bold;

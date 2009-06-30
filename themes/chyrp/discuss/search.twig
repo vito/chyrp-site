@@ -1,5 +1,10 @@
 {% extends "layouts/discuss.twig" %}
 
+{% block crumb %}
+<a href="{% url "/discuss" %}">Discuss</a> &raquo;
+Search
+{% endblock %}
+
 {% block content %}
 {% if forums.paginated or topics.paginated or messages.paginated %}
     <h1>${ "Search results for &#8220;%s&#8221;" | translate | format(search | escape) }</h1>
