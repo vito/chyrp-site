@@ -31,10 +31,12 @@ ${ topics.prev_link }
         <textarea name="description" rows="10" cols="75"></textarea>
     </p>
 
-    <p id="attachments">
+    <div id="attachments">
         <label>Attachment(s)</label>
-        <input type="file" name="attachment[]" /> <a href="javascript:void(0)" onclick="$$('#attachments').append('<br /><input type=\'file\' name=\'attachment[]\' />'); return false;">[+]</a>
-    </p>
+        <div class="fields">
+            <input type="file" name="attachment[]" /> <a class="add-attachment" href="javascript:void(0)">+</a>
+        </div>
+    </div>
 
     <p>
         <input type="submit" value="Continue &rarr;">
