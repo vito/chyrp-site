@@ -45,9 +45,11 @@
         }
 
         public function index() {
-            $this->display("extend/index",
-                           array("types" => Type::find()),
-                           __("Index"));
+            $this->display(
+                "extend/index",
+                array("types" => Type::find(array("order" => "id ASC"))),
+                __("Index")
+            );
         }
 
         public function all() {
