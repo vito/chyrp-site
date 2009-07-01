@@ -86,7 +86,7 @@
                                "description" => $description,
                                "order" => $order,
                                "clean" => sanitize($name),
-                               "url" => self::check_url($name)));
+                               "url" => self::check_url(sanitize($name))));
 
             $forum = new self($sql->latest());
 
