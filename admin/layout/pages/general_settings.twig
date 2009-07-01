@@ -3,6 +3,7 @@
 {% block title %}${ "Site Configuration" | translate }{% endblock %}
 
 {% block content %}
+            <h1>${ "Site Configuration" | translate }</h1>
             <form id="general_settings" class="split" action="{% admin "general_settings" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <fieldset>
                     <p>
@@ -23,7 +24,7 @@
                             <span class="sub">${ "(optional)" | translate }</span>
                         </label>
                         <input class="text" type="text" name="url" value="{% if site.url != site.chyrp_url %}${ site.url | escape }{% endif %}" id="url" />
-                        <a href="{% admin "help&id=alternate_urls" %}" class="help emblem"><img src="theme/images/icons/help.png" alt="help" /></a>
+                        <a href="{% admin "help&id=alternate_urls" %}" class="help emblem"><img src="images/icons/help.png" alt="help" /></a>
                         <small>
                             ${ "Enter an alternate address here if you want your homepage URL to be different from the URL where Chyrp is normally available." | translate }
                         </small>
@@ -36,7 +37,7 @@
                         <label for="timezone">${ "What time is it?" | translate }</label>
                         <select name="timezone" id="timezone">
                         {% for zone in timezones %}
-                        <option value="$zone.name"${ zone.name | option_selected(site.timezone) }>${ zone.now | strftime("%m/%d/%y %H:%M" | translate) } &mdash; ${ zone.name | replace("_", " ") | replace("St ", "St. ") }</option>
+                        <option value="$zone.name"${ zone.name | option_selected(site.timezone) }>${ zone.now | strftime("%I:%M %p on %B %e, %Y" | translate) } &mdash; ${ zone.name | replace("_", " ") | replace("St ", "St. ") }</option>
                         {% endfor %}
                         </select>
                     </p>
@@ -51,7 +52,7 @@
                     </p>
 
                     <p class="buttons">
-                        <button type="submit" class="yay"><img src="theme/images/icons/success.png" alt="success" />${ "Update" | translate }</button>
+                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Update" | translate }</button>
                     </p>
 
                     <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
