@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-type" content="$theme.type; charset=utf-8" />
-        <title>{% block title %}{% if title %}${ title | escape } &mdash; {% endif %}$site.name: Blog{% endblock %}</title>
+        <title>{% block title %}{% if title %}${ title | escape } &mdash; {% endif %}$site.name{% endblock %}</title>
         <meta name="generator" content="Chyrp" />
         <link rel="pingback" href="$site.chyrp_url/includes/xmlrpc.php" />
         <link rel="EditURI" type="application/rsd+xml" href="$site.chyrp_url/includes/rsd.php" />
@@ -40,11 +40,11 @@ ${ trigger.call("head") }
         </form>
 
         <ul id="navigation">
-            <li class="first selected">
+            <li class="first${ "home" | selected(route.action, true) }">
                 <h1><a href="$site.url">Chyrp</a></h1>
                 <a href="$site.url">Home</a>
             </li>
-            <li class="second">
+            <li class="second${ "download" | selected(route.action, true) }">
                 <h1><a href="$site.url">Chyrp</a></h1>
                 <a href="{% url "download" in Main %}">Download</a>
             </li>
@@ -64,7 +64,7 @@ ${ trigger.call("head") }
                 <h1><a href="$site.url">Chyrp</a></h1>
                 <a href="{% url "code" in Main %}">Code</a>
             </li>
-            <li class="seventh">
+            <li class="seventh${ true | selected(route.action != "home" and route.action != "download", true) }">
                 <h1><a href="$site.url">Chyrp</a></h1>
                 <a href="{% url "blog" in Main %}">Blog</a>
             </li>

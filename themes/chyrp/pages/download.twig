@@ -1,0 +1,46 @@
+{% extends "layouts/default.twig" %}
+
+{% block title %}
+Download &mdash; Chyrp
+{% endblock %}
+
+{% block content %}
+<a class="big download colorize" href="javscript:void(0)">Download (v2.0)</a>
+
+<h1>Minimum Requirements</h1>
+<p>
+    Please ensure that your host provides the following:
+</p>
+<ul>
+    <li>PHP &gt;= 5.1.3</li>
+    <li>MySQL 4.1+, or SQLite 3+ with <a href="http://php.net/pdo">PDO</a></li>
+</ul>
+<p>
+    All of these technologies are fairly common today. If your hosting provider doesn't have these, you're probably better off switching whether or not you use Chyrp. You might be able to just e-mail your provider and ask them for it.
+</p>
+
+<br />
+<h1>Feeling Generous?</h1>
+<p>
+    Chyrp is a project created and maintained as a hobby - no money is made from it aside from donations. Any contribution would be greatly appreciated!
+</p>
+<form class="donate" action="http://pledgie.com/campaigns/836" method="get" />
+    <input type="submit" value="Donate!" />
+</form>
+
+<br />
+<h1>Git the Source</h1>
+<p>
+    Another method of grabbing Chyrp and staying up to date is to use our <a href="http://git-scm.com">Git</a> repository. To do this you must have Git installed.
+</p>
+<ul>
+    <li>
+        Initial clone:<br />
+        <pre><code>git clone git://github.com/vito/chyrp</code></pre>
+    </li>
+    <li>
+        Stay updated:<br />
+        <pre><code>git pull # and then run upgrade.php</code></pre>
+    </li>
+</ul>
+{% endblock %}

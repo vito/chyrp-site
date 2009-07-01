@@ -31,9 +31,9 @@ code {
 }
 pre code {
     display: block;
-    background: #111;
+    background: #0a0a0a;
     color: #fff;
-    padding: .5em .75em .35em;
+    padding: .5em 1em;
     margin-bottom: 1em;
 }
 
@@ -769,10 +769,11 @@ form.search {
         #blog .post.text .info {
             margin-top: 1em;
         }
-        #blog .post.text h2 {
+        #blog .post.text h3 {
             padding: .5em;
             border-bottom: .05em solid #222;
             margin: 0;
+            font-size: 2em;
         }
         #blog .post.text .content {
             padding: 1em 1em 0;
@@ -970,6 +971,16 @@ div#controls ul li.close a:hover {
     }
     .big ul li {
         list-style: none;
+}
+.big.download {
+    font-size: 2em;
+    background: #0a0a0a;
+    padding: 1em;
+    margin-bottom: 1.5em;
+    display: block;
+}
+form.donate input {
+    margin: 0 0 1em;
 }
 .clear { clear: both }
 .left  { float: left }

@@ -85,15 +85,22 @@
          * See Also:
          *     <update>
          */
-        static function add($name, $description, $color, $clean = null) {
+        static function add($name,
+                            $description = "",
+                            $color = "0a0a0a",
+                            $clean = null,
+                            $url = null) {
             $sql = SQL::current();
+                                
+            $clean = oneof($clean, sanitize($name));
             $sql->insert(
                 "types",
                 array(
                     "name" => $name,
                     "description" => $description,
                     "color" => $color,
-                    "clean" => oneof($clean, sanitize($name))
+                    "clean" => $clean,
+                    "url" => oneof($url, self::check_url($clean))
                 )
             );
 
@@ -112,7 +119,11 @@
          *     $name - The new name.
          *     $description - The new description.
          */
-        public function update($name = null, $description = null, $color = null, $clean = null) {
+        public function update($name = null,
+                               $description = null,
+                               $color = null,
+                               $clean = null,
+                               $url = null) {
             if ($this->no_results)
                 return false;
 
@@ -122,6 +133,7 @@
             $this->description = ($description === null ? $this->description : $description);
             $this->color       = ($color === null ? $this->color : $color);
             $this->clean       = ($clean === null ? $this->clean : $clean);
+            $this->url         = ($url   === null ? $this->url   : $url  );
 
             $sql = SQL::current();
             $sql->update(
@@ -131,7 +143,8 @@
                     "name"        => $this->name,
                     "description" => $this->description,
                     "color"       => $this->color,
-                    "clean"       => $this->clean
+                    "clean"       => $this->clean,
+                    "url"         => $this->url
                 )
             );
 

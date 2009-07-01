@@ -15,7 +15,9 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              name VARCHAR(100) DEFAULT '',
                              description TEXT,
-                             color VARCHAR(6) DEFAULT 'FFFFFF'
+                             color VARCHAR(6) DEFAULT '0A0A0A'
+                             clean VARCHAR(100) DEFAULT '',
+                             url VARCHAR(100) DEFAULT '',
                          ) DEFAULT CHARSET=utf8");
 
             $sql->query("CREATE TABLE IF NOT EXISTS __extensions (
