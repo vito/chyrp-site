@@ -136,7 +136,7 @@
         }
 
         public function index() {
-            $milestones = Milestone::find();
+            $milestones = Milestone::find(array("order" => "id ASC"));
 
             $this->display("progress/index",
                            array("milestones" => $milestones),

@@ -956,6 +956,10 @@ div#controls ul li.close a:hover {
         margin-left: .75em;
         font-size: 1em;
 }
+.blurb {
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
 .big {
     font-size: 1.5em;
     font-weight: bold;
@@ -972,7 +976,7 @@ div#controls ul li.close a:hover {
     .big ul li {
         list-style: none;
 }
-.big.download {
+.big.giant {
     font-size: 2em;
     background: #0a0a0a;
     padding: 1em;
