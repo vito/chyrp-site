@@ -249,6 +249,13 @@
             if (!Visitor::current()->group->can("add_message"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to add messages.", "discuss"));
 
+            if (empty($_POST['topic_id']))
+                error(__("Error"), __("Please enter a message."));
+
+            $topic = new Topic($_POST['topic_id']);
+            if (empty($_POST['body']))
+                Flash::warning(__("Please enter a message.", "discuss"), $topic->url());
+
             $message = Message::add($_POST['body'], $_POST['topic_id']);
 
             $files = array();

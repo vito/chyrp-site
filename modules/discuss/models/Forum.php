@@ -254,6 +254,6 @@
          * Returns the most recently replied-to or created topic in the forum.
          */
         public function latest_activity() {
-            return $this->topics[0];
+            return oneof(@$this->topics[0]->latest_message, @$this->topics[0]);
         }
     }

@@ -33,7 +33,7 @@
             $this->filtered = !isset($options["filter"]) or $options["filter"];
 
             if ($this->ticket_count)
-                $this->percentage = (100 - ($this->open_tickets() / $this->ticket_count * 100));
+                $this->percentage = round(100 - ($this->open_tickets() / $this->ticket_count * 100));
             else
                 $this->percentage = 0;
 

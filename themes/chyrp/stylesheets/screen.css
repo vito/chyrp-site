@@ -715,6 +715,7 @@ form.search {
     }
     #blog .post {
         margin-bottom: 2em;
+        margin-left: 20em;
         }
         #blog .post .block {
             float: left;
@@ -842,7 +843,8 @@ div#controls {
     border-top: .1em solid #0f0f0f;
     width: 100%;
     position: fixed;
-    bottom: 1.9em;
+    /* bottom: 1.9em; */
+    bottom: 0;
     left: 0;
     right: 0;
 }
@@ -955,6 +957,12 @@ div#controls ul li.close a:hover {
     .pagination .nums {
         margin-left: .75em;
         font-size: 1em;
+}
+.pagination.post {
+    margin-bottom: 2em;
+    }
+    .pagination.post a {
+        padding: .25em .5em;
 }
 .blurb {
     font-size: 1.5em;

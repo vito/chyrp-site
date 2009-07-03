@@ -224,9 +224,9 @@
             Flash::notice(__("Forum deleted.", "discuss"), "/admin/?action=manage_forums");
         }
 
-        public function user_post_count_attr(&$attr, $user) {
-            if (isset($this->post_counts[$user->id]))
-                return $attr = $this->post_counts[$user->id];
+        public function user_message_count_attr(&$attr, $user) {
+            if (isset($this->message_counts[$user->id]))
+                return $attr = $this->message_counts[$user->id];
 
             $counts = SQL::current()->select("messages",
                                              array("user_id", "COUNT(1) AS count"),
@@ -238,13 +238,8 @@
                                              "user_id")->fetchAll();
 
             foreach ($counts as $row)
-                $this->post_counts[$row["user_id"]] = $row["count"];
+                $this->message_counts[$row["user_id"]] = $row["count"];
 
-        	return $attr = $this->post_counts[$user->id];
-        }
-
-        public function user_grab(&$options) {
-            $options["select"][] = "COUNT(posts.id) AS `post_count`";
-        	$options["left_join"][] = array("table" => "posts", "where" => array("users.id = posts.user_id"));
+        	return $attr = oneof($this->message_counts[$user->id], 0);
         }
     }
