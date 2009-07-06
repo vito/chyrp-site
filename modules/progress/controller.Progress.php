@@ -208,7 +208,8 @@
                 array(
                     "placeholders" => true,
                     "where" => $where,
-                    "params" => $params
+                    "params" => $params,
+                    "done" => true
                 )
             );
 

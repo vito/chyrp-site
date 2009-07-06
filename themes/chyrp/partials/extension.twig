@@ -14,8 +14,10 @@
             <li>Notes: <strong>$extension.latest_version.note_count</strong></li>
             <li>Last updated: <strong>${ extension.latest_version.updated_at | fallback(extension.latest_version.created_at) | relative }</strong></li>
         </ul>
+        {% if extension.latest_version.image %}
         <a class="preview" href="${ extension.latest_version.image | uploaded }" style="background-image: url('${ extension.latest_version.image | uploaded }')"></a>
-        $extension.latest_version.description
+        {% endif %}
+        ${ extension.latest_version.description | excerpt }
         <div class="clear"></div>
         <div class="buttons">
             <a class="colorize button" href="{% url "download/" ~ extension.textID ~ "/" ~ extension.latest_version.id %}">Download</a>

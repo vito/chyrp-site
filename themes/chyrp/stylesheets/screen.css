@@ -35,6 +35,7 @@ pre code {
     color: #fff;
     padding: .5em 1em;
     margin-bottom: 1em;
+    line-height: 1.4em;
 }
 
 em {
@@ -663,8 +664,9 @@ form.search {
                 width: 20em;
                 height: 13.3em;
                 float: right;
+                background-color: #0a0a0a;
                 background-position: center center;
-                background-repeat: none;
+                background-repeat: no-repeat;
             }
             #extend .extension .content .buttons {
                 margin: 1em 0 0;

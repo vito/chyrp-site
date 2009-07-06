@@ -14,6 +14,7 @@
             '|/edit_extension/([^/]+)/|' => '/?action=edit_extension&id=$1',
             '|/delete_extension/([^/]+)/|' => '/?action=delete_extension&id=$1',
             '|/type/([^/]+)/|' => '/?action=type&url=$1',
+            '|/browse/([^/]+)/|' => '/?action=browse&url=$1',
             '|/tag/([^/]+)/|' => '/?action=tag&url=$1'
         );
 
@@ -470,7 +471,7 @@ EOF;
             }
 
             $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($extension->type->url));
-            $image = upload($_FILES['image'], null, "previews/".pluralize($extension->type->url));
+            $image = ($_FILES['image']['error'] == 0) ? upload($_FILES['image'], null, "previews/".pluralize($type->url)) : "" ;
 
             $version = Version::add(
                 $_POST['number'],
@@ -787,6 +788,12 @@ EOF;
             # Viewing a type
             if ($route->arg[0] == "type") {
                 $_GET['url'] = $route->arg[1];
+                return $route->action = "type";
+            }
+
+            # Viewing a type (backwards-compatible URL)
+            if ($route->arg[0] == "browse") {
+                $_GET['url'] = depluralize($route->arg[1]);
                 return $route->action = "type";
             }
 

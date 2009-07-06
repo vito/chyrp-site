@@ -52,7 +52,7 @@ $topic.title
     <div class="clear"></div>
 </div>
 
-{% paginate 10 messages in topic.messages as message %}
+{% paginate 25 messages in topic.messages as message %}
 {% include "partials/message.twig" %}
 {% endpaginate %}
 

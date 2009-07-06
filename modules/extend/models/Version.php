@@ -49,6 +49,8 @@
             $trigger = Trigger::current();
 
             if ($this->filtered) {
+                $this->description_unfiltered = $this->description;
+
                 if (!$this->extension->user->group->can("code_in_extensions"))
                     $this->description = strip_tags($this->description);
 

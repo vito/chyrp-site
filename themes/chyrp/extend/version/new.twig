@@ -6,7 +6,7 @@
     <fieldset>
         <p>
             <label for="description">Description</label>
-            <textarea name="description" id="description" rows="8" cols="100%">${ POST.description | escape }</textarea>
+            <textarea name="description" id="description" rows="8" cols="100%">${ POST.description | fallback(extension.latest_version.description_unfiltered) | escape }</textarea>
         </p>
         <div id="attachments">
             <label for="attachment">Attachment(s)</label>
@@ -21,14 +21,12 @@
         </p>
         <p>
             <label for="compatible">Chyrp Compatibility</label>
-            <input type="text" name="compatible" value="${ POST.compatible | escape }" id="compatible" />
-            <br />
+            <input type="text" name="compatible" value="${ POST.compatible | fallback(extension.latest_version.compatible | join(", ")) | escape }" id="compatible" />
             <span class="sub">Version numbers, comma-separated.</span>
         </p>
         <p>
             <label for="extension">${ extension.type.name | capitalize }</label>
             <input type="file" name="extension" id="extension" />
-            <br />
             <span class="sub">.zip files only.</span>
         </p>
         <p>
@@ -37,8 +35,7 @@
         </p>
         <p>
             <label for="compatible">Tags <span class="sub">(recommended)</span></label>
-            <input type="text" name="tags" value="${ POST.tags | escape }" id="tags" />
-            <br />
+            <input type="text" name="tags" value="${ POST.tags | fallback(extension.latest_version.tags | join(", ")) | escape }" id="tags" />
             <span class="sub">Comma-seperated.</span>
         </p>
 

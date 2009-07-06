@@ -14,7 +14,9 @@
             <li>Notes: <strong>$ver.note_count</strong></li>
             <li>Last updated: <strong>${ ver.updated_at | fallback(ver.created_at) | relative }</strong></li>
         </ul>
+        {% if ver.image %}
         <a class="preview" href="${ ver.image | uploaded }" style="background-image: url('${ ver.image | uploaded }')"></a>
+        {% endif %}
         $ver.description
         <div class="clear"></div>
         <div class="buttons">
