@@ -98,6 +98,12 @@
                 return $route->action = "search";
             }
 
+            # Handle post-receive POST requests sent from Github
+            # (or any other thing that sends the proper JSON data)
+            if ($route->arg[0] == "post_receive") {
+                return $route->action = "post_receive";
+            }
+
             # Custom pages added by Modules, Feathers, Themes, etc.
             foreach ($config->routes as $path => $action) {
                 if (is_numeric($action))
@@ -152,10 +158,21 @@
             if ($ticket->no_results)
                 exit; # TODO
 
+            $users = array();
+            $milestones = array();
+            if ($ticket->editable()) {
+                $milestones = Milestone::find();
+
+                $groups = Group::find();
+                foreach ($groups as $group)
+                    if ($group->can("edit_ticket"))
+                        $users = array_merge($users, $group->users);
+            }
+
             $this->display("progress/ticket/view",
                            array("ticket" => $ticket,
-                                 "users" => ($ticket->editable() ? User::find() : array()),
-                                 "milestones" => ($ticket->editable() ? Milestone::find() : array())),
+                                 "users" => $users,
+                                 "milestones" => $milestones),
                            $ticket->title);
         }
 
@@ -168,11 +185,21 @@
             if ($milestone->no_results)
                 exit; # TODO
 
-            $can_create = Visitor::current()->group()->can("add_ticket");
+            $users = array();
+            $milestones = array();
+            if (Visitor::current()->group->can("add_ticket")) {
+                $milestones = Milestone::find();
+
+                $groups = Group::find();
+                foreach ($groups as $group)
+                    if ($group->can("edit_ticket"))
+                        $users = array_merge($users, $group->users);
+            }
+
             $this->display("progress/milestone",
                            array("milestone" => $milestone,
-                                 "users" => ($can_create ? User::find() : array()),
-                                 "milestones" => ($can_create ? Milestone::find() : array())),
+                                 "users" => $users,
+                                 "milestones" => $milestones),
                            $milestone->name);
         }
 
@@ -276,8 +303,8 @@
                         $name = substr($name, 0, -3);
                     }
 
-                    $changes[$name] = array("from" => $from,
-                                            "to" => $val);
+                    $changes[$name] = array("from" => strip_tags($from),
+                                            "to" => strip_tags($val));
                 }
 
             if (empty($changes)) {
@@ -300,6 +327,47 @@
                     Attachment::add(basename($path), $path, "revision", $revision->id);
                 }
 
+            $domain = parse_url(Config::current()->url, PHP_URL_HOST);
+
+            if (!empty($changes)) {
+                $changes_list = "<ul>\n";
+                
+                foreach ($changes as $name => $values)
+                    $changes_list.= "<li>".$name." changed from \"".$values["from"]."\" to \"".$values["to"]."\"</li>\n";
+
+                $changes_list.= "</ul>\n";
+
+                $message = _f("%s has revised ticket #%d. <a href=\"%s\">View online &rarr;</a><br />\n<br />\n<br />\nChanges:\n\n%s\n%s",
+                              array(oneof(Visitor::current()->full_name, Visitor::current()->login),
+                                    $ticket->id,
+                                    $revision->url(),
+                                    $changes_list,
+                                    $revision->body),
+                              "progress");
+            } else
+                $message = _f("%s has revised ticket #%d. <a href=\"%s\">View online &rarr;</a><br />\n<br />\n%s",
+                              array(oneof(Visitor::current()->full_name, Visitor::current()->login),
+                                    $ticket->id,
+                                    $revision->url(),
+                                    $revision->body),
+                              "progress");
+
+            if (!empty($ticket->owner->email) and Visitor::current()->id != $ticket->owner->id)
+                mail($ticket->owner->email,
+                     _f("Ticket #%d Updated! (%s)", array($ticket->id, $ticket->title), "progress"),
+                     $message,
+                     "MIME-Version: 1.0\r\n".
+                     "Content-type: text/html; charset=utf-8\r\n".
+                     "From: no-reply@".$domain);
+
+            if (Visitor::current()->id != $ticket->user->id)
+                mail($ticket->user->email,
+                     _f("Ticket #%d Updated! (%s)", array($ticket->id, $ticket->title), "progress"),
+                     $message,
+                     "MIME-Version: 1.0\r\n".
+                     "Content-type: text/html; charset=utf-8\r\n".
+                     "From: no-reply@".$domain);
+
             Flash::notice(__("Revision added.", "progress"), $revision->url(true));
         }
 
@@ -307,6 +375,19 @@
             if (!Visitor::current()->group->can("add_ticket"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create tickets.", "progress"));
 
+            if (empty($_POST['title']))
+                Flash::warning(__("Please provide a summary of the ticket in the form of a title.", "progress"));
+
+            if (empty($_POST['milestone_id']))
+                Flash::warning(__("No milestone selected.", "progress"));
+
+            $milestone = new Milestone($_POST['milestone_id']);
+            if ($milestone->no_results)
+                error(__("Error"), __("Invalid milestone.", "progress"));
+            
+            if (Flash::exists())
+                redirect($milestone->url());
+            
             $ticket = Ticket::add($_POST['title'], $_POST['description'], "new", $_POST['milestone_id'], $_POST['owner_id']);
 
             $files = array();
@@ -319,6 +400,19 @@
                     $path = upload($attachment, null, "attachments");
                     Attachment::add(basename($path), $path, "ticket", $ticket->id);
                 }
+
+            $domain = parse_url(Config::current()->url, PHP_URL_HOST);
+
+            if (!empty($ticket->owner->email) and Visitor::current()->id != $ticket->owner->id)
+                mail($ticket->owner->email,
+                     _f("Ticket #%d Created! (%s)", array($ticket->id, $ticket->title), "progress"),
+                     _f("%s has created the ticket \"%s\" and assigned the owner to you. Description:<br />\n<br />\n%s",
+                        array(oneof($ticket->user->full_name, $ticket->user->login),
+                              $ticket->title,
+                              $ticket->description)),
+                     "MIME-Version: 1.0\r\n".
+                     "Content-type: text/html; charset=utf-8\r\n".
+                     "From: no-reply@".$domain);
 
             Flash::notice(__("Ticket added.", "progress"), $ticket->url());
         }
@@ -475,6 +569,81 @@
             Ticket::delete($ticket->id);
 
             Flash::notice(__("Ticket deleted.", "progress"), $ticket->milestone->url());
+        }
+
+        public function post_receive() {
+            if (empty($_POST['payload']))
+                exit("Empty payload.");
+
+            $json = json_decode($_POST['payload']);
+
+            # Handle special keywords that stand for models.
+            $targets = array("milestone" => array("Milestone", "name"),
+                             "owner" => array("User", "login"),
+                             "user" => array("User", "login"));
+            
+            foreach($json->commits as $commit) {
+                if (!preg_match("/\[#[0-9]+(\s[^\]]+)?\]/", $commit->message))
+                    continue;
+
+                $user = new User(array("email" => $commit->author->email));
+                $message = "Updated in commit [".substr($commit->id, 0, 8)."](".$commit->url."):\n\n".$commit->message;
+
+                preg_match_all("/\[#([0-9]+)\s?([^\]]*)\]/", $commit->message, $updates, PREG_SET_ORDER);
+                foreach ($updates as $update) {
+                    $ticket = new Ticket($update[1], array("filter" => false));
+                    if ($ticket->no_results)
+                        continue;
+                    
+                    preg_match_all("/([a-zA-Z]+):(\"([^\"]+)\"|([^ ]+))/", $update[2], $changes, PREG_SET_ORDER);
+                    $revchanges = array();
+                    foreach ($changes as $change) {
+                        $attribute = $change[1];
+                        $value = oneof($change[3], $change[4]);
+                        
+                        if (!in_array($attribute, array("title", "description", "state", "milestone", "owner", "user")))
+                            continue;
+
+                        foreach ($targets as $name => $target)
+                            if ($attribute == $name) {
+                                $model = $target[0];
+                                if (is_numeric($value))
+                                    $value = new $model($value);
+                                else
+                                    $value = new $model(array($target[1] => $value));
+                            }
+                        
+                        $revchanges[$attribute] = $value;
+                    }
+
+                    $fromto = array();
+                    foreach ($revchanges as $attr => $val) {
+                        $old = @$ticket->$attr;
+                        $new = $val;
+
+                        foreach ($targets as $name => $target)
+                            if ($attr == $name) {
+                                $old = $ticket->$name->$target[1];
+                                $new = $val->$target[1];
+                            }
+
+                        $fromto[$attr] = array("from" => $old,
+                                               "to" => $new);
+                    }
+                    
+                    $ticket->update(@$revchanges["title"],
+                                    @$revchanges["description"],
+                                    @$revchanges["state"],
+                                    @$revchanges["milestone"],
+                                    @$revchanges["owner"],
+                                    @$revchanges["user"]);
+
+                    Revision::add($message,
+                                  $fromto,
+                                  $ticket,
+                                  $user);
+                }
+            }
         }
 
         /**

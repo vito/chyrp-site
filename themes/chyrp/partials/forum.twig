@@ -5,7 +5,11 @@
         <h4>Last Activity</h4>
         <ul class="content">
             {% if forum.last_activity %}
+            {% if forum.latest_activity.topic %}
+            <li><a href="$forum.latest_activity.topic.url" title="${ forum.latest_activity.topic.title | escape(true) }">${ forum.latest_activity.topic.title | truncate(100) }</a></li>
+            {% else %}
             <li><a href="$forum.latest_activity.url" title="${ forum.latest_activity.title | escape(true) }">${ forum.latest_activity.title | truncate(100) }</a></li>
+            {% endif %}
             <li>${ forum.last_activity | relative }</li>
             <li>by <a href="$forum.latest_activity.user.url">$forum.latest_activity.user.login</a></li>
             {% else %}

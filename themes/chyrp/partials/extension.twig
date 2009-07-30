@@ -15,7 +15,7 @@
             <li>Last updated: <strong>${ extension.latest_version.updated_at | fallback(extension.latest_version.created_at) | relative }</strong></li>
         </ul>
         {% if extension.latest_version.image %}
-        <a class="preview" href="${ extension.latest_version.image | uploaded }" style="background-image: url('${ extension.latest_version.image | uploaded }')"></a>
+        <a class="preview" href="${ extension.latest_version.image | uploaded }" style="background-image: url('$site.chyrp_url/includes/thumb.php?file=../uploads/$extension.latest_version.image&amp;max_width=250px')"></a>
         {% endif %}
         ${ extension.latest_version.description | excerpt }
         <div class="clear"></div>

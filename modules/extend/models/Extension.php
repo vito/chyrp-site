@@ -34,7 +34,7 @@
 
             $options["group"][] = "id";
 
-            $options["order"] = array("__last_update", "extensions.id");
+            $options["order"] = array("__last_update DESC", "extensions.id DESC");
 
             parent::grab($this, $extension_id, $options);
 
@@ -49,7 +49,7 @@
 
             if ($this->filtered) {
                 if (!$this->user->group->can("code_in_extensions"))
-                    $this->name = strip_tags($this->name);
+                    $this->name = fix($this->name);
 
                 $trigger->filter($this->name, array("markup_title", "markup_extension_title"), $this);
             }
@@ -71,7 +71,7 @@
 
             $options["group"][] = "id";
 
-            $options["order"] = array("__last_update", "extensions.id");
+            $options["order"] = array("__last_update DESC", "extensions.id DESC");
 
             return parent::search(get_class(), $options, $options_for_object);
         }
@@ -252,5 +252,24 @@
             $config = Config::current();
 
             return url("view/".$this->url, ExtendController::current());
+        }
+
+        /**
+         * Function: delete_link
+         * Outputs a delete link for the post, if the <User.can> delete_[model].
+         *
+         * Parameters:
+         *     $text - The text to show for the link.
+         *     $before - If the link can be shown, show this before it.
+         *     $after - If the link can be shown, show this after it.
+         *     $classes - Extra CSS classes for the link, space-delimited.
+         */
+        public function delete_link($text = null, $before = null, $after = null, $classes = "") {
+            if (!$this->deletable())
+                return false;
+
+            fallback($text, __("Delete"));
+
+            echo $before.'<a href="'.url("delete_extension/".$this->id, ExtendController::current()).'" title="Delete" class="'.($classes ? $classes." " : '').'extension_delete_link delete_link" id="extension_delete_'.$this->id.'">'.$text.'</a>'.$after;
         }
     }

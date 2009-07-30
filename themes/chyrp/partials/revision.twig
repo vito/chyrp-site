@@ -1,13 +1,15 @@
     <li class="revision" id="revision_$revision.id">
         <div class="user">
-            {% if revision.editable or revision.deletable %}
             <span class="right">
+                <a href="$revision.url">permalink</a>
+                {% if revision.editable or revision.deletable %}
                 ${ revision.edit_link("edit") }
                 ${ revision.delete_link("delete") }
+                {% endif %}
             </span>
-            {% endif %}
             <img src="$revision.user.gravatar?s=16&amp;d=identicon" class="gravatar-emblem" alt="Gravatar" />
-            <span class="name">$revision.user.login</span>
+            <span class="name">${ revision.user.full_name | fallback(revision.user.login) }</span>
+            <span class="sub">on ${ revision.created_at | strftime("<strong>%B %d %Y</strong> at <strong>%I:%M %P</strong>" | translate) }</span>
         </div>
 
         <ul class="changes">

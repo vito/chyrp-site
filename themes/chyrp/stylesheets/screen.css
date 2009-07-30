@@ -29,13 +29,17 @@ pre {
 code {
     font-family: monospace;
 }
-pre code {
+pre code,
+blockquote {
     display: block;
     background: #0a0a0a;
     color: #fff;
-    padding: .5em 1em;
+    padding: 1.5em 1.75em;
     margin-bottom: 1em;
     line-height: 1.4em;
+}
+blockquote {
+    padding-bottom: .5em;
 }
 
 em {
@@ -192,6 +196,7 @@ form.search {
         #navigation li a {
             text-decoration: none;
             color: inherit;
+            padding: .5em;
         }
         #navigation li h1 {
             border: none;
@@ -203,6 +208,7 @@ form.search {
         }
         #navigation li h1 a {
             color: inherit;
+            padding: 0;
     }
     #navigation li.selected,
     #navigation li:hover {
@@ -665,7 +671,7 @@ form.search {
                 height: 13.3em;
                 float: right;
                 background-color: #0a0a0a;
-                background-position: center center;
+                background-position: top center;
                 background-repeat: no-repeat;
             }
             #extend .extension .content .buttons {

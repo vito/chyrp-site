@@ -637,6 +637,9 @@
          * Grabs posts for the feed.
          */
         public function feed($posts = null) {
+            if (!substr_count($_SERVER['HTTP_USER_AGENT'], "FeedBurner"))
+                redirect(Config::current()->feed_url);
+            
             fallback($posts, Post::find(array("limit" => Config::current()->feed_items)));
 
             header("Content-Type: application/atom+xml; charset=UTF-8");

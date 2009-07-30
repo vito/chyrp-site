@@ -40,7 +40,7 @@
             if ($this->no_results)
                 return false;
 
-            $this->compatible = (array) YAML::load($this->compatible);
+            $this->compatible = array_map(array("Version", "numberfy"), (array) YAML::load($this->compatible));
             $this->tags = (!empty($this->tags) ? YAML::load($this->tags) : array());
             $this->linked_tags = self::link_tags($this->tags);
 
@@ -52,7 +52,7 @@
                 $this->description_unfiltered = $this->description;
 
                 if (!$this->extension->user->group->can("code_in_extensions"))
-                    $this->description = strip_tags($this->description);
+                    $this->description = fix($this->description);
 
                 $trigger->filter($this->description, array("markup_text", "markup_version_text"), $this);
             }
@@ -217,8 +217,8 @@
             foreach ($version->attachments as $attachment)
                 Attachment::delete($attachment->id);
 
-            @unlink(uploaded($this->filename, true));
-            @unlink(uploaded($this->preview, true));
+            @unlink(uploaded($version->filename, false));
+            @unlink(uploaded($version->preview, false));
 
             parent::destroy(get_class(), $id);
         }
@@ -233,8 +233,7 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group->can("edit_extension")) or
-                   ($user->group->can("edit_own_extension") and $this->user_id == $user->id);
+            return $this->extension->editable($user);
         }
 
         /**
@@ -247,8 +246,7 @@
 
             fallback($user, Visitor::current());
 
-            return ($user->group->can("edit_extension")) or
-                   ($user->group->can("edit_own_extension") and $this->user_id == $user->id);
+            return $this->extension->editable($user);
         }
 
         /**
@@ -344,5 +342,12 @@
 
         public function loved() {
             return (bool) SQL::current()->count("loves", array("version_id" => $this->id, "user_id" => Visitor::current()->id));
+        }
+
+        static function numberfy($num) {
+            if ((int) $num == $num)
+                return number_format($num, 1);
+            else
+                return $num;
         }
     }

@@ -210,11 +210,30 @@
             $last_activity = 0;
 
             foreach ($this->extensions as $extension) {
-                $timestamp = max($extension->last_activity, strtotime($extension->updated_at), strtotime($extension->created_at));
+                $timestamp = max(strtotime($extension->last_update), strtotime($extension->updated_at), strtotime($extension->created_at));
                 if ($timestamp > $last_activity)
                     $last_activity = $timestamp;
             }
 
             return $last_activity;
+        }
+
+        /**
+         * Function: latest_activity
+         * Returns the latest extension.
+         */
+        public function latest_activity() {
+            $latest_activity = null;
+            $last_activity = 0;
+
+            foreach ($this->extensions as $extension) {
+                $timestamp = max(strtotime($extension->last_update), strtotime($extension->updated_at), strtotime($extension->created_at));
+                if ($timestamp > $last_activity) {
+                    $last_activity = $timestamp;
+                    $latest_activity = $extension;
+                }
+            }
+
+            return $latest_activity;
         }
     }

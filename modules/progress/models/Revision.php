@@ -33,7 +33,7 @@
 
             if ($this->filtered) {
                 if (!$this->user->group->can("code_in_revisions"))
-                    $this->body = strip_tags($this->body);
+                    $this->body = fix($this->body);
 
                 $trigger->filter($this->body, array("markup_text", "markup_revision_text"), $this);
             }
@@ -59,7 +59,7 @@
          *
          * Parameters:
          *     $body - The bodyitle of the new revision.
-         *     $changes - key => val array of changes made to the ticket.
+         *     $changes - key => ("from" => old, "to" => new) array of changes made to the ticket.
          *     $ticket - The ticket the revision belongs to.
          *     $user - The revision's creator.
          *     $created_at - Creation timestamp.

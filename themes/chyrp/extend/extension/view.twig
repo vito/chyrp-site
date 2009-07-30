@@ -4,6 +4,11 @@
 <a href="{% url "/extend" %}">Extend</a> &raquo;
 <a href="$extension.type.url">${ extension.type.name | pluralize }</a> &raquo;
 $extension.name
+{% if ver.editable or ver.deletable %}
+&ndash;
+$ver.edit_link
+$ver.delete_link
+{% endif %}
 {% endblock %}
 
 {% block content %}

@@ -280,10 +280,10 @@
         }
 
         public function new_version() {
-            if (!Visitor::current()->group->can("edit_extension"))
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit extensions.", "extend"));
-
             $extension = new Extension(array("url" => $_GET['url']));
+            if (!$extension->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this extension.", "extend"));
+
             if ($extension->no_results)
                 exit; # TODO
 
@@ -417,8 +417,12 @@ EOF;
         }
 
         public function add_version() {
-            if (!Visitor::current()->group->can("edit_extension"))
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit extensions.", "extend"));
+            if (empty($_POST['extension_id']))
+                exit; # TODO
+
+            $extension = new Extension($_POST['extension_id']);
+            if (!$extension->editable())
+                show_403(__("Access Denied"), __("You do not have sufficient privileges to edit this extension.", "extend"));
 
             if ($_FILES['extension']['error'] == 4)
                 Flash::warning(__("You forgot the extension file, silly!", "extend"), $_SESSION['redirect_to']);
@@ -428,8 +432,6 @@ EOF;
 
             if (empty($_POST['compatible']))
                 Flash::warning(__("Please list the Chyrp versions you know to be compatible with this extension.", "extend"), $_SESSION['redirect_to']);
-
-            $extension = new Extension($_POST['extension_id']);
 
             $visitor = Visitor::current();
 
@@ -471,7 +473,7 @@ EOF;
             }
 
             $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($extension->type->url));
-            $image = ($_FILES['image']['error'] == 0) ? upload($_FILES['image'], null, "previews/".pluralize($type->url)) : "" ;
+            $image = ($_FILES['image']['error'] == 0) ? upload($_FILES['image'], null, "previews/".pluralize($extension->type->url)) : "" ;
 
             $version = Version::add(
                 $_POST['number'],
@@ -624,7 +626,6 @@ EOF;
                 }
 
                 $filename = upload($_FILES['extension'], "zip", "extension/".pluralize($version->extension->type->url));
-                $filename = upload($_FILES['extension'], ".zip");
             } else
                 $filename = $version->filename;
 
@@ -830,7 +831,7 @@ EOF;
                 return $route->action = "new_version";
             }
 
-            if (in_array($route->arg[0], array("edit_version", "delete_version", "edit_note", "delete_note"))) {
+            if (in_array($route->arg[0], array("edit_version", "delete_version", "edit_note", "delete_note", "delete_extension"))) {
                 $_GET['id'] = $route->arg[1];
                 return $route->action = $route->arg[0];
             }

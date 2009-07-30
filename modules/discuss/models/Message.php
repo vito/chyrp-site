@@ -32,7 +32,7 @@
 
             if ($this->filtered) {
                 if (!$this->user->group->can("code_in_messages"))
-                    $this->body = strip_tags($this->body);
+                    $this->body = fix($this->body);
 
                 $trigger->filter($this->body, array("markup_text", "markup_message_text"), $this);
             }

@@ -44,6 +44,11 @@
             $trigger = Trigger::current();
 
             if ($this->filtered) {
+                if (!$this->user->group->can("code_in_revisions")) {
+                    $this->title = fix($this->title);
+                    $this->description = fix($this->description);
+                }
+
                 $trigger->filter($this->title, array("markup_title", "markup_ticket_title"), $this);
                 $trigger->filter($this->description, array("markup_text", "markup_ticket_text"), $this);
             }

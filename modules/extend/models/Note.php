@@ -31,7 +31,7 @@
 
             if ($this->filtered) {
                 if (!$this->user->group->can("code_in_notes"))
-                    $this->body = strip_tags($this->body);
+                    $this->body = fix($this->body);
 
                 $trigger->filter($this->body, array("markup_text", "markup_note_text"), $this);
             }

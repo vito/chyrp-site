@@ -3,7 +3,12 @@
 {% block crumb %}
 <a href="{% url "/progress" %}">Progress</a> &raquo;
 <a href="$ticket.milestone.url">$ticket.milestone.name</a> &raquo;
-$ticket.title &ndash; $ticket.edit_link $ticket.delete_link
+$ticket.title
+{% if ticket.editable or ticket.deletable %}
+&ndash;
+$ticket.edit_link
+$ticket.delete_link
+{% endif %}
 {% endblock %}
 
 {% block content %}
