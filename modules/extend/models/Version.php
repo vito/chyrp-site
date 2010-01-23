@@ -133,6 +133,9 @@
 
             $trigger->call("add_version", $version);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $version;
         }
 
@@ -199,6 +202,9 @@
                                "updated_at"   => $updated_at));
 
             $trigger->call("update_version", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -221,6 +227,9 @@
             @unlink(uploaded($version->preview, false));
 
             parent::destroy(get_class(), $id);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

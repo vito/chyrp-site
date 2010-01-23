@@ -80,6 +80,9 @@
 
             Trigger::current()->call("add_message", $message);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $message;
         }
 
@@ -119,6 +122,9 @@
                                "created_at" => $created_at,
                                "updated_at" => $updated_at));
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             Trigger::current()->call("update_message", $this, $old);
         }
 
@@ -136,6 +142,9 @@
 
             foreach ($message->attachments as $attachment)
                 unlink(uploaded($attachment->path, false));
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

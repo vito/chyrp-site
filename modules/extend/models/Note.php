@@ -72,7 +72,7 @@
                             $version,
                             $user       = null,
                             $created_at = null,
-                            $updated_at = "0000-00-00 00:00:00") { 
+                            $updated_at = "0000-00-00 00:00:00") {
             $version_id = ($version instanceof Version) ? $version->id : $version ;
             $user_id = ($user instanceof User) ? $user->id : $user ;
 
@@ -88,6 +88,9 @@
             $note = new self($sql->latest());
 
             Trigger::current()->call("add_note", $note);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
 
             return $note;
         }
@@ -129,6 +132,9 @@
                                "updated_at" => $updated_at));
 
             Trigger::current()->call("update_note", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -145,6 +151,9 @@
 
             foreach ($note->attachments as $attachment)
                 unlink(uploaded($attachment->path, false));
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

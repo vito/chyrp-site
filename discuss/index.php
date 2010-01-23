@@ -10,6 +10,16 @@
     # Parse the route.
     $route = Route::current($discuss);
 
+	if (module_enabled("cacher") and !empty(Modules::$instances["cacher"]->cacher->path)) {
+	  $cacher =& Modules::$instances["cacher"]->cacher;
+
+	  $cacher->caches = INCLUDES_DIR."/caches/discuss";
+	  $cacher->path = str_replace(INCLUDES_DIR."/caches",
+								  INCLUDES_DIR."/caches/discuss",
+								  $cacher->path);
+	  $cacher->file = $cacher->path."/".md5($cacher->url).".html";
+	}
+
     # Execute the appropriate Controller responder.
     $route->init();
 

@@ -92,6 +92,9 @@
             Trigger::current()->call("add_milestone", $milestone);
 
             return $milestone;
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -120,6 +123,9 @@
                                "due"         => $this->due));
 
             Trigger::current()->call("update_milestone", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -131,6 +137,9 @@
          */
         static function delete($id) {
             parent::destroy(get_class(), $id);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

@@ -91,7 +91,7 @@
                             $clean = null,
                             $url = null) {
             $sql = SQL::current();
-                                
+
             $clean = oneof($clean, sanitize($name));
             $sql->insert(
                 "types",
@@ -107,6 +107,9 @@
             $type = new self($sql->latest());
 
             Trigger::current()->call("add_type", $type);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
 
             return $type;
         }
@@ -149,6 +152,9 @@
             );
 
             Trigger::current()->call("update_type", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -160,6 +166,9 @@
          */
         static function delete($id) {
             parent::destroy(get_class(), $id);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

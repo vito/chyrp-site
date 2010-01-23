@@ -76,7 +76,7 @@
                             $ticket,
                             $user       = null,
                             $created_at = null,
-                            $updated_at = "0000-00-00 00:00:00") { 
+                            $updated_at = "0000-00-00 00:00:00") {
             $ticket_id = ($ticket instanceof Ticket) ? $ticket->id : $ticket ;
             $user_id = ($user instanceof User) ? $user->id : $user ;
 
@@ -93,6 +93,9 @@
             $revision = new self($sql->latest());
 
             Trigger::current()->call("add_revision", $revision);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
 
             return $revision;
         }
@@ -136,6 +139,9 @@
                                "updated_at" => $updated_at));
 
             Trigger::current()->call("update_revision", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -152,6 +158,9 @@
 
             foreach ($revision->attachments as $attachment)
                 unlink(uploaded($attachment->path, false));
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

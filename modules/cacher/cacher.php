@@ -40,7 +40,7 @@
 
         public function route_init($route) {
             if (!empty($_POST) or
-                !($route->controller instanceof MainController) or
+                ($route->controller instanceof AdminController) or
                 in_array($this->url, Config::current()->cache_exclude) or
                 $this->cancelled or
                 !$this->cacher->url_available() or
@@ -56,7 +56,7 @@
         }
 
         public function end($route) {
-            if (!($route->controller instanceof MainController) or
+            if (($route->controller instanceof AdminController) or
                 in_array($this->url, Config::current()->cache_exclude) or
                 $this->cancelled or
                 $this->cacher->url_available() or

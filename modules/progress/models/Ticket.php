@@ -126,6 +126,9 @@
 
             $trigger->call("add_ticket", $ticket);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $ticket;
         }
 
@@ -174,6 +177,9 @@
                                "updated_at"   => $updated_at));
 
             $trigger->call("update_ticket", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -193,6 +199,9 @@
 
             foreach ($ticket->attachments as $attachment)
                 unlink(uploaded($attachment->path, false));
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

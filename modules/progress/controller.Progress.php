@@ -331,7 +331,7 @@
 
             if (!empty($changes)) {
                 $changes_list = "<ul>\n";
-                
+
                 foreach ($changes as $name => $values)
                     $changes_list.= "<li>".$name." changed from \"".$values["from"]."\" to \"".$values["to"]."\"</li>\n";
 
@@ -384,10 +384,10 @@
             $milestone = new Milestone($_POST['milestone_id']);
             if ($milestone->no_results)
                 error(__("Error"), __("Invalid milestone.", "progress"));
-            
+
             if (Flash::exists())
                 redirect($milestone->url());
-            
+
             $ticket = Ticket::add($_POST['title'], $_POST['description'], "new", $_POST['milestone_id'], $_POST['owner_id']);
 
             $files = array();
@@ -581,7 +581,7 @@
             $targets = array("milestone" => array("Milestone", "name"),
                              "owner" => array("User", "login"),
                              "user" => array("User", "login"));
-            
+
             foreach($json->commits as $commit) {
                 if (!preg_match("/\[#[0-9]+(\s[^\]]+)?\]/", $commit->message))
                     continue;
@@ -594,13 +594,13 @@
                     $ticket = new Ticket($update[1], array("filter" => false));
                     if ($ticket->no_results)
                         continue;
-                    
+
                     preg_match_all("/([a-zA-Z]+):(\"([^\"]+)\"|([^ ]+))/", $update[2], $changes, PREG_SET_ORDER);
                     $revchanges = array();
                     foreach ($changes as $change) {
                         $attribute = $change[1];
                         $value = oneof($change[3], $change[4]);
-                        
+
                         if (!in_array($attribute, array("title", "description", "state", "milestone", "owner", "user")))
                             continue;
 
@@ -612,7 +612,7 @@
                                 else
                                     $value = new $model(array($target[1] => $value));
                             }
-                        
+
                         $revchanges[$attribute] = $value;
                     }
 
@@ -630,7 +630,7 @@
                         $fromto[$attr] = array("from" => $old,
                                                "to" => $new);
                     }
-                    
+
                     $ticket->update(@$revchanges["title"],
                                     @$revchanges["description"],
                                     @$revchanges["state"],

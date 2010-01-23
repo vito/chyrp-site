@@ -121,6 +121,9 @@
 
             $trigger->call("add_extension", $extension);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $extension;
         }
 
@@ -163,6 +166,9 @@
                                "user_id" => $user_id));
 
             $trigger->call("update_extension", $this, $old);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
@@ -179,6 +185,9 @@
                 Version::delete($version->id);
 
             parent::destroy(get_class(), $id);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

@@ -92,6 +92,9 @@
 
             Trigger::current()->call("add_forum", $forum);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $forum;
         }
 
@@ -120,6 +123,9 @@
                                "description" => $this->description,
                                "order"       => $this->order));
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             Trigger::current()->call("update_forum", $this, $old);
         }
 
@@ -132,6 +138,9 @@
          */
         static function delete($id) {
             parent::destroy(get_class(), $id);
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**

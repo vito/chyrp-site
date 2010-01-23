@@ -125,6 +125,9 @@
 
             $trigger->call("add_topic", $topic);
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             return $topic;
         }
 
@@ -168,6 +171,9 @@
                                "created_at"  => $created_at,
                                "updated_at"  => $updated_at));
 
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
+
             $trigger->call("update_topic", $this, $old);
         }
 
@@ -188,6 +194,9 @@
 
             foreach ($topic->attachments as $attachment)
                 unlink(uploaded($attachment->path, false));
+
+			if (module_enabled("cacher"))
+			    Modules::$instances["cacher"]->regenerate();
         }
 
         /**
