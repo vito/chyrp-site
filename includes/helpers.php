@@ -26,6 +26,7 @@
         $domain = (substr_count($_SERVER['HTTP_HOST'], ".")) ? preg_replace("/^www\./", ".", $_SERVER['HTTP_HOST']) : "" ;
         session_set_cookie_params(60 * 60 * 24 * 30, "/", $domain);
         session_name("ChyrpSession");
+        register_shutdown_function("session_write_close");
         session_start();
     }
 
@@ -60,7 +61,8 @@
             # Since the header might already be set to gzip, start output buffering again.
             if (extension_loaded("zlib") and !ini_get("zlib.output_compression") and
                 isset($_SERVER['HTTP_ACCEPT_ENCODING']) and
-                substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+                substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip") and
+                USE_ZLIB) {
                 ob_start("ob_gzhandler");
                 header("Content-Encoding: gzip");
             } else
@@ -115,7 +117,7 @@
      * Returns whether or not they are logged in by returning the <Visitor.$id> (which defaults to 0).
      */
     function logged_in() {
-        return (isset(Visitor::current()->id) and Visitor::current()->id != 0);
+        return (class_exists("Visitor") and isset(Visitor::current()->id) and Visitor::current()->id != 0);
     }
 
     /**
@@ -320,7 +322,7 @@
             extract($ending);
 
         if ($html) {
-            if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length)
+            if (strlen(preg_replace("/<[^>]+>/", "", $text)) <= $length)
                 return $text;
 
             $totalLength = strlen($ending);
@@ -328,7 +330,8 @@
             $truncate = "";
             preg_match_all("/(<\/?([\w+]+)[^>]*>)?([^<>]*)/", $text, $tags, PREG_SET_ORDER);
             foreach ($tags as $tag) {
-                if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2]) and preg_match('/<[\w]+[^>]*>/s', $tag[0]))
+                if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2])
+                    and preg_match('/<[\w]+[^>]*>/s', $tag[0]))
                     array_unshift($openTags, $tag[2]);
                 elseif (preg_match('/<\/([\w]+)[^>]*>/s', $tag[0], $closeTag)) {
                     $pos = array_search($closeTag[1], $openTags);
@@ -507,14 +510,16 @@
      *     $string - The string to sanitize.
      *     $force_lowercase - Force the string to lowercase?
      *     $anal - If set to *true*, will remove all non-alphanumeric characters.
+     *     $trunc - Number of characters to truncate to (default 100, 0 to disable).
      */
-    function sanitize($string, $force_lowercase = true, $anal = false) {
+    function sanitize($string, $force_lowercase = true, $anal = false, $trunc = 100) {
         $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
                        "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
                        "—", "–", ",", "<", ".", ">", "/", "?");
         $clean = trim(str_replace($strip, "", strip_tags($string)));
         $clean = preg_replace('/\s+/', "-", $clean);
-        $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+        $clean = ($anal ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean);
+        $clean = ($trunc ? substr($clean, 0, $trunc) : $clean);
         return ($force_lowercase) ?
             (function_exists('mb_strtolower')) ?
                 mb_strtolower($clean, 'UTF-8') :
@@ -893,12 +898,13 @@
      *     A unique version of the given $name.
      */
     function unique_filename($name, $path = "", $num = 2) {
-        if (!file_exists(MAIN_DIR.Config::current()->uploads_path.$path.$name))
+        $path = rtrim($path, "/");
+        if (!file_exists(MAIN_DIR.Config::current()->uploads_path.$path."/".$name))
             return $name;
 
         $name = explode(".", $name);
 
-        # Handle "double extensions"
+        # Handle common double extensions
         foreach (array("tar.gz", "tar.bz", "tar.bz2") as $extension) {
             list($first, $second) = explode(".", $extension);
             $file_first =& $name[count($name) - 2];
@@ -911,7 +917,7 @@
         $ext = ".".array_pop($name);
 
         $try = implode(".", $name)."-".$num.$ext;
-        if (!file_exists(MAIN_DIR.Config::current()->uploads_path.$path.$try))
+        if (!file_exists(MAIN_DIR.Config::current()->uploads_path.$path."/".$try))
             return $try;
 
         return unique_filename(implode(".", $name).$ext, $path, $num + 1);
@@ -932,14 +938,15 @@
      */
     function upload($file, $extension = null, $path = "", $put = false) {
         $file_split = explode(".", $file['name']);
-        $dir = rtrim(MAIN_DIR.Config::current()->uploads_path.$path, "/");
+        $path = rtrim($path, "/");
+        $dir = MAIN_DIR.Config::current()->uploads_path.$path;
 
         if (!file_exists($dir))
             mkdir($dir, 0777, true);
 
         $original_ext = end($file_split);
 
-        # Handle "double extensions"
+        # Handle common double extensions
         foreach (array("tar.gz", "tar.bz", "tar.bz2") as $ext) {
             list($first, $second) = explode(".", $ext);
             $file_first =& $file_split[count($file_split) - 2];
@@ -1013,6 +1020,9 @@
      *     $file - Filename relative to the uploads directory.
      */
     function uploaded($file, $url = true) {
+        if (empty($file))
+            return "";
+
         $config = Config::current();
         return ($url ? $config->chyrp_url.$config->uploads_path.$file : MAIN_DIR.$config->uploads_path.$file);
     }
@@ -1242,7 +1252,7 @@
         set_timezone($orig);
         return strtotime($time);
     }
-    
+
     /**
      * Function: timezones
      * Returns an array of timezones that have unique offsets. Doesn't count deprecated timezones.
@@ -1552,7 +1562,7 @@
             if (($name == "week" and $difference >= ($val * 2)) or # Only say "weeks" after two have passed.
                 ($name != "week" and $difference >= $val))
                 $unit = $possible_units[] = $name;
-        
+
         $precision = (int) in_array("year", $possible_units);
         $amount = round($difference / $units[$unit], $precision);
 

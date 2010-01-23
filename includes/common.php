@@ -5,10 +5,10 @@
      * Chyrp - A Lightweight Blogging Engine
      *
      * Version:
-     *     v2.0
+     *     v2.1 git
      *
      * License:
-     *     GPL-3
+     *     Modified MIT (See COPYING)
      *
      * Chyrp Copyright:
      *     Copyright (c) 2009 Alex Suraci, <http://toogeneric.com/>
@@ -16,7 +16,7 @@
 
     # Constant: CHYRP_VERSION
     # Chyrp's version number.
-    define('CHYRP_VERSION', "2.0");
+    define('CHYRP_VERSION', "2.1 git");
 
     # Constant: DEBUG
     # Should Chyrp use debugging processes?
@@ -83,6 +83,14 @@
     # Absolute path to /themes
     define('THEMES_DIR', MAIN_DIR."/themes");
 
+    # Constant: ADMIN_THEMES_DIR
+    # Absolute path to /admin/themes
+    define('ADMIN_THEMES_DIR', MAIN_DIR."/admin/themes");
+
+    # Constant: USE_ZLIB
+    # Use zlib to provide GZIP compression
+    define('USE_ZLIB', true);
+
     # Set error reporting levels, and headers for Chyrp's JS files.
     if (JAVASCRIPT) {
         error_reporting(0);
@@ -97,7 +105,8 @@
         extension_loaded("zlib") and
         !ini_get("zlib.output_compression") and
         isset($_SERVER['HTTP_ACCEPT_ENCODING']) and
-        substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+        substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip") and
+        USE_ZLIB) {
         ob_start("ob_gzhandler");
         header("Content-Encoding: gzip");
     } else

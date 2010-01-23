@@ -12,6 +12,7 @@
     define('TESTER',       isset($_SERVER['HTTP_USER_AGENT']) and $_SERVER['HTTP_USER_AGENT'] == "tester.rb");
     define('MAIN_DIR',     dirname(__FILE__));
     define('INCLUDES_DIR', MAIN_DIR."/includes");
+    define('USE_ZLIB',     false);
 
     # Make sure E_STRICT is on so Chyrp remains errorless.
     error_reporting(E_ALL | E_STRICT);
@@ -40,7 +41,8 @@
 
     # Atlantic/Reykjavik is 0 offset. Set it so the timezones() function is
     # always accurate, even if the server has its own timezone settings.
-    set_timezone("Atlantic/Reykjavik");
+    $default_timezone = oneof(ini_get("date.timezone"), "Atlantic/Reykjavik");
+    set_timezone($default_timezone);
 
     # Sanitize all input depending on magic_quotes_gpc's enabled status.
     sanitize_input($_GET);
@@ -89,6 +91,14 @@
 
             if (!$sql->connect(true))
                 $errors[] = _f("Could not connect to the specified database:\n<pre>%s</pre>", array($sql->error));
+            elseif ($_POST['adapter'] == "pgsql") {
+                new Query($sql, "CREATE FUNCTION year(timestamp) RETURNS double precision AS 'select extract(year from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+                new Query($sql, "CREATE FUNCTION month(timestamp) RETURNS double precision AS 'select extract(month from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+                new Query($sql, "CREATE FUNCTION day(timestamp) RETURNS double precision AS 'select extract(day from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+                new Query($sql, "CREATE FUNCTION hour(timestamp) RETURNS double precision AS 'select extract(hour from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+                new Query($sql, "CREATE FUNCTION minute(timestamp) RETURNS double precision AS 'select extract(minute from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+                new Query($sql, "CREATE FUNCTION second(timestamp) RETURNS double precision AS 'select extract(second from $1);' LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT");
+            }
         }
 
         if (empty($_POST['name']))
@@ -164,11 +174,11 @@
                              feather VARCHAR(32) DEFAULT '',
                              clean VARCHAR(128) DEFAULT '',
                              url VARCHAR(128) DEFAULT '',
-                             pinned TINYINT(1) DEFAULT 0,
+                             pinned BOOLEAN DEFAULT FALSE,
                              status VARCHAR(32) DEFAULT 'public',
                              user_id INTEGER DEFAULT 0,
-                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
+                             created_at DATETIME DEFAULT NULL,
+                             updated_at DATETIME DEFAULT NULL
                          ) DEFAULT CHARSET=utf8");
 
             # Post attributes table.
@@ -184,14 +194,14 @@
                              id INTEGER PRIMARY KEY AUTO_INCREMENT,
                              title VARCHAR(250) DEFAULT '',
                              body LONGTEXT,
-                             show_in_list TINYINT(1) DEFAULT '1',
+                             show_in_list BOOLEAN DEFAULT '1',
                              list_order INTEGER DEFAULT 0,
                              clean VARCHAR(128) DEFAULT '',
                              url VARCHAR(128) DEFAULT '',
                              user_id INTEGER DEFAULT 0,
                              parent_id INTEGER DEFAULT 0,
-                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
+                             created_at DATETIME DEFAULT NULL,
+                             updated_at DATETIME DEFAULT NULL
                          ) DEFAULT CHARSET=utf8");
 
             # Users table
@@ -203,7 +213,7 @@
                              email VARCHAR(128) DEFAULT '',
                              website VARCHAR(128) DEFAULT '',
                              group_id INTEGER DEFAULT 0,
-                             joined_at DATETIME DEFAULT '0000-00-00 00:00:00',
+                             joined_at DATETIME DEFAULT NULL,
                              UNIQUE (login)
                          ) DEFAULT CHARSET=utf8");
 
@@ -227,8 +237,8 @@
                              id VARCHAR(40) DEFAULT '',
                              data LONGTEXT,
                              user_id INTEGER DEFAULT 0,
-                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00',
+                             created_at DATETIME DEFAULT NULL,
+                             updated_at DATETIME DEFAULT NULL,
                              PRIMARY KEY (id)
                          ) DEFAULT CHARSET=utf8");
 
@@ -289,6 +299,7 @@
 
             foreach ($names as $id => $name)
                 $sql->replace("permissions",
+                              array("id", "group_id"),
                               array("id" => $id,
                                     "name" => $name,
                                     "group_id" => 0));
@@ -302,12 +313,13 @@
             # Insert the default groups (see above)
             $group_id = array();
             foreach($groups as $name => $permissions) {
-                $sql->replace("groups", array("name" => ucfirst($name)));
+                $sql->replace("groups", "name", array("name" => ucfirst($name)));
 
-                $group_id[$name] = $sql->latest();
+                $group_id[$name] = $sql->latest("groups");
 
                 foreach ($permissions as $permission)
                     $sql->replace("permissions",
+                                  array("id", "group_id"),
                                   array("id" => $permission,
                                         "name" => $names[$permission],
                                         "group_id" => $group_id[$name]));
@@ -522,6 +534,9 @@
                         <?php if (class_exists("PDO") and in_array("sqlite", PDO::getAvailableDrivers())): ?>
                         <option value="sqlite"<?php selected("sqlite", fallback($_POST['adapter'], "mysql")); ?>>SQLite 3</option>
                         <?php endif; ?>
+                        <?php if (class_exists("PDO") and in_array("pgsql", PDO::getAvailableDrivers())): ?>
+                        <option value="pgsql"<?php selected("pgsql", oneof(@$_POST['adapter'], "mysql")); ?>>PostgreSQL</option>
+                        <?php endif; ?>
                     </select>
                 </p>
                 <div<?php echo (isset($_POST['adapter']) and $_POST['adapter'] == "sqlite") ? ' style="display: none"' : "" ; ?>>
@@ -570,7 +585,7 @@
                     <label for="timezone"><?php echo __("What time is it?"); ?></label>
                     <select name="timezone" id="timezone">
 <?php foreach (timezones() as $zone): ?>
-                        <option value="<?php echo $zone["name"]; ?>"<?php selected($zone["name"], oneof(@$_POST['timezone'], "Africa/Abidjan")); ?>>
+                        <option value="<?php echo $zone["name"]; ?>"<?php selected($zone["name"], oneof(@$_POST['timezone'], $default_timezone)); ?>>
                             <?php echo strftime("%I:%M %p on %B %d, %Y", $zone["now"]); ?> &mdash;
                             <?php echo str_replace(array("_", "St "), array(" ", "St. "), $zone["name"]); ?>
                         </option>

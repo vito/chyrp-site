@@ -46,10 +46,12 @@
         foreach ($tags->fetchAll() as $tag) {
             echo _f("Relocating tags for post #%d...", array($tag["post_id"]), "tags");
             $dirty = $sql->replace("post_attributes",
+                                   array("post_id", "name"),
                                    array("name" => "unclean_tags",
                                          "value" => $tag["tags"],
                                          "post_id" => $tag["post_id"]));
             $clean = $sql->replace("post_attributes",
+                                   array("post_id", "name"),
                                    array("name" => "clean_tags",
                                          "value" => $tag["clean"],
                                          "post_id" => $tag["post_id"]));
@@ -90,6 +92,7 @@
             echo _f("Relocating tags for post #%d...", array($post_id), "tags");
 
             echo test($insert = $sql->replace("post_attributes",
+                                              array("post_id", "name"),
                                               array("name" => "tags",
                                                     "value" => $yaml,
                                                     "post_id" => $post_id)),
@@ -112,9 +115,10 @@
 
         foreach ($tags->fetchAll() as $attr)
             $sql->replace("post_attributes",
-                         array("post_id" => $attr["post_id"],
-                               "name" => "tags",
-                               "value" => YAML::dump(YAML::load($attr["value"]))));
+                          array("post_id", "name"),
+                          array("post_id" => $attr["post_id"],
+                                "name" => "tags",
+                                "value" => YAML::dump(YAML::load($attr["value"]))));
     }
 
     update_tags_structure();

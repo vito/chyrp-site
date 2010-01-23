@@ -77,6 +77,22 @@ ${ trigger.call("head") }
             {% endfor %}
             {% endfor %}
 {% block content %}{% endblock %}
+<<<<<<< HEAD:themes/chyrp/layouts/default.twig
+=======
+                <div class="clear"></div>
+                $posts.prev_link
+                $posts.next_link
+                {% if posts.paginated and posts.pages > 1 %}
+                <span class="pages">${ "Page %d of %d" | translate | format(posts.page, posts.pages) }</span>
+                {% endif %}
+                <div id="footer">
+                    <p>Stardust theme &copy; 2008 <a href="mailto:aa.macdonald@gmail.com">Aaron MacDonald</a></p>
+                    <p>${ "Powered by <a class=\"chyrp\" href=\"http://chyrp.net/\">Chyrp</a>" | translate }</p>
+                    <a class="atom" href="{% url "feed" %}">atom</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+>>>>>>> 56d72b8d65d5fd39aaf71e61da97201b63c13cdc:themes/stardust/layouts/default.twig
         </div>
 
         <ul id="footer">
@@ -102,7 +118,7 @@ ${ trigger.call("head") }
                 {% for debug in sql_debug %}
                 <li>
                     <pre>${ debug.query | replace("\t", "    ") | escape }</pre>
-                    <em>${ "Called from <strong>%s</strong> on line <strong>%d</strong>." | translate | format(debug.file, debug.line) }</em>
+                    <em>${ "Called from <strong>%s</strong> on line <strong>%d</strong> at %ss." | translate | format(debug.file, debug.line, debug.time) }</em>
                 </li>
                 {% endfor %}
             </ol>

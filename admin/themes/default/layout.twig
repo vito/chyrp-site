@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-type" content="$theme.type; charset=utf-8" />
         <title>$site.name: {% block title %}$title{% endblock %}</title>
-        <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+        <link rel="stylesheet" href="$theme_url/style.css" type="text/css" media="screen" title="no title" charset="utf-8" />
         <script src="$site.chyrp_url/includes/lib/gz.php?file=jquery.js" type="text/javascript" charset="utf-8"></script>
         <script src="$site.chyrp_url/includes/lib/gz.php?file=plugins.js" type="text/javascript" charset="utf-8"></script>
         <script src="$site.chyrp_url/includes/admin.js.php?action=$route.action" type="text/javascript" charset="utf-8"></script>
@@ -22,7 +22,7 @@ ${ trigger.call("admin_head") }
                     {% endfor %}
 {% endblock %}
                 </ul>
-                <h1>$site.name</h1>
+                <h1><a href="$site.url">$site.name</a></h1>
             </div>
         </div>
         <div id="welcome">
@@ -58,7 +58,6 @@ ${ trigger.call("admin_head") }
             <div class="clear"></div>
         </div>
         <div class="column" id="footer">
-            <img src="images/chyrp.gif" alt="Logo" />
             ${ "Chyrp loves you." | translate }<br />
             <span class="sub">
                 ${ "v%s &copy; %d Alex Suraci" | translate | format(version, 2009) }

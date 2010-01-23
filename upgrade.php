@@ -31,7 +31,8 @@
         extension_loaded("zlib") and
         !ini_get("zlib.output_compression") and
         isset($_SERVER['HTTP_ACCEPT_ENCODING']) and
-        substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+        substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip") and
+        USE_ZLIB) {
         ob_start("ob_gzhandler");
         header("Content-Encoding: gzip");
     } else
@@ -459,7 +460,7 @@
     /**
      * Function: rss_posts_to_feed_items
      * Rename the feed items setting.
-     * 
+     *
      * Versions: 1.1.3.2 => 2.0
      */
     function rss_posts_to_feed_items() {
@@ -582,8 +583,8 @@
                                              id VARCHAR(40) DEFAULT '',
                                              data LONGTEXT,
                                              user_id INTEGER DEFAULT '0',
-                                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00',
+                                             created_at DATETIME DEFAULT NULL,
+                                             updated_at DATETIME DEFAULT NULL,
                                              PRIMARY KEY (id)
                                          ) DEFAULT CHARSET=utf8") or die(mysql_error()));
     }
@@ -722,7 +723,7 @@
 
         echo " - ".__("Backing up `posts` table...").
              test($backup = $sql->select("posts"));
-        
+
         if (!$backup)
             return;
 
@@ -744,8 +745,8 @@
                                              pinned TINYINT(1) DEFAULT 0,
                                              status VARCHAR(32) DEFAULT 'public',
                                              user_id INTEGER DEFAULT 0,
-                                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
+                                             created_at DATETIME DEFAULT NULL,
+                                             updated_at DATETIME DEFAULT NULL
                                          ) DEFAULT CHARSET=utf8"));
 
         if (!$create) {
@@ -804,7 +805,7 @@
                                   array("post_id" => $row["id"],
                                         "name" => $name,
                                         "value" => $value))) {
-                    # Clear successful attribute insertions so the 
+                    # Clear successful attribute insertions so the
                     # user can try again without primary key conflicts.
                     foreach ($inserts as $insertion)
                         $sql->delete("post_attributes",
@@ -836,7 +837,7 @@
 
             echo " - ".__("Backing up `posts` table...").
                  test($backup = $sql->select("posts"));
-        
+
             if (!$backup)
                 return;
 
@@ -857,8 +858,8 @@
                                                  pinned TINYINT(1) DEFAULT 0,
                                                  status VARCHAR(32) DEFAULT 'public',
                                                  user_id INTEGER DEFAULT 0,
-                                                 created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                                                 updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
+                                                 created_at DATETIME DEFAULT NULL,
+                                                 updated_at DATETIME DEFAULT NULL
                                              ) DEFAULT CHARSET=utf8"));
 
             if (!$create)
@@ -933,7 +934,7 @@
             return;
 
         $backup = $groups->fetchAll();
-            
+
         $names = array();
         foreach($backup as $group) {
             $names[$group["id"]] = $group["name"];
@@ -955,7 +956,7 @@
                  test($sql->insert("groups",
                                    array("id" => $id,
                                         "name" => $name)));
-        
+
         foreach ($permissions as $id => $permissions)
             foreach ($permissions as $permission)
                 echo _f("Restoring permission `%s` on group `%s`...", array($permission, $names[$id])).
@@ -1005,7 +1006,7 @@
 
         echo " - ".__("Backing up `users` table...").
              test($backup = $sql->select("users"));
-        
+
         if (!$backup)
             return;
 
@@ -1026,7 +1027,7 @@
                                             `email` varchar(128) DEFAULT '',
                                             `website` varchar(128) DEFAULT '',
                                             `group_id` int(11) DEFAULT '0',
-                                            `joined_at` datetime DEFAULT '0000-00-00 00:00:00',
+                                            `joined_at` datetime DEFAULT NULL,
                                             PRIMARY KEY (`id`),
                                             UNIQUE KEY `login` (`login`)
                                         ) DEFAULT CHARSET=utf8"));
@@ -1175,7 +1176,7 @@
         Config::fallback("uploads_path", "/uploads/");
         Config::fallback("chyrp_url", Config::get("url"));
         Config::fallback("sql", Config::$yaml["database"]);
-        Config::fallback("timezone", "America/Indiana/Indianapolis");
+        Config::fallback("timezone", "America/New_York");
 
         Config::remove("rss_posts");
         Config::remove("time_offset");

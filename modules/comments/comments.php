@@ -16,14 +16,14 @@
                              author VARCHAR(250) DEFAULT '',
                              author_url VARCHAR(128) DEFAULT '',
                              author_email VARCHAR(128) DEFAULT '',
-                             author_ip INT(10) DEFAULT '0',
+                             author_ip INTEGER DEFAULT '0',
                              author_agent VARCHAR(255) DEFAULT '',
                              status VARCHAR(32) default 'denied',
                              signature VARCHAR(32) DEFAULT '',
-                             post_id INTEGER DEFAULT '0',
-                             user_id INTEGER DEFAULT '0',
-                             created_at DATETIME DEFAULT '0000-00-00 00:00:00',
-                             updated_at DATETIME DEFAULT '0000-00-00 00:00:00'
+                             post_id INTEGER DEFAULT 0,
+                             user_id INTEGER DEFAULT 0,
+                             created_at DATETIME DEFAULT NULL,
+                             updated_at DATETIME DEFAULT NULL
                          ) DEFAULT CHARSET=utf8");
 
             $config = Config::current();
@@ -66,7 +66,7 @@
 
         static function route_add_comment() {
             $post = new Post($_POST['post_id'], array("drafts" => true));
-            if (!Comment::user_can($post->id))
+            if (!Comment::user_can($post))
                 show_403(__("Access Denied"), __("You cannot comment on this post.", "comments"));
 
             if (empty($_POST['author'])) error(__("Error"), __("Author can't be blank.", "comments"));
@@ -515,7 +515,7 @@
                              $chyrp->status,
                              $chyrp->signature,
                              datetime($comment->published),
-                             ($comment->published == $comment->updated) ? "0000-00-00 00:00:00" : datetime($comment->updated),
+                             ($comment->published == $comment->updated) ? null : datetime($comment->updated),
                              $post,
                              ($user_id ? $user_id : 0));
             }
@@ -582,7 +582,7 @@
                              $comment["comment_email"],
                              $comment["comment_ip"],
                              "",
-                             ($comment["comment_visible"] ? "approved" : denied),
+                             ($comment["comment_visible"] ? "approved" : "denied"),
                              "",
                              $comment["comment_created_on"],
                              $comment["comment_modified_on"],
@@ -650,7 +650,7 @@
 
         public function post_latest_comment_attr($attr, $post) {
             if (isset($this->latest_comments))
-                return fallback($this->latest_comments[$post->id], "0000-00-00 00:00:00");
+                return fallback($this->latest_comments[$post->id], null);
 
             $times = SQL::current()->select("comments",
                                             array("MAX(created_at) AS latest", "post_id"),
@@ -672,7 +672,7 @@
             foreach ($times->fetchAll() as $row)
                 $this->latest_comments[$row["post_id"]] = $row["latest"];
 
-            return fallback($this->latest_comments[$post->id], "0000-00-00 00:00:00");
+            return fallback($this->latest_comments[$post->id], null);
         }
 
         public function comments_get($options) {

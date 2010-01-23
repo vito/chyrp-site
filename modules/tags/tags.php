@@ -112,6 +112,7 @@
             $tags = array_combine($tags, $tags_cleaned);
 
             SQL::current()->replace("post_attributes",
+                                    array("post_id", "name"),
                                     array("name" => "tags",
                                           "value" => YAML::dump($tags),
                                           "post_id" => $post->id));
@@ -221,7 +222,7 @@
 
             $tags = array();
             $names = array();
-            
+
             foreach($sql->select("post_attributes",
                                  "*",
                                  array("name" => "tags",
@@ -351,6 +352,7 @@
                     $tags[$tag] = sanitize($tag);
 
                     $sql->replace("post_attributes",
+                                  array("post_id", "name"),
                                   array("name" => "tags",
                                         "value" => YAML::dump($tags),
                                         "post_id" => $post_id));
@@ -375,7 +377,7 @@
 
             $attributes = $sql->select("post_attributes",
                                        array("value", "post_id"),
-                                       array("name" => "tags", 
+                                       array("name" => "tags",
                                              "value like all" => $likes));
 
             $ids = array();
@@ -403,7 +405,7 @@
                 return false;
 
             $main->display(array("pages/tag", "pages/index"),
-                           array("posts" => $posts, "tag" => $tag),
+                           array("posts" => $posts, "tag" => $tag, "tags" => $tags),
                            _f("Posts tagged with %s", array($tag), "tags"));
         }
 
@@ -700,7 +702,7 @@
             $tag = $_POST['name'];
 
             if (!$post->editable())
-                continue;
+                exit("{}");
 
             $tags = $sql->select("post_attributes",
                                  "value",
@@ -714,6 +716,7 @@
             $tags[$tag] = sanitize($tag);
 
             $sql->replace("post_attributes",
+                          array("post_id", "name"),
                           array("name" => "tags",
                                 "value" => YAML::dump($tags),
                                 "post_id" => $post->id));

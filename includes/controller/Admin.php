@@ -29,10 +29,17 @@
          * Prepares Twig.
          */
         private function __construct() {
-            $this->twig = new Twig_Loader((file_exists(THEME_DIR."/admin") ? THEME_DIR."/admin" : MAIN_DIR."/admin/layout"),
-                                          (is_writable(INCLUDES_DIR."/caches") and !DEBUG) ?
-                                              INCLUDES_DIR."/caches" :
-                                              null);
+            $this->admin_theme = fallback($_SESSION['admin_theme'], "default");
+
+            $this->theme = new Twig_Loader(MAIN_DIR."/admin/themes/".$this->admin_theme,
+                                           (is_writable(INCLUDES_DIR."/caches") and !DEBUG) ?
+                                               INCLUDES_DIR."/caches" :
+                                               null);
+
+            $this->default = new Twig_Loader(MAIN_DIR."/admin/themes/default",
+                                             (is_writable(INCLUDES_DIR."/caches") and !DEBUG) ?
+                                                 INCLUDES_DIR."/caches" :
+                                                 null);
         }
 
         /**
@@ -147,6 +154,7 @@
                                  "selected_feather" => Feathers::$instances[$feather],
                                  "args" => array("url" => stripslashes($_GET['url']),
                                                  "page_url" => stripslashes($_GET['url']),
+                                                 "page_link" => '(via <a href="'.stripslashes($_GET['url']).'">'.$_GET['title'].'</a>)',
                                                  "title" => stripslashes($_GET['title']),
                                                  "page_title" => stripslashes($_GET['title']),
                                                  "selection" => stripslashes($_GET['selection']))));
@@ -163,6 +171,9 @@
 
             if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
                 show_403(__("Access Denied"), __("Invalid security key."));
+
+            if (!isset($_POST['draft']) and !$visitor->group->can("add_post"))
+                $_POST['draft'] = 'true';
 
             $post = Feathers::$instances[$_POST['feather']]->submit();
 
@@ -1119,6 +1130,7 @@
                     $user_id = $sql->select("users", "id", array("login" => $login), "id DESC")->fetchColumn();
 
                     $data = xml2arr($entry->content);
+                    $data["imported_from"] = "chyrp";
 
                     if (!empty($_POST['media_url']))
                         array_walk_recursive($data, "media_url_scan");
@@ -1132,7 +1144,7 @@
                                       $chyrp->status,
                                       datetime($entry->published),
                                       ($entry->updated == $entry->published) ?
-                                          "0000-00-00 00:00:00" :
+                                          null :
                                           datetime($entry->updated),
                                       "",
                                       false);
@@ -1157,7 +1169,7 @@
                                       $chyrp->clean,
                                       Page::check_url($chyrp->url),
                                       datetime($entry->published),
-                                      ($entry->updated == $entry->published) ? "0000-00-00 00:00:00" : datetime($entry->updated));
+                                      ($entry->updated == $entry->published) ? null : datetime($entry->updated));
 
                     $trigger->call("import_chyrp_page", $entry, $page);
                 }
@@ -1243,7 +1255,9 @@
                                               "future"  => "draft",
                                               "pending" => "draft");
 
-                    $data = array("title" => trim($item->title), "body" => trim($content->encoded));
+                    $data = array("title" => trim($item->title),
+                                  "body" => trim($content->encoded),
+                                  "imported_from" => "wordpress");
 
                     $post = Post::add($data,
                                       $clean,
@@ -1387,6 +1401,8 @@
                         break;
                 }
 
+                $values["imported_from"] = "tumblr";
+
                 $new_post = Post::add($values,
                                       $clean,
                                       Post::check_url($clean),
@@ -1456,7 +1472,8 @@
                 $clean = fallback($post["url_title"], sanitize($post["Title"]));
 
                 $new_post = Post::add(array("title" => $post["Title"],
-                                            "body" => $post["Body"]),
+                                            "body" => $post["Body"],
+                                            "imported_from" => "textpattern"),
                                       $clean,
                                       Post::check_url($clean),
                                       "text",
@@ -1502,6 +1519,31 @@
 
             mysql_query("SET NAMES 'utf8'");
 
+            $get_authors = mysql_query("SELECT * FROM mt_author ORDER BY author_id ASC", $link) or error(__("Database Error"), mysql_error());
+            $users = array();
+            while ($author = mysql_fetch_array($get_authors)) {
+                # Try to figure out if this author is the same as the person doing the import.
+                if ($author["author_name"] == Visitor::current()->login or
+                    $author["author_nickname"] == Visitor::current()->login or
+                    $author["author_nickname"] == Visitor::current()->full_name or
+                    $author["author_url"] == Visitor::current()->website or
+                    $author["author_email"] == Visitor::current()->email)
+                    $users[$author["author_id"]] = Visitor::current();
+                else
+                    $users[$author["author_id"]] = User::add($author["author_name"],
+                                                             $author["author_password"],
+                                                             $author["author_email"],
+                                                             ($author["author_nickname"] != $author["author_name"] ?
+                                                                 $author["author_nickname"] :
+                                                                 ""),
+                                                             $author["author_url"],
+                                                             ($author["author_can_create_blog"] == "1" ?
+                                                                 Visitor::current()->group :
+                                                                 null),
+                                                             $author["author_created_on"],
+                                                             false);
+            }
+
             $get_posts = mysql_query("SELECT * FROM mt_entry ORDER BY entry_id ASC", $link) or error(__("Database Error"), mysql_error());
             $posts = array();
             while ($post = mysql_fetch_array($get_posts))
@@ -1528,23 +1570,24 @@
                                           3 => "draft",
                                           4 => "draft");
 
-                $clean = fallback($post["entry_basename"], sanitize($post["entry_title"]));
+                $clean = oneof($post["entry_basename"], sanitize($post["entry_title"]));
 
-                if ($post["entry_class"] == "entry") {
+                if (empty($post["entry_class"]) or $post["entry_class"] == "entry") {
                     $new_post = Post::add(array("title" => $post["entry_title"],
-                                                "body" => $body),
+                                                "body" => $body,
+                                                "imported_from" => "movabletype"),
                                           $clean,
                                           Post::check_url($clean),
                                           "text",
-                                          null,
+                                          @$users[$post["entry_author_id"]],
                                           false,
                                           $status_translate[$post["entry_status"]],
-                                          $post["entry_authored_on"],
+                                          oneof(@$post["entry_authored_on"], @$post["entry_created_on"], datetime()),
                                           $post["entry_modified_on"],
                                           "",
                                           false);
                     $trigger->call("import_movabletype_post", $post, $new_post, $link);
-                } elseif ($post["entry_class"] == "page") {
+                } elseif (@$post["entry_class"] == "page") {
                     $new_page = Page::add($post["entry_title"], $body, null, 0, true, 0, $clean, Page::check_url($clean));
                     $trigger->call("import_movabletype_page", $post, $new_page, $link);
                 }
@@ -1717,7 +1760,7 @@
             if (!$open = @opendir(THEMES_DIR))
                 return Flash::warning(__("Could not read themes directory."));
 
-             while (($folder = readdir($open)) !== false) {
+            while (($folder = readdir($open)) !== false) {
                 if (!file_exists(THEMES_DIR."/".$folder."/info.yaml"))
                     continue;
 
@@ -1733,8 +1776,8 @@
                 fallback($info["author"], array("name" => "", "url" => ""));
 
                 $info["author"]["link"] = !empty($info["author"]["url"]) ?
-                                              '<a href="'.$info["author"]["url"].'">'.$info["author"]["name"].'</a>' :
-                                              $info["author"]["name"] ;
+                    '<a href="'.$info["author"]["url"].'">'.$info["author"]["name"].'</a>' :
+                    $info["author"]["name"] ;
                 $info["description"] = preg_replace("/<code>(.+)<\/code>/se",
                                                     "'<code>'.fix('\\1').'</code>'",
                                                     $info["description"]);
@@ -1745,9 +1788,45 @@
 
                 $this->context["themes"][] = array("name" => $folder,
                                                    "screenshot" => (file_exists(THEMES_DIR."/".$folder."/screenshot.png") ?
-                                                                       $config->chyrp_url."/themes/".$folder."/screenshot.png" :
-                                                                       $config->chyrp_url."/admin/images/noscreenshot.png"),
+                                                                        $config->chyrp_url."/themes/".$folder."/screenshot.png" :
+                                                                        ""),
                                                    "info" => $info);
+            }
+
+            if (!$open = @opendir(ADMIN_THEMES_DIR))
+                return Flash::warning(__("Could not read themes directory."));
+
+            while (($folder = readdir($open)) !== false) {
+                if (!file_exists(ADMIN_THEMES_DIR."/".$folder."/info.yaml"))
+                    continue;
+
+                if (file_exists(ADMIN_THEMES_DIR."/".$folder."/locale/".$config->locale.".mo"))
+                    load_translator($folder, ADMIN_THEMES_DIR."/".$folder."/locale/".$config->locale.".mo");
+
+                $info = YAML::load(ADMIN_THEMES_DIR."/".$folder."/info.yaml");
+
+                fallback($info["name"], $folder);
+                fallback($info["version"], "0");
+                fallback($info["url"]);
+                fallback($info["description"]);
+                fallback($info["author"], array("name" => "", "url" => ""));
+
+                $info["author"]["link"] = !empty($info["author"]["url"]) ?
+                    '<a href="'.$info["author"]["url"].'">'.$info["author"]["name"].'</a>' :
+                    $info["author"]["name"] ;
+                $info["description"] = preg_replace("/<code>(.+)<\/code>/se",
+                                                    "'<code>'.fix('\\1').'</code>'",
+                                                    $info["description"]);
+
+                $info["description"] = preg_replace("/<pre>(.+)<\/pre>/se",
+                                                    "'<pre>'.fix('\\1').'</pre>'",
+                                                    $info["description"]);
+
+                $this->context["admin_themes"][] = array("name" => $folder,
+                                                         "screenshot" => (file_exists(ADMIN_THEMES_DIR."/".$folder."/screenshot.png") ?
+                                                                              $config->chyrp_url."/admin/themes/".$folder."/screenshot.png" :
+                                                                              ""),
+                                                         "info" => $info);
             }
 
             closedir($open);
@@ -1896,10 +1975,41 @@
                 Flash::message($message);
 
             # Clear the caches made by the previous theme.
-            foreach (glob(INCLUDES_DIR."/caches/*.cache") as $cache)
+            foreach ((array) glob(INCLUDES_DIR."/caches/*.cache") as $cache)
                 @unlink($cache);
 
             Flash::notice(_f("Theme changed to &#8220;%s&#8221;.", array($info["name"])), "/admin/?action=themes");
+        }
+
+        /**
+         * Function: theme
+         * Changes the admin theme.
+         */
+        public function change_admin_theme() {
+            if (empty($_GET['theme']))
+                error(__("No Theme Specified"), __("You did not specify a theme to switch to."));
+
+            $config = Config::current();
+
+            $_SESSION['admin_theme'] = $_GET['theme'];
+
+            if (file_exists(ADMIN_THEMES_DIR."/".$_GET['theme']."/locale/".$config->locale.".mo"))
+                load_translator($_GET['theme'], ADMIN_THEMES_DIR."/".$_GET['theme']."/locale/".$config->locale.".mo");
+
+            $info = YAML::load(ADMIN_THEMES_DIR."/".$_GET['theme']."/info.yaml");
+            fallback($info["notifications"], array());
+
+            foreach ($info["notifications"] as &$notification)
+                $notification = __($notification, $_GET['theme']);
+
+            foreach ($info["notifications"] as $message)
+                Flash::message($message);
+
+            # Clear the caches made by the previous theme.
+            foreach (glob(INCLUDES_DIR."/caches/*.cache") as $cache)
+                @unlink($cache);
+
+            Flash::notice(_f("Admin theme changed to &#8220;%s&#8221;.", array($info["name"])), "/admin/?action=themes");
         }
 
         /**
@@ -2177,7 +2287,7 @@
          * Renders the page.
          *
          * Parameters:
-         *     $action - The template file to display, in /admin/layout/pages.
+         *     $action - The template file to display, in (theme dir)/pages.
          *     $context - Context for the template.
          *     $title - The title for the page. Defaults to a camlelization of the action, e.g. foo_bar -> Foo Bar.
          */
@@ -2218,6 +2328,8 @@
             $this->context["debug"]      = DEBUG;
             $this->context["feathers"]   = Feathers::$instances;
             $this->context["modules"]    = Modules::$instances;
+            $this->context["admin_theme"] = $this->admin_theme;
+            $this->context["theme_url"]  = Config::current()->chyrp_url."/admin/themes/".$this->admin_theme;
             $this->context["POST"]       = $_POST;
             $this->context["GET"]        = $_GET;
 
@@ -2275,9 +2387,10 @@
 
             $this->context["sql_debug"]  = SQL::current()->debug;
 
-            $template = file_exists(THEME_DIR."/admin/layout/pages/".$action.".twig") ?
-                            THEME_DIR."/admin/pages/".$action.".twig" :
-                            MAIN_DIR."/admin/layout/pages/".$action.".twig" ;
+            $file = MAIN_DIR."/admin/themes/%s/pages/".$action.".twig";
+            $template = file_exists(sprintf($file, $this->admin_theme)) ?
+                sprintf($file, $this->admin_theme) :
+                sprintf($file, "default");
 
             $config = Config::current();
             if (!file_exists($template)) {
@@ -2291,14 +2404,20 @@
                     error(__("Template Missing"), _f("Couldn't load template: <code>%s</code>", array($template)));
             }
 
+            # Try the theme first
             try {
-                $this->twig->getTemplate($template)->display($this->context);
-            } catch (Exception $e) {
-                $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
-                $trace = debug_backtrace();
-                $twig = array("file" => $e->filename, "line" => $e->lineno);
-                array_unshift($trace, $twig);
-                error(__("Error"), $prettify, $trace);
+                $this->theme->getTemplate($template)->display($this->context);
+            } catch (Exception $t) {
+                # Fallback to the default
+                try {
+                    $this->default->getTemplate($template)->display($this->context);
+                } catch (Exception $e) {
+                    $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
+                    $trace = debug_backtrace();
+                    $twig = array("file" => $e->filename, "line" => $e->lineno);
+                    array_unshift($trace, $twig);
+                    error(__("Error"), $prettify, $trace);
+                }
             }
         }
 

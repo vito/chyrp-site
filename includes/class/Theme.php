@@ -137,20 +137,26 @@
                                         "MONTH(created_at) AS month",
                                         "created_at AS created_at",
                                         "COUNT(id) AS posts"),
-                                  array("status = 'public'", Post::feathers()),
+                                  array("status" => "public", Post::feathers()),
                                   $order_by." ".strtoupper($order),
                                   array(),
                                   ($limit == 0) ? null : $limit,
                                   null,
-                                  array("YEAR(created_at)", "MONTH(created_at)"));
+                                  array("created_at"));
 
             $archives = array();
+            $grouped = array();
             while ($date = $dates->fetchObject())
-                $archives[] = array("month" => $date->month,
-                                    "year"  => $date->year,
-                                    "when"  => $date->created_at,
-                                    "url"   => url("archive/".when("Y/m/", $date->created_at)),
-                                    "count" => $date->posts);
+                if (isset($grouped[$date->month." ".$date->year]))
+                    $archives[$grouped[$date->month." ".$date->year]]["count"]++;
+                else {
+                    $grouped[$date->month." ".$date->year] = count($archives);
+                    $archives[] = array("month" => $date->month,
+                                        "year"  => $date->year,
+                                        "when"  => $date->created_at,
+                                        "url"   => url("archive/".when("Y/m/", $date->created_at)),
+                                        "count" => $date->posts);
+                }
 
             return $this->archives_list["$limit,$order_by,$order"] = $archives;
         }
@@ -206,7 +212,7 @@
                     $stylesheets.= "<!--[if IE]>";
                 if (preg_match("/^ie([0-9\.]+)\.css/", $file, $matches))
                     $stylesheets.= "<!--[if IE ".$matches[1]."]>";
-                elseif (preg_match("/(lt|gt)ie([0-9\.]+)\.css/", $file, $matches))
+                elseif (preg_match("/(lte?|gte?)ie([0-9\.]+)\.css/", $file, $matches))
                     $stylesheets.= "<!--[if ".$matches[1]." IE ".$matches[2]."]>";
 
                 $stylesheets.= '<link rel="stylesheet" href="'.$config->chyrp_url.$path.'" type="text/css" media="'.($file == "print.css" ? "print" : "screen").'" charset="utf-8" />';

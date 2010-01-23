@@ -4,7 +4,7 @@
             $this->addAlias("markup_post_text", "makesafe", 8);
         }
 
-		# Replace the "read more" indicator before markup modules get to it.
+        # Replace the "read more" indicator before markup modules get to it.
         static function makesafe($text, $post = null) {
             if (!is_string($text) or !preg_match("/<!--more(\((.+)\))?-->/", $text)) return $text;
 
@@ -20,21 +20,22 @@
 
         # To be used in the Twig template as ${ post.body | read_more("Read more...") }
         static function read_more($text, $string = null) {
-            if (!substr_count($text, "e51b2b9a58824dd068d8777ec6e97e4d")) return $text;
+            if (!substr_count($text, "e51b2b9a58824dd068d8777ec6e97e4d"))
+                return $text;
 
-            preg_match("/<a class=\"read_more\" href=\"[^\"]+\">e51b2b9a58824dd068d8777ec6e97e4d<\/a>\(\(\(more(\((.+)\))?\)\)\)(<\/p>|<br \/>)?/", $text, $more);
-            $split_read = preg_split("/\(\(\(more(\((.+)\))?\)\)\)/", $text);
-            $split_read[0].= @$more[3];
+            if (Route::current()->action == "view")
+                return preg_replace('/(<p>)?<a class="read_more" href="([^"]+)">e51b2b9a58824dd068d8777ec6e97e4d<\/a>\(\(\(more(\((.+)\))?\)\)\)(<\/p>(\n\n<\/p>(\n\n)?)?)?/', "", $text);
 
-			if (!empty($more[2]))
-				$string = $more[2];
+            preg_match_all("/e51b2b9a58824dd068d8777ec6e97e4d(\(\(\(more(\((.+)\))?\)\)\))/", preg_replace("/<[^>]+>/", "", $text), $more, PREG_OFFSET_CAPTURE);
+            $body = truncate($text, $more[1][0][1], "", true, true, true);
+            $body.= @$more[3][0];
+
+            if (!empty($more[2][0]))
+                $string = $more[2][0];
             elseif (!isset($string) or $string instanceof Post) # If it's called from anywhere but Twig the post will be passed as a second argument.
                 $string = __("Read More &raquo;", "theme");
 
-            if (Route::current()->action == "view")
-                return preg_replace('/(<p>)?<a class="read_more" href="([^"]+)">e51b2b9a58824dd068d8777ec6e97e4d<\/a>(<\/p>(\n\n<\/p>(\n\n)?)?)?/', "", implode("\n\n", $split_read));
-
-            return str_replace("e51b2b9a58824dd068d8777ec6e97e4d", $string, $split_read[0]);
+            return str_replace("e51b2b9a58824dd068d8777ec6e97e4d", $string, $body);
         }
 
         static function title_from_excerpt($text) {
@@ -43,6 +44,6 @@
         }
 
         public function preview($text) {
-            return preg_replace("/<!--more(\((.+)\))?-->/", "<hr />", $text);
+            return preg_replace("/<!--more(\(([^\)]+)\))?-->/", "<hr />", $text);
         }
     }

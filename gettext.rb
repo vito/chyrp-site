@@ -3,7 +3,7 @@ require "yaml"
 require "optparse"
 
 OPTIONS = {
-  :project => "Chyrp v2.0 RC3",
+  :project => "Chyrp v2.1 git",
   :maintainer => "Alex Suraci <suracil.icio.us@gmail.com>",
   :domain  => nil,
   :msgstr  => "",#"XXX",
@@ -52,6 +52,7 @@ class Gettext
 
     @domain = (OPTIONS[:domain].nil?) ? "" : ', "'+OPTIONS[:domain]+'"'
     @twig_domain = (OPTIONS[:domain].nil? or OPTIONS[:domain] == "theme") ? "" : '\("'+OPTIONS[:domain]+'"\)'
+    @twig_arg_domain = (OPTIONS[:domain].nil? or OPTIONS[:domain] == "theme") ? "" : ', "'+OPTIONS[:domain]+'"'
 
     prepare_files
     do_scan
@@ -174,7 +175,7 @@ class Gettext
   end
 
   def scan_twig_plural(text, line, filename, clean_filename)
-    text.gsub(/[\s\{\(](#{STRING})\s*\|\s*translate_plural\((#{STRING}), .*?#{@domain}\)\s*\|\s*format\(.*?\)/) do
+    text.gsub(/[\s\{\(](#{STRING})\s*\|\s*translate_plural\((#{STRING}),.*?#{@twig_arg_domain}\)\s*\|\s*format\(.*?\)/) do
       if @translations[$1].nil?
         @translations[$1] = { :places => [clean_filename + ":" + line.to_s],
                               :filter => true,

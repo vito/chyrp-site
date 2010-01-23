@@ -3,7 +3,6 @@
 {% block title %}${ "User Settings" | translate }{% endblock %}
 
 {% block content %}
-            <h1>${ "User Settings" | translate }</h1>
             <form id="user_settings" class="split" action="{% admin "user_settings" %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <fieldset>
                     <p>
@@ -29,7 +28,7 @@
                     </p>
 
                     <p class="buttons">
-                        <button type="submit" class="yay"><img src="images/icons/success.png" alt="success" />${ "Update" | translate }</button>
+                        <button type="submit" class="yay"><img src="$theme_url/images/icons/success.png" alt="success" />${ "Update" | translate }</button>
                     </p>
 
                     <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />

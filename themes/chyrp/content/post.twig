@@ -32,6 +32,26 @@
                         {% endif %}
                         <div class="clear"></div>
                         <span class="info">
+<<<<<<< HEAD:themes/chyrp/content/post.twig
+=======
+                            {% if post.pinned %}
+                            <strong><a href="$post.url">${ post.created_at | strftime("%B %d @ %I:%M %p" | translate) }</a></strong>
+                            {% else %}
+                            <strong><a href="$post.url">${ post.created_at | strftime("%I:%M %p" | translate) }</a></strong>
+                            {% endif %}
+                            {% if enabled_modules.categorize and post.category.id != 0 %}
+                            |
+                            <a href="$post.category.url" rel="tag">$post.category.name</a>
+                            {% endif %}
+                            {% if enabled_modules.comments %}
+                            |
+                            <a href="$post.url#comments">${ "%s Comment" | translate_plural("%s Comments", post.comment_count) | format(post.comment_count) }</a>
+                            {% endif %}
+                            {% if post.linked_tags | length > 0 %}
+                            |
+                            ${ "Tags" | translate }: ${ post.linked_tags | join(", ") }
+                            {% endif %}
+>>>>>>> 56d72b8d65d5fd39aaf71e61da97201b63c13cdc:themes/stardust/content/post.twig
                         </span>
                         <div class="clear"></div>
                     </div>

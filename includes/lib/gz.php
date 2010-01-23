@@ -1,12 +1,16 @@
 <?php
+    # Constant: USE_ZLIB
+    # Use zlib to provide GZIP compression
+    define('USE_ZLIB', true);
+    
     $valid_files = "jquery.js plugins.js";
     if (!in_array($_GET['file'], explode(" ", $valid_files)) and strpos($_GET['file'], "/themes/") === false)
         exit("Access Denied.");
 
-    if (strpos($_GET['file'], "/themes/") and strpos($_GET['file'], ".."))
+    if (substr_count($_GET['file'], "..") > 0 )
         exit("GTFO.");
 
-    if (extension_loaded('zlib')) {
+    if (extension_loaded('zlib') and USE_ZLIB) {
         ob_start("ob_gzhandler");
         header("Content-Encoding: gzip");
     } else

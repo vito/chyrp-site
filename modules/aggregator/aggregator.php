@@ -29,18 +29,18 @@
             if ($config->disable_aggregation or time() - $config->last_aggregation < ($config->aggregate_every * 60))
                 return;
 
-            $aggregates = $config->aggregates;
+            $aggregates = (array) $config->aggregates;
 
             if (empty($aggregates))
                 return;
 
-            foreach ((array) $config->aggregates as $name => $feed) {
+            foreach ($aggregates as $name => $feed) {
                 $xml_contents = preg_replace(array("/<(\/?)dc:date>/", "/xmlns=/"),
                                              array("<\\1date>", "a="),
                                              get_remote($feed["url"]));
                 $xml = simplexml_load_string($xml_contents, "SimpleXMLElement", LIBXML_NOCDATA);
 
-                if ($xml == false)
+                if ($xml === false)
                     continue;
 
                 # Flatten namespaces recursively
@@ -70,11 +70,12 @@
                         
                         # Construct the post data from the user-defined XPath mapping:
                         $data = array("aggregate" => $name);
-                        foreach ($feed["data"] as $attr => $field)
-                            $data[$attr] = (!empty($field)) ? $this->parse_field($field, $item) : "" ;
+                        foreach ($feed["data"] as $attr => $field) {
+                            $field = (!empty($field) ? $this->parse_field($field, $item) : "");
+                            $data[$attr] = (is_string($field) ? $field : YAML::dump($field));
+                        }
 
-                        if (isset($data["title"]) or isset($data["name"]))
-                            $clean = sanitize(oneof(@$data["title"], @$data["name"]));
+                        $clean = sanitize(oneof(@$data["title"], @$data["name"], ""));
 
                         Post::add($data, $clean, null, $feed["feather"], $feed["author"],
                                   false,
@@ -163,8 +164,17 @@
             return upload_from_url(self::image_from_content($html));
         }
 
-        public function parse_field($value, $item) {
-            if (preg_match("/^([a-z0-9:\/]+)$/", $value)) {
+        public function parse_field($value, $item, $basic = true) {
+            if (is_array($value)) {
+                $parsed = array();
+                foreach ($value as $key => $val)
+                    $parsed[$this->parse_field($key, $item, false)] = $this->parse_field($val, $item, false);
+                
+                return $parsed;
+            } elseif (!is_string($value))
+                return $value;
+            
+            if ($basic and preg_match("/^([a-z0-9:\/]+)$/", $value)) {
                 $xpath = $item->xpath($value);
                 return html_entity_decode($xpath[0], ENT_QUOTES, "utf-8");
             }
@@ -210,8 +220,7 @@
 
             $config = Config::current();
             $set = array($config->set("aggregate_every", $_POST['aggregate_every']),
-                         $config->set("disable_aggregation", !empty($_POST['disable_aggregation'])),
-                         $config->set("aggregation_author", $_POST['aggregation_author']));
+                         $config->set("disable_aggregation", !empty($_POST['disable_aggregation'])));
 
             if (!in_array(false, $set))
                 Flash::notice(__("Settings updated."), "/admin/?action=aggregation_settings");
@@ -248,7 +257,7 @@
 
             $config->aggregates[$_POST['name']] = $aggregate;
             $config->set("aggregates", $config->aggregates);
-            $config->set("last_aggregation", 0);    // to force a refresh
+            $config->set("last_aggregation", 0); # to force a refresh
 
             Flash::notice(__("Aggregate created.", "aggregator"), "/admin/?action=manage_aggregates");
         }
@@ -365,14 +374,14 @@
 
             $body.= "<h2>".__("Functions", "aggregator")."</h2>";
             $body.= "<cite><strong>".__("Usage")."</strong>: <code>call:foo_function(feed[foo] || feed[arg2])</code></cite>\n";
-            $body.= "<p>".__("To call a function and use its return value for the post's value, use <code>call:</code>. Separate arguments with <code> || </code>.")."</p>";
-            $body.= "<p>".__("The Aggregator module provides a couple helper functions:")."</p>";
+            $body.= "<p>".__("To call a function and use its return value for the post's value, use <code>call:</code>. Separate arguments with <code> || </code>.", "aggregator")."</p>";
+            $body.= "<p>".__("The Aggregator module provides a couple helper functions:", "aggregator")."</p>";
             $body.= "<cite><strong>".__("To upload an image from the content", "aggregator")."</strong>: <code>call:Aggregator::upload_image_from_content(feed[content])</code></cite>";
             $body.= "<cite><strong>".__("To get the URL of an image in the content", "aggregator")."</strong>: <code>call:Aggregator::image_from_content(feed[content])</code></cite>";
 
             $body.= "<h2>".__("Example", "aggregator")."</h2>";
-            $body.= "<p>".__("From the Photo feather:")."</pre>";
-            $body.= "<pre><code>filename: call:upload_from_url(feed[link].attr[href])\ncaption: feed[description]</code></pre>";
+            $body.= "<p>".__("From the Photo feather:", "aggregator")."</pre>";
+            $body.= "<pre><code>filename: call:upload_from_url(feed[link].attr[href])\ncaption: feed[description] # or just \"description\"</code></pre>";
 
             return array($title, $body);
         }

@@ -34,7 +34,7 @@
                         foreach ($options as $key => $val)
                             $$key = $val;
 
-                    echo '              $("#'.$id.'").clone().attr("id", "'.$id.'_fake").addClass("swfupload_button").insertBefore("#'.$id.'")'."\n";
+                    echo '              $("#'.$id.'_field").clone().attr("id", "'.$id.'_fake").addClass("swfupload_button").insertBefore("#'.$id.'_field")'."\n";
                     echo "              ".$id." = new SWFUpload({\n";
                     echo '                  upload_url : "'.$upload_url.'",'."\n";
                     echo '                  flash_url : "'.$flash_url.'",'."\n";
@@ -51,7 +51,7 @@
                     echo '                  upload_progress_handler : '.$upload_progress_handler.','."\n";
                     echo '                  upload_error_handler : '.$upload_error_handler.','."\n";
                     echo '                  upload_success_handler : '.$upload_success_handler.','."\n";
-                    echo '                  button_placeholder_id : "'.$id.'",'."\n";
+                    echo '                  button_placeholder_id : "'.$id.'_field",'."\n";
                     echo '                  button_width : $("#'.$id.'_fake").width(),'."\n";
                     echo '                  button_height : $("#'.$id.'_fake").height(),'."\n";
                     echo '                  button_action : SWFUpload.BUTTON_ACTION.SELECT_FILES,'."\n";
