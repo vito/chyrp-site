@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Chyrp Docs: Trigger</title>
+		<link rel="stylesheet" href="http://chyrp.net/old/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<link rel="stylesheet" href="http://chyrp.net/old/css/docs.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<script src="http://chyrp.net/old/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/corner.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/docs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/mint/?js" type="text/javascript"></script>
+		</head>
+	<body>
+		<h1 id="chyrp">Chyrp</h1>
+		<img id="logo" src="http://chyrp.net/old/images/logo.png" alt="Chyrp" />
+		<ul id="navigation">
+			<li><a href="http://chyrp.net/old/" title="Home">Home</a></li>
+			<li><a href="http://chyrp.net/old/extend" title="Extend">Extend</a></li>
+			<li><a href="http://chyrp.net/old/download" title="Download">Download</a></li>
+			<li><a href="http://chyrp.net/old/community" title="Community">Community</a></li>
+			<li class="selected"><a href="http://chyrp.net/old/code" title="Code">Code</a></li>
+			<li><a href="http://chyrp.net/old/blog" title="Blog">Blog</a></li>
+		</ul>
+		<div id="content">
+			<div id="Menu">
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Core</a>
+						<div class="MGroupContent" id="MGroupContent1">
+							<div class="MEntry">
+								<div class="MFile"><a href="../common-php.html">Common</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../helpers-php.html">Helpers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../xmlrpc-php.html">XML-RPC</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../../upgrade-php.html">Upgrader</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Models</a>
+						<div class="MGroupContent" id="MGroupContent2">
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Post-php.html">Post</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Page-php.html">Page</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/User-php.html">User</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Group-php.html">Group</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Visitor-php.html">Visitor</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Controllers</a>
+						<div class="MGroupContent" id="MGroupContent3">
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Main-php.html">Main Controller</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Admin-php.html">Admin Controller</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Classes</a>
+						<div class="MGroupContent" id="MGroupContent4">
+							<div class="MEntry">
+								<div class="MFile"><a href="Config-php.html">Config</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="SQL-php.html">SQL</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Query-php.html">Query</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Modules-php.html">Modules</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Feathers-php.html">Feathers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Flash-php.html">Flash</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Model-php.html">Model</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Theme-php.html">Theme</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile" id="MSelected">Trigger</div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Route-php.html">Route</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Paginator-php.html">Paginator</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Session-php.html">Session</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="QueryBuilder-php.html">QueryBuilder</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Interfaces</a>
+						<div class="MGroupContent" id="MGroupContent5">
+							<div class="MEntry">
+								<div class="MFile"><a href="../interface/Feather-php.html">Feather</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--Menu-->
+			<div id="Content">
+				<div class="CClass">
+					<div class="CTopic" id="MainTopic">
+						<h1 class="CTitle"><a name="Trigger"></a>Trigger</h1>
+						<div class="CBody">
+							<p class="CParagraph">Controls and keeps track of all of the Triggers and events.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SMain">
+											<td class="SEntry"><a href="#Trigger" >Trigger</a></td>
+											<td class="SDescription">Controls and keeps track of all of the Triggers and events.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Trigger.Variables" >Variables</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Trigger.$priorities" >$priorities</a></td>
+											<td class="SDescription">Custom prioritized callbacks.</td>
+										</tr>
+										<tr class="SVariable SIndent2">
+											<td class="SEntry"><a href="#Trigger.$called" >$called</a></td>
+											<td class="SDescription">Keeps track of called Triggers.</td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Trigger.$exists" >$exists</a></td>
+											<td class="SDescription">Caches trigger exist states.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Trigger.Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Trigger.cmp" >cmp</a></td>
+											<td class="SDescription">Sorts actions by priority when used with usort.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Trigger.call" >call</a></td>
+											<td class="SDescription">Calls a trigger, passing any additional arguments to it.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Trigger.filter" >filter</a></td>
+											<td class="SDescription">Filters a variable through a trigger&rsquo;s actions.&nbsp; Similar to <a href="#Trigger.call" class="LFunction" >call</a>, except this is stackable and is intended to modify something instead of inject code.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Trigger.remove" >remove</a></td>
+											<td class="SDescription">Unregisters a given $action from a $trigger.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Trigger.exists" >exists</a></td>
+											<td class="SDescription">Checks if there are any actions for a given $trigger.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Trigger.current" >current</a></td>
+											<td class="SDescription">Returns a singleton reference to the current class.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.Variables"></a>Variables</h3>
+						</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.$priorities"></a>$priorities</h3>
+						<div class="CBody">
+							<pre>public $priorities</pre><p class="CParagraph">Custom prioritized callbacks.</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.$called"></a>$called</h3>
+						<div class="CBody">
+							<pre>private $called</pre><p class="CParagraph">Keeps track of called Triggers.</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.$exists"></a>$exists</h3>
+						<div class="CBody">
+							<pre>private $exists</pre><p class="CParagraph">Caches trigger exist states.</p></div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.cmp"></a>cmp</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">private function cmp(</td>
+										<td class="PParameter">$a,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$b</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sorts actions by priority when used with usort.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.call"></a>call</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function call(</td>
+										<td class="PParameter">$name</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Calls a trigger, passing any additional arguments to it.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The name of the trigger, or an array of triggers to call.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.filter"></a>filter</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function filter(</td>
+										<td class="PParameterPrefix">&amp;</td>
+										<td class="PParameter">$target,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameterPrefix"></td>
+										<td class="PParameter">$name</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Filters a variable through a trigger&rsquo;s actions.&nbsp; Similar to <a href="#Trigger.call" class="LFunction" >call</a>, except this is stackable and is intended to modify something instead of inject code.</p>
+						<p class="CParagraph">Any additional arguments passed to this function are passed to the function being called.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">&amp;$target</td>
+									<td class="CDLDescription">The variable to filter.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The name of the trigger.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">$target, filtered through any/all actions for the trigger $name.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.remove"></a>remove</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function remove(</td>
+										<td class="PParameter">$trigger,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$action</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Unregisters a given $action from a $trigger.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$trigger</td>
+									<td class="CDLDescription">The trigger to unregister from.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$action</td>
+									<td class="CDLDescription">The action name.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.exists"></a>exists</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function exists(</td>
+										<td class="PParameter">$name</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Checks if there are any actions for a given $trigger.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$trigger</td>
+									<td class="CDLDescription">The trigger name.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph"><code class="inline">true</code> or <code class="inline">false</code></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Trigger.current"></a>current</h3>
+						<div class="CBody">
+							<pre>public static function &amp; current()</pre><p class="CParagraph">Returns a singleton reference to the current class.</p>
+						</div>
+					</div>
+				</div>
+			</div><!--Content-->
+		</div>
+		<div class="clear"></div>
+		<div id="footer">
+			<a class="toogeneric" href="http://toogeneric.com/">&#42;</a>
+			Chyrp &copy; Alex Suraci 2007&mdash;
+		</div>
+	</body>
+</html>

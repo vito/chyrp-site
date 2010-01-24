@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Chyrp Docs: Paginator</title>
+		<link rel="stylesheet" href="http://chyrp.net/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<link rel="stylesheet" href="http://chyrp.net/css/docs.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<script src="http://chyrp.net/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/js/corner.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/js/docs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/mint/?js" type="text/javascript"></script>
+		</head>
+	<body>
+		<h1 id="chyrp">Chyrp</h1>
+		<img id="logo" src="http://chyrp.net/images/logo.png" alt="Chyrp" />
+		<ul id="navigation">
+			<li><a href="http://chyrp.net/" title="Home">Home</a></li>
+			<li><a href="http://chyrp.net/extend" title="Extend">Extend</a></li>
+			<li><a href="http://chyrp.net/download" title="Download">Download</a></li>
+			<li><a href="http://chyrp.net/community" title="Community">Community</a></li>
+			<li class="selected"><a href="http://chyrp.net/code" title="Code">Code</a></li>
+			<li><a href="http://chyrp.net/blog" title="Blog">Blog</a></li>
+		</ul>
+		<div id="content">
+			<div id="Menu">
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Core</a>
+						<div class="MGroupContent" id="MGroupContent1">
+							<div class="MEntry">
+								<div class="MFile"><a href="../common-php.html">Common</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../helpers-php.html">Helpers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../xmlrpc-php.html">XML-RPC</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="upgrade-php.html">Upgrader</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Models</a>
+						<div class="MGroupContent" id="MGroupContent2">
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Post-php.html">Post</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Page-php.html">Page</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/User-php.html">User</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Group-php.html">Group</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Visitor-php.html">Visitor</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Controllers</a>
+						<div class="MGroupContent" id="MGroupContent3">
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Main-php.html">Main Controller</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Admin-php.html">Admin Controller</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Classes</a>
+						<div class="MGroupContent" id="MGroupContent4">
+							<div class="MEntry">
+								<div class="MFile"><a href="Config-php.html">Config</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="SQL-php.html">SQL</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Query-php.html">Query</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Modules-php.html">Modules</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Feathers-php.html">Feathers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Flash-php.html">Flash</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Model-php.html">Model</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Theme-php.html">Theme</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Trigger-php.html">Trigger</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Route-php.html">Route</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile" id="MSelected">Paginator</div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Session-php.html">Session</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="QueryBuilder-php.html">QueryBuilder</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Interfaces</a>
+						<div class="MGroupContent" id="MGroupContent5">
+							<div class="MEntry">
+								<div class="MFile"><a href="../interface/Feather-php.html">Feather</a></div>
+							</div>
+						</div>
+					</div>
+				</div><script language=JavaScript><!--
+HideAllBut([4, 5, 3, 2], 6);// --></script>
+			</div><!--Menu-->
+			<div id="Content">
+				<div class="CClass">
+					<div class="CTopic" id="MainTopic">
+						<h1 class="CTitle"><a name="Paginator"></a>Paginator</h1>
+						<div class="CBody">
+							<p class="CParagraph">Paginates over an array.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SMain">
+											<td class="SEntry"><a href="#Paginator" >Paginator</a></td>
+											<td class="SDescription">Paginates over an array.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Paginator.Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Paginator.__construct" >__construct</a></td>
+											<td class="SDescription">Prepares an array for pagination.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Paginator.next" >next</a></td>
+											<td class="SDescription">Returns the next pagination sequence.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Paginator.prev" >prev</a></td>
+											<td class="SDescription">Returns the next pagination sequence.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Paginator.next_page" >next_page</a></td>
+											<td class="SDescription">Checks whether or not it makes sense to show the Next Page link.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Paginator.prev_page" >prev_page</a></td>
+											<td class="SDescription">Checks whether or not it makes sense to show the Previous Page link.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Paginator.next_link" >next_link</a></td>
+											<td class="SDescription">Outputs a link to the next page.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Paginator.prev_link" >prev_link</a></td>
+											<td class="SDescription">Outputs a link to the previous page.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Paginator.next_page_url" >next_page_url</a></td>
+											<td class="SDescription">Returns the URL to the next page.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Paginator.prev_page_url" >prev_page_url</a></td>
+											<td class="SDescription">Returns the URL to the previous page.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.__construct"></a>__construct</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function __construct(</td>
+										<td class="PParameter">$array,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$per_page</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> 5,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$name</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;page&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$model</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$page</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Prepares an array for pagination.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$array</td>
+									<td class="CDLDescription">The array to paginate.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$per_page</td>
+									<td class="CDLDescription">Amount of items per page.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The name of the $_GET parameter to use for determining the current page.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$model</td>
+									<td class="CDLDescription">If this is true, each item in $array that gets shown on the page will be initialized as a model of whatever is passed as the second argument to $array.&nbsp; The first argument of $array is expected to be an array of IDs.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A paginated array $per_page or smaller.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.next"></a>next</h3>
+						<div class="CBody">
+							<pre>public function next()</pre><p class="CParagraph">Returns the next pagination sequence.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.prev"></a>prev</h3>
+						<div class="CBody">
+							<pre>public function prev()</pre><p class="CParagraph">Returns the next pagination sequence.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.next_page"></a>next_page</h3>
+						<div class="CBody">
+							<pre>public function next_page()</pre><p class="CParagraph">Checks whether or not it makes sense to show the Next Page link.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.prev_page"></a>prev_page</h3>
+						<div class="CBody">
+							<pre>public function prev_page()</pre><p class="CParagraph">Checks whether or not it makes sense to show the Previous Page link.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.next_link"></a>next_link</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function next_link(</td>
+										<td class="PParameter">$text</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$class</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;next_page&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$clean_urls</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Outputs a link to the next page.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$text</td>
+									<td class="CDLDescription">The text for the link.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$class</td>
+									<td class="CDLDescription">The CSS class for the link.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$clean_urls</td>
+									<td class="CDLDescription">Whether to link with dirty or clean URLs.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.prev_link"></a>prev_link</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function prev_link(</td>
+										<td class="PParameter">$text</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$class</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;prev_page&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$clean_urls</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Outputs a link to the previous page.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$text</td>
+									<td class="CDLDescription">The text for the link.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$class</td>
+									<td class="CDLDescription">The CSS class for the link.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$clean_urls</td>
+									<td class="CDLDescription">Whether to link with dirty or clean URLs.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.next_page_url"></a>next_page_url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function next_page_url(</td>
+										<td class="PParameter">$clean_urls</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the URL to the next page.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$clean_urls</td>
+									<td class="CDLDescription">Whether to link with dirty or clean URLs.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Paginator.prev_page_url"></a>prev_page_url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function prev_page_url(</td>
+										<td class="PParameter">$clean_urls</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the URL to the previous page.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$clean_urls</td>
+									<td class="CDLDescription">Whether to link with dirty or clean URLs.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div><!--Content-->
+		</div>
+		<div class="clear"></div>
+		<div id="footer">
+			<a class="toogeneric" href="http://toogeneric.com/">&#42;</a>
+			Chyrp &copy; Alex Suraci 2007&mdash;
+		</div>
+	</body>
+</html>

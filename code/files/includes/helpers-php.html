@@ -1,0 +1,2256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Chyrp Docs: Helpers</title>
+		<link rel="stylesheet" href="http://chyrp.net/old/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<link rel="stylesheet" href="http://chyrp.net/old/css/docs.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<script src="http://chyrp.net/old/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/corner.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/docs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/mint/?js" type="text/javascript"></script>
+		</head>
+	<body>
+		<h1 id="chyrp">Chyrp</h1>
+		<img id="logo" src="http://chyrp.net/old/images/logo.png" alt="Chyrp" />
+		<ul id="navigation">
+			<li><a href="http://chyrp.net/old/" title="Home">Home</a></li>
+			<li><a href="http://chyrp.net/old/extend" title="Extend">Extend</a></li>
+			<li><a href="http://chyrp.net/old/download" title="Download">Download</a></li>
+			<li><a href="http://chyrp.net/old/community" title="Community">Community</a></li>
+			<li class="selected"><a href="http://chyrp.net/old/code" title="Code">Code</a></li>
+			<li><a href="http://chyrp.net/old/blog" title="Blog">Blog</a></li>
+		</ul>
+		<div id="content">
+			<div id="Menu">
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Core</a>
+						<div class="MGroupContent" id="MGroupContent1">
+							<div class="MEntry">
+								<div class="MFile"><a href="common-php.html">Common</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile" id="MSelected">Helpers</div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="xmlrpc-php.html">XML-RPC</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../upgrade-php.html">Upgrader</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Models</a>
+						<div class="MGroupContent" id="MGroupContent2">
+							<div class="MEntry">
+								<div class="MFile"><a href="model/Post-php.html">Post</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="model/Page-php.html">Page</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="model/User-php.html">User</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="model/Group-php.html">Group</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="model/Visitor-php.html">Visitor</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Controllers</a>
+						<div class="MGroupContent" id="MGroupContent3">
+							<div class="MEntry">
+								<div class="MFile"><a href="controller/Main-php.html">Main Controller</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="controller/Admin-php.html">Admin Controller</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Classes</a>
+						<div class="MGroupContent" id="MGroupContent4">
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Config-php.html">Config</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/SQL-php.html">SQL</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Query-php.html">Query</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Modules-php.html">Modules</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Feathers-php.html">Feathers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Flash-php.html">Flash</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Model-php.html">Model</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Theme-php.html">Theme</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Trigger-php.html">Trigger</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Route-php.html">Route</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Paginator-php.html">Paginator</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/Session-php.html">Session</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="class/QueryBuilder-php.html">QueryBuilder</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Interfaces</a>
+						<div class="MGroupContent" id="MGroupContent5">
+							<div class="MEntry">
+								<div class="MFile"><a href="interface/Feather-php.html">Feather</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--Menu-->
+			<div id="Content">
+				<div class="CFile">
+					<div class="CTopic" id="MainTopic">
+						<h1 class="CTitle"><a name="Helpers"></a>Helpers</h1>
+						<div class="CBody">
+							<p class="CParagraph">Various functions used throughout Chyrp&rsquo;s code.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SMain">
+											<td class="SEntry"><a href="#Helpers" >Helpers</a></td>
+											<td class="SDescription">Various functions used throughout Chyrp&rsquo;s code.</td>
+										</tr>
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Variables" >Variables</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SVariable SIndent1 SMarked">
+											<td class="SEntry"><a href="#$time_start" >$time_start</a></td>
+											<td class="SDescription">Times Chyrp.</td>
+										</tr>
+										<tr class="SVariable SIndent1">
+											<td class="SEntry"><a href="#$l10n" >$l10n</a></td>
+											<td class="SDescription">Stores loaded gettext domains.</td>
+										</tr>
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#session" >session</a></td>
+											<td class="SDescription">Begins Chyrp&rsquo;s custom session storage whatnots.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#error" >error</a></td>
+											<td class="SDescription">Shows an error message.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#show_403" >show_403</a></td>
+											<td class="SDescription">Shows an error message with a 403 HTTP header.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#logged_in" >logged_in</a></td>
+											<td class="SDescription">Returns whether or not they are logged in by returning the <a href="model/Visitor-php.html#Visitor.$id" class="LVariable" >Visitor.$id</a> (which defaults to 0).</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#load_translator" >load_translator</a></td>
+											<td class="SDescription">Loads a .mo file for gettext translation.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#__" >__</a></td>
+											<td class="SDescription">Returns a translated string.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#_p" >_p</a></td>
+											<td class="SDescription">Returns a plural (or not) form of a translated string.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#_f" >_f</a></td>
+											<td class="SDescription">Returns a formatted translated string.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#redirect" >redirect</a></td>
+											<td class="SDescription">Redirects to the given URL and exits immediately.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#url" >url</a></td>
+											<td class="SDescription">Mask for Route-&gt;url().</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#pluralize" >pluralize</a></td>
+											<td class="SDescription">Returns a pluralized string.&nbsp; This is a port of Rails&rsquo;s pluralizer.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#depluralize" >depluralize</a></td>
+											<td class="SDescription">Returns a depluralized string.&nbsp; This is the inverse of <a href="#pluralize" class="LFunction" >pluralize</a>.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#truncate" >truncate</a></td>
+											<td class="SDescription">Truncates a string to the given length, optionally taking into account HTML tags, and/or keeping words in tact.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#when" >when</a></td>
+											<td class="SDescription">Returns date formatting for a string that isn&rsquo;t a regular time() value</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#datetime" >datetime</a></td>
+											<td class="SDescription">Returns a standard datetime string based on either the passed timestamp or their time offset, usually for MySQL inserts.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#fix" >fix</a></td>
+											<td class="SDescription">Returns a HTML-sanitized version of a string.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#unfix" >unfix</a></td>
+											<td class="SDescription">Returns the reverse of fix().</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#lang_code" >lang_code</a></td>
+											<td class="SDescription">Returns the passed language code (e.g. en_US) to the human-readable text (e.g.&nbsp; English (US))</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#sanitize" >sanitize</a></td>
+											<td class="SDescription">Returns a sanitized string, typically for URLs.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#trackback_respond" >trackback_respond</a></td>
+											<td class="SDescription">Responds to a trackback request.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#trackback_send" >trackback_send</a></td>
+											<td class="SDescription">Sends a trackback request.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#send_pingbacks" >send_pingbacks</a></td>
+											<td class="SDescription">Sends pingback requests to the URLs in a string.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#grab_urls" >grab_urls</a></td>
+											<td class="SDescription">Crawls a string for links.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#pingback_url" >pingback_url</a></td>
+											<td class="SDescription">Checks if a URL is pingback-capable.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#camelize" >camelize</a></td>
+											<td class="SDescription">Converts a given string to camel-case.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#decamelize" >decamelize</a></td>
+											<td class="SDescription">Decamelizes a string.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#selected" >selected</a></td>
+											<td class="SDescription">If $val1 == $val2, outputs or returns <code class="inline"> selected=&rdquo;selected&rdquo;</code></td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#checked" >checked</a></td>
+											<td class="SDescription">If $val == 1 (true), outputs &lsquo; checked=&rdquo;checked&rdquo;&rsquo;</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#module_enabled" >module_enabled</a></td>
+											<td class="SDescription">Returns whether the given module is enabled or not.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#feather_enabled" >feather_enabled</a></td>
+											<td class="SDescription">Returns whether the given feather is enabled or not.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#fallback" >fallback</a></td>
+											<td class="SDescription">Sets a given variable if it is not set.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#oneof" >oneof</a></td>
+											<td class="SDescription">Returns the first argument that is set and non-empty.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#random" >random</a></td>
+											<td class="SDescription">Returns a random string.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#unique_filename" >unique_filename</a></td>
+											<td class="SDescription">Makes a given filename unique for the uploads directory.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#upload" >upload</a></td>
+											<td class="SDescription">Moves an uploaded file to the uploads directory.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#upload_from_url" >upload_from_url</a></td>
+											<td class="SDescription">Copy a file from a specified URL to their upload directory.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#uploaded" >uploaded</a></td>
+											<td class="SDescription">Returns a URL to an uploaded file.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#timer_start" >timer_start</a></td>
+											<td class="SDescription">Starts the timer.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#timer_stop" >timer_stop</a></td>
+											<td class="SDescription">Stops the timer and returns the total time.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#normalize" >normalize</a></td>
+											<td class="SDescription">Attempts to normalize all newlines and whitespace into single spaces.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#get_remote" >get_remote</a></td>
+											<td class="SDescription">Grabs the contents of a website/location.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#self_url" >self_url</a></td>
+											<td class="SDescription">Returns the current URL.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#show_404" >show_404</a></td>
+											<td class="SDescription">Shows a 404 error message and immediately exits.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#set_locale" >set_locale</a></td>
+											<td class="SDescription">Set locale in a platform-independent way</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#sanitize_input" >sanitize_input</a></td>
+											<td class="SDescription">Makes sure no inherently broken ideas such as magic_quotes break our application</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#match" >match</a></td>
+											<td class="SDescription">Try to match a string against an array of regular expressions.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#cancel_module" >cancel_module</a></td>
+											<td class="SDescription">Temporarily removes a module from $config-&gt;enabled_modules.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#time_in_timezone" >time_in_timezone</a></td>
+											<td class="SDescription">Returns the appropriate time() for representing a timezone.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#timezones" >timezones</a></td>
+											<td class="SDescription">Returns an array of timezones that have unique offsets.&nbsp; Doesn&rsquo;t count deprecated timezones.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#set_timezone" >set_timezone</a></td>
+											<td class="SDescription">Sets the timezone.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#get_timezone" >get_timezone()</a></td>
+											<td class="SDescription">Returns the current timezone.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#error_panicker" >error_panicker</a></td>
+											<td class="SDescription">Exits and states where the error occurred.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#keywords" >keywords</a></td>
+											<td class="SDescription">Handle keyword-searching.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#init_extensions" >init_extensions</a></td>
+											<td class="SDescription">Initialize all Modules and Feathers.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#xml2arr" >xml2arr</a></td>
+											<td class="SDescription">Recursively converts a SimpleXML object (and children) to an array.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#arr2xml" >arr2xml</a></td>
+											<td class="SDescription">Recursively adds an array (or object I guess) to a SimpleXML object.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#relative_time" >relative_time</a></td>
+											<td class="SDescription">Returns the difference between the given timestamps or now.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#list_notate" >list_notate</a></td>
+											<td class="SDescription">Notates an array as a list of things.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#email" >email</a></td>
+											<td class="SDescription">Send an email.&nbsp; Function arguments are exactly the same as the PHP mail() function.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#now" >now</a></td>
+											<td class="SDescription">Alias to strtotime, for prettiness like now(&ldquo;+1 day&rdquo;).</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#comma_sep" >comma_sep</a></td>
+											<td class="SDescription">Convert a comma-seperated string into an array of the listed values.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Variables"></a>Variables</h3>
+						</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="$time_start"></a>$time_start</h3>
+						<div class="CBody">
+							<pre>$time_start</pre><p class="CParagraph">Times Chyrp.</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="$l10n"></a>$l10n</h3>
+						<div class="CBody">
+							<pre>$l10n</pre><p class="CParagraph">Stores loaded gettext domains.</p></div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="session"></a>session</h3>
+						<div class="CBody">
+							<pre>function session()</pre><p class="CParagraph">Begins Chyrp&rsquo;s custom session storage whatnots.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="error"></a>error</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function error(</td>
+										<td class="PParameter">$title,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$body,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$backtrace</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> array()</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Shows an error message.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$title</td>
+									<td class="CDLDescription">The title for the error dialog.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$body</td>
+									<td class="CDLDescription">The message for the error dialog.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$backtrace</td>
+									<td class="CDLDescription">The trace of the error.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="show_403"></a>show_403</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function show_403(</td>
+										<td class="PParameter">$title,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$body</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Shows an error message with a 403 HTTP header.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$title</td>
+									<td class="CDLDescription">The title for the error dialog.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$body</td>
+									<td class="CDLDescription">The message for the error dialog.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="logged_in"></a>logged_in</h3>
+						<div class="CBody">
+							<pre>function logged_in()</pre><p class="CParagraph">Returns whether or not they are logged in by returning the <a href="model/Visitor-php.html#Visitor.$id" class="LVariable" >Visitor.$id</a> (which defaults to 0).</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="load_translator"></a>load_translator</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function load_translator(</td>
+										<td class="PParameter">$domain,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$mofile</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Loads a .mo file for gettext translation.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$domain</td>
+									<td class="CDLDescription">The name for this translation domain.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$mofile</td>
+									<td class="CDLDescription">The .mo file to read from.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="__"></a>__</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function __(</td>
+										<td class="PParameter">$text,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$domain</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;chyrp&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a translated string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$text</td>
+									<td class="CDLDescription">The string to translate.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$domain</td>
+									<td class="CDLDescription">The translation domain to read from.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="_p"></a>_p</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function _p(</td>
+										<td class="PParameter">$single,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$plural,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$number,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$domain</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;chyrp&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a plural (or not) form of a translated string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$single</td>
+									<td class="CDLDescription">Singular string.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$plural</td>
+									<td class="CDLDescription">Pluralized string.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$number</td>
+									<td class="CDLDescription">The number to judge by.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$domain</td>
+									<td class="CDLDescription">The translation domain to read from.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="_f"></a>_f</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function _f(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$args</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> array(),</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$domain</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;chyrp&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a formatted translated string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">String to translate and format.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$args</td>
+									<td class="CDLDescription">One arg or an array of arguments to format with.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$domain</td>
+									<td class="CDLDescription">The translation domain to read from.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="redirect"></a>redirect</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function redirect(</td>
+										<td class="PParameter">$url,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$use_chyrp_url</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Redirects to the given URL and exits immediately.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$url</td>
+									<td class="CDLDescription">The URL to redirect to.&nbsp; If it begins with <code class="inline">/</code> it will be relative to the <code class="inline">Config.chyrp_url</code>.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$use_chyrp_url</td>
+									<td class="CDLDescription">Use the <code class="inline">Config.chyrp_url</code> instead of <code class="inline">Config.url</code> for $urls beginning with <code class="inline">/</code>?</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="url"></a>url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function url(</td>
+										<td class="PParameter">$url,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$controller</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Mask for Route-&gt;url().</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="pluralize"></a>pluralize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function pluralize(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$number</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a pluralized string.&nbsp; This is a port of Rails&rsquo;s pluralizer.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to pluralize.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$number</td>
+									<td class="CDLDescription">If passed, and this number is 1, it will not pluralize.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="depluralize"></a>depluralize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function depluralize(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$number</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a depluralized string.&nbsp; This is the inverse of <a href="#pluralize" class="LFunction" >pluralize</a>.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to depluralize.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$number</td>
+									<td class="CDLDescription">If passed, and this number is not 1, it will not depluralize.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="truncate"></a>truncate</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function truncate(</td>
+										<td class="PParameter">$text,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$length</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> 100,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$ending</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;...&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$exact</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$html</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Truncates a string to the given length, optionally taking into account HTML tags, and/or keeping words in tact.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$text</td>
+									<td class="CDLDescription">String to shorten.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$length</td>
+									<td class="CDLDescription">Length to truncate to.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$ending</td>
+									<td class="CDLDescription">What to place at the end, e.g.&nbsp; &ldquo;...&rdquo;.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$exact</td>
+									<td class="CDLDescription">Break words?</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$html</td>
+									<td class="CDLDescription">Auto-close cut-off HTML tags?</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Author</h4>
+							<p class="CParagraph">CakePHP team, code style modified.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="when"></a>when</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function when(</td>
+										<td class="PParameter">$formatting,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$when,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$strftime</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns date formatting for a string that isn&rsquo;t a regular time() value</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$formatting</td>
+									<td class="CDLDescription">The formatting for date().</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$when</td>
+									<td class="CDLDescription">Time to base on.&nbsp; If it is not numeric it will be run through strtotime.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$strftime</td>
+									<td class="CDLDescription">Use <code class="inline">strftime</code> instead of <code class="inline">date</code>?</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="datetime"></a>datetime</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function datetime(</td>
+										<td class="PParameter">$when</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a standard datetime string based on either the passed timestamp or their time offset, usually for MySQL inserts.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$when</td>
+									<td class="CDLDescription">An optional timestamp.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="fix"></a>fix</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function fix(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$quotes</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a HTML-sanitized version of a string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">String to fix.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$quotes</td>
+									<td class="CDLDescription">Encode quotes?</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="unfix"></a>unfix</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function unfix(</td>
+										<td class="PParameter">$string</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the reverse of fix().</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">String to unfix.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="lang_code"></a>lang_code</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function lang_code(</td>
+										<td class="PParameter">$code</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the passed language code (e.g. en_US) to the human-readable text (e.g.&nbsp; English (US))</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$code</td>
+									<td class="CDLDescription">The language code to convert</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Author</h4>
+							<p class="CParagraph">TextPattern devs, modified to fit with Chyrp.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="sanitize"></a>sanitize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function sanitize(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$force_lowercase</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$anal</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a sanitized string, typically for URLs.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to sanitize.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$force_lowercase</td>
+									<td class="CDLDescription">Force the string to lowercase?</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$anal</td>
+									<td class="CDLDescription">If set to <b>true</b>, will remove all non-alphanumeric characters.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="trackback_respond"></a>trackback_respond</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function trackback_respond(</td>
+										<td class="PParameter">$error</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$message</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Responds to a trackback request.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$error</td>
+									<td class="CDLDescription">Is this an error?</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$message</td>
+									<td class="CDLDescription">Message to return.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="trackback_send"></a>trackback_send</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function trackback_send(</td>
+										<td class="PParameter">$post,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$target</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sends a trackback request.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$post</td>
+									<td class="CDLDescription">The post we&rsquo;re sending from.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$target</td>
+									<td class="CDLDescription">The URL we&rsquo;re sending to.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="send_pingbacks"></a>send_pingbacks</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function send_pingbacks(</td>
+										<td class="PParameter">$string,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$post</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sends pingback requests to the URLs in a string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to crawl for pingback URLs.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$post</td>
+									<td class="CDLDescription">The post we&rsquo;re sending from.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="grab_urls"></a>grab_urls</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function grab_urls(</td>
+										<td class="PParameter">$string</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Crawls a string for links.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to crawl.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">An array of all URLs found in the string.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="pingback_url"></a>pingback_url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function pingback_url(</td>
+										<td class="PParameter">$url</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Checks if a URL is pingback-capable.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$url</td>
+									<td class="CDLDescription">The URL to check.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The pingback target, if the URL is pingback-capable.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="camelize"></a>camelize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function camelize(</td>
+										<td class="PParameter">$string,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$keep_spaces</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Converts a given string to camel-case.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to camelize.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$keep_spaces</td>
+									<td class="CDLDescription">Whether or not to convert underscores to spaces or remove them.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A CamelCased string.</p>
+							<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#decamelize" class="LFunction" >decamelize</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="decamelize"></a>decamelize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function decamelize(</td>
+										<td class="PParameter">$string</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Decamelizes a string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$string</td>
+									<td class="CDLDescription">The string to decamelize.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A de_camel_cased string.</p>
+							<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#camelize" class="LFunction" >camelize</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="selected"></a>selected</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function selected(</td>
+										<td class="PParameter">$val1,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$val2,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$return</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">If $val1 == $val2, outputs or returns <code class="inline"> selected=&rdquo;selected&rdquo;</code></p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$val1</td>
+									<td class="CDLDescription">First value.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$val2</td>
+									<td class="CDLDescription">Second value.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$return</td>
+									<td class="CDLDescription">Return <code class="inline"> selected=&rdquo;selected&rdquo;</code> instead of outputting it</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="checked"></a>checked</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function checked(</td>
+										<td class="PParameter">$val</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">If $val == 1 (true), outputs &lsquo; checked=&rdquo;checked&rdquo;&rsquo;</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$val</td>
+									<td class="CDLDescription">Value to check.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="module_enabled"></a>module_enabled</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function module_enabled(</td>
+										<td class="PParameter">$name</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns whether the given module is enabled or not.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The folder name of the module.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">Whether or not the requested module is enabled.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="feather_enabled"></a>feather_enabled</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function feather_enabled(</td>
+										<td class="PParameter">$name</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns whether the given feather is enabled or not.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The folder name of the feather.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">Whether or not the requested feather is enabled.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="fallback"></a>fallback</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function fallback(</td>
+										<td class="PParameterPrefix">&amp;</td>
+										<td class="PParameter">$variable</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sets a given variable if it is not set.</p>
+						<p class="CParagraph">The last of the arguments or the first non-empty value will be used.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">&amp;$variable</td>
+									<td class="CDLDescription">The variable to return or set.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The value of whatever was chosen.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="oneof"></a>oneof</h3>
+						<div class="CBody">
+							<pre>function oneof()</pre><p class="CParagraph">Returns the first argument that is set and non-empty.</p>
+						<p class="CParagraph">It will guess where to stop based on the types of the arguments, e.g.&nbsp; &ldquo;&rdquo; has priority over array() but not 1.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="random"></a>random</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function random(</td>
+										<td class="PParameter">$length,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$specialchars</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a random string.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$length</td>
+									<td class="CDLDescription">How long the string should be.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$specialchars</td>
+									<td class="CDLDescription">Use special characters in the resulting string?</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="unique_filename"></a>unique_filename</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function unique_filename(</td>
+										<td class="PParameter">$name,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$path</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$num</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> 2</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Makes a given filename unique for the uploads directory.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$name</td>
+									<td class="CDLDescription">The name to check.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$path</td>
+									<td class="CDLDescription">Path to check in.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$num</td>
+									<td class="CDLDescription">Number suffix from which to start increasing if the filename exists.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A unique version of the given $name.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="upload"></a>upload</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function upload(</td>
+										<td class="PParameter">$file,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$extension</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$path</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;&quot;,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$put</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Moves an uploaded file to the uploads directory.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$file</td>
+									<td class="CDLDescription">The $_FILES value.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$extension</td>
+									<td class="CDLDescription">An array of valid extensions (case-insensitive).</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$path</td>
+									<td class="CDLDescription">A sub-folder in the uploads directory (optional).</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$put</td>
+									<td class="CDLDescription">Use copy() instead of move_uploaded_file()?</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The resulting filename from the upload.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="upload_from_url"></a>upload_from_url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function upload_from_url(</td>
+										<td class="PParameter">$url,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$extension</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$path</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Copy a file from a specified URL to their upload directory.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$url</td>
+									<td class="CDLDescription">The URL to copy.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$extension</td>
+									<td class="CDLDescription">An array of valid extensions (case-insensitive).</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$path</td>
+									<td class="CDLDescription">A sub-folder in the uploads directory (optional).</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#upload" class="LFunction" >upload</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="uploaded"></a>uploaded</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function uploaded(</td>
+										<td class="PParameter">$file,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$url</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> true</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a URL to an uploaded file.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$file</td>
+									<td class="CDLDescription">Filename relative to the uploads directory.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="timer_start"></a>timer_start</h3>
+						<div class="CBody">
+							<pre>function timer_start()</pre><p class="CParagraph">Starts the timer.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="timer_stop"></a>timer_stop</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function timer_stop(</td>
+										<td class="PParameter">$precision</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> 3</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Stops the timer and returns the total time.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$precision</td>
+									<td class="CDLDescription">Number of decimals places to round to.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A formatted number with the given $precision.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="normalize"></a>normalize</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function normalize(</td>
+										<td class="PParameter">$string</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Attempts to normalize all newlines and whitespace into single spaces.</p>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The normalized string.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="get_remote"></a>get_remote</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function get_remote(</td>
+										<td class="PParameter">$url</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Grabs the contents of a website/location.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$url</td>
+									<td class="CDLDescription">The URL of the location to grab.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The response from the remote URL.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="self_url"></a>self_url</h3>
+						<div class="CBody">
+							<pre>function self_url()</pre><p class="CParagraph">Returns the current URL.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="show_404"></a>show_404</h3>
+						<div class="CBody">
+							<pre>function show_404()</pre><p class="CParagraph">Shows a 404 error message and immediately exits.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$scope</td>
+									<td class="CDLDescription">An array of values to extract into the scope.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="set_locale"></a>set_locale</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function set_locale(</td>
+										<td class="PParameter">$locale</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Set locale in a platform-independent way</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$locale</td>
+									<td class="CDLDescription">the locale name (<code class="inline">en_US</code>, <code class="inline">uk_UA</code>, <code class="inline">fr_FR</code> etc.)</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">The encoding name used by locale-aware functions.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="sanitize_input"></a>sanitize_input</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function sanitize_input(</td>
+										<td class="PParameterPrefix">&amp;</td>
+										<td class="PParameter">$data</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Makes sure no inherently broken ideas such as magic_quotes break our application</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$data</td>
+									<td class="CDLDescription">The array to be sanitized, usually one of <code class="inline">$_GET</code>, <code class="inline">$_POST</code>, <code class="inline">$_COOKIE</code>, or <code class="inline">$_REQUEST</code></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="match"></a>match</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function match(</td>
+										<td class="PParameter">$try,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$haystack</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Try to match a string against an array of regular expressions.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$try</td>
+									<td class="CDLDescription">An array of regular expressions, or a single regular expression.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$haystack</td>
+									<td class="CDLDescription">The string to test.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">Whether or not the match succeeded.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="cancel_module"></a>cancel_module</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function cancel_module(</td>
+										<td class="PParameter">$target</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Temporarily removes a module from $config-&gt;enabled_modules.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$target</td>
+									<td class="CDLDescription">Module name to disable.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="time_in_timezone"></a>time_in_timezone</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function time_in_timezone(</td>
+										<td class="PParameter">$timezone</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the appropriate time() for representing a timezone.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="timezones"></a>timezones</h3>
+						<div class="CBody">
+							<pre>function timezones()</pre><p class="CParagraph">Returns an array of timezones that have unique offsets.&nbsp; Doesn&rsquo;t count deprecated timezones.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="set_timezone"></a>set_timezone</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function set_timezone(</td>
+										<td class="PParameter">$timezone</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sets the timezone.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$timezone</td>
+									<td class="CDLDescription">The timezone to set.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="get_timezone"></a>get_timezone()</h3>
+						<div class="CBody">
+							<pre>function get_timezone()</pre><p class="CParagraph">Returns the current timezone.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="error_panicker"></a>error_panicker</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function error_panicker(</td>
+										<td class="PParameter">$errno,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$message,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$file,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$line</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Exits and states where the error occurred.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="keywords"></a>keywords</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function keywords(</td>
+										<td class="PParameter">$query,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$plain,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$table</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Handle keyword-searching.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$query</td>
+									<td class="CDLDescription">The query to parse.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$plain</td>
+									<td class="CDLDescription">WHERE syntax to search for non-keyword queries.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$table</td>
+									<td class="CDLDescription">If specified, the keywords will be checked against this table&rsquo;s columns for validity.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">An array containing the &ldquo;WHERE&rdquo; queries and the corresponding parameters.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="init_extensions"></a>init_extensions</h3>
+						<div class="CBody">
+							<pre>function init_extensions()</pre><p class="CParagraph">Initialize all Modules and Feathers.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="xml2arr"></a>xml2arr</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function xml2arr(</td>
+										<td class="PParameter">$parse</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Recursively converts a SimpleXML object (and children) to an array.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$parse</td>
+									<td class="CDLDescription">The SimpleXML object to convert into an array.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="arr2xml"></a>arr2xml</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function arr2xml(</td>
+										<td class="PParameterPrefix">&amp;</td>
+										<td class="PParameter">$object,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameterPrefix"></td>
+										<td class="PParameter">$data</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Recursively adds an array (or object I guess) to a SimpleXML object.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">&amp;$object</td>
+									<td class="CDLDescription">The SimpleXML object to modify.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$data</td>
+									<td class="CDLDescription">The data to add to the SimpleXML object.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="relative_time"></a>relative_time</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function relative_time(</td>
+										<td class="PParameter">$when,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$from</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns the difference between the given timestamps or now.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$time</td>
+									<td class="CDLDescription">Timestamp to compare to.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$from</td>
+									<td class="CDLDescription">Timestamp to compare from.&nbsp; If not specified, defaults to now.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A string formatted like &ldquo;3 days ago&rdquo; or &ldquo;3 days from now&rdquo;.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="list_notate"></a>list_notate</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function list_notate(</td>
+										<td class="PParameter">$array,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$quotes</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> false</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Notates an array as a list of things.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$array</td>
+									<td class="CDLDescription">An array of things to notate.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$quotes</td>
+									<td class="CDLDescription">Wrap quotes around strings?</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A string like &ldquo;foo, bar, and baz&rdquo;.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="email"></a>email</h3>
+						<div class="CBody">
+							<pre>function email()</pre><p class="CParagraph">Send an email.&nbsp; Function arguments are exactly the same as the PHP mail() function.</p>
+						<p class="CParagraph">This is intended so that modules can provide an email method if the server cannot use mail().</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="now"></a>now</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function now(</td>
+										<td class="PParameter">$when</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Alias to strtotime, for prettiness like now(&ldquo;+1 day&rdquo;).</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="comma_sep"></a>comma_sep</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function comma_sep(</td>
+										<td class="PParameter">$string</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Convert a comma-seperated string into an array of the listed values.</p>
+						</div>
+					</div>
+				</div>
+			</div><!--Content-->
+		</div>
+		<div class="clear"></div>
+		<div id="footer">
+			<a class="toogeneric" href="http://toogeneric.com/">&#42;</a>
+			Chyrp &copy; Alex Suraci 2007&mdash;
+		</div>
+	</body>
+</html>

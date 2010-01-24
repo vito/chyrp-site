@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Chyrp Docs: Route</title>
+		<link rel="stylesheet" href="http://chyrp.net/old/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<link rel="stylesheet" href="http://chyrp.net/old/css/docs.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<script src="http://chyrp.net/old/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/corner.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/docs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/mint/?js" type="text/javascript"></script>
+		</head>
+	<body>
+		<h1 id="chyrp">Chyrp</h1>
+		<img id="logo" src="http://chyrp.net/old/images/logo.png" alt="Chyrp" />
+		<ul id="navigation">
+			<li><a href="http://chyrp.net/old/" title="Home">Home</a></li>
+			<li><a href="http://chyrp.net/old/extend" title="Extend">Extend</a></li>
+			<li><a href="http://chyrp.net/old/download" title="Download">Download</a></li>
+			<li><a href="http://chyrp.net/old/community" title="Community">Community</a></li>
+			<li class="selected"><a href="http://chyrp.net/old/code" title="Code">Code</a></li>
+			<li><a href="http://chyrp.net/old/blog" title="Blog">Blog</a></li>
+		</ul>
+		<div id="content">
+			<div id="Menu">
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Core</a>
+						<div class="MGroupContent" id="MGroupContent1">
+							<div class="MEntry">
+								<div class="MFile"><a href="../common-php.html">Common</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../helpers-php.html">Helpers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../xmlrpc-php.html">XML-RPC</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../../upgrade-php.html">Upgrader</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Models</a>
+						<div class="MGroupContent" id="MGroupContent2">
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Post-php.html">Post</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Page-php.html">Page</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/User-php.html">User</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Group-php.html">Group</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../model/Visitor-php.html">Visitor</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Controllers</a>
+						<div class="MGroupContent" id="MGroupContent3">
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Main-php.html">Main Controller</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="../controller/Admin-php.html">Admin Controller</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Classes</a>
+						<div class="MGroupContent" id="MGroupContent4">
+							<div class="MEntry">
+								<div class="MFile"><a href="Config-php.html">Config</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="SQL-php.html">SQL</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Query-php.html">Query</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Modules-php.html">Modules</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Feathers-php.html">Feathers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Flash-php.html">Flash</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Model-php.html">Model</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Theme-php.html">Theme</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Trigger-php.html">Trigger</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile" id="MSelected">Route</div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Paginator-php.html">Paginator</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="Session-php.html">Session</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="QueryBuilder-php.html">QueryBuilder</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Interfaces</a>
+						<div class="MGroupContent" id="MGroupContent5">
+							<div class="MEntry">
+								<div class="MFile"><a href="../interface/Feather-php.html">Feather</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--Menu-->
+			<div id="Content">
+				<div class="CClass">
+					<div class="CTopic" id="MainTopic">
+						<h1 class="CTitle"><a name="Route"></a>Route</h1>
+						<div class="CBody">
+							<p class="CParagraph">Holds information for URLs, redirecting, etc.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SMain">
+											<td class="SEntry"><a href="#Route" >Route</a></td>
+											<td class="SDescription">Holds information for URLs, redirecting, etc.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Route.Variables" >Variables</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.$action" >$action</a></td>
+											<td class="SDescription">The current action.</td>
+										</tr>
+										<tr class="SVariable SIndent2">
+											<td class="SEntry"><a href="#Route.$try" >$try</a></td>
+											<td class="SDescription">An array of (string) actions to try until one doesn&rsquo;t return false.</td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.$ajax" >$ajax</a></td>
+											<td class="SDescription">Shortcut to the AJAX constant (useful for Twig).</td>
+										</tr>
+										<tr class="SVariable SIndent2">
+											<td class="SEntry"><a href="#Route.$success" >$success</a></td>
+											<td class="SDescription">Did <a href="#Route.init" class="LFunction" >Route.init</a> call a successful route?</td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.$controller" >$controller</a></td>
+											<td class="SDescription">The Route&rsquo;s Controller.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Route.Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.__construct" >__construct</a></td>
+											<td class="SDescription">Parse the URL and to determine what to do.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Route.init" >init</a></td>
+											<td class="SDescription">Attempt Controller actions until one of them doesn&rsquo;t return false.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.url" >url</a></td>
+											<td class="SDescription">Attempts to change the specified clean URL to a dirty URL if clean URLs is disabled.&nbsp; Use this for linking to things.&nbsp; The applicable URL conversions are passed through the parse_urls trigger.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Route.add" >add</a></td>
+											<td class="SDescription">Adds a route to Chyrp.&nbsp; Only needed for actions that have more than one parameter.&nbsp; For example, for /tags/ you won&rsquo;t need to do this, but you will for /tag/tag-name/.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Route.remove" >remove</a></td>
+											<td class="SDescription">Removes a route added by <a href="#Route.add" class="LFunction" >add</a>.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Route.current" >current</a></td>
+											<td class="SDescription">Returns a singleton reference to the current class.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.Variables"></a>Variables</h3>
+						</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.$action"></a>$action</h3>
+						<div class="CBody">
+							<pre>public $action</pre><p class="CParagraph">The current action.</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.$try"></a>$try</h3>
+						<div class="CBody">
+							<pre>public $try</pre><p class="CParagraph">An array of (string) actions to try until one doesn&rsquo;t return false.</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.$ajax"></a>$ajax</h3>
+						<div class="CBody">
+							<pre>public $ajax</pre><p class="CParagraph">Shortcut to the AJAX constant (useful for Twig).</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.$success"></a>$success</h3>
+						<div class="CBody">
+							<pre>public $success</pre><p class="CParagraph">Did <a href="#Route.init" class="LFunction" >Route.init</a> call a successful route?</p></div>
+					</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.$controller"></a>$controller</h3>
+						<div class="CBody">
+							<pre>public $controller</pre><p class="CParagraph">The Route&rsquo;s Controller.</p></div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.__construct"></a>__construct</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">private function __construct(</td>
+										<td class="PParameter">$controller</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Parse the URL and to determine what to do.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$controller</td>
+									<td class="CDLDescription">The controller to use.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.init"></a>init</h3>
+						<div class="CBody">
+							<pre>public function init()</pre><p class="CParagraph">Attempt Controller actions until one of them doesn&rsquo;t return false.</p>
+						<p class="CParagraph">This will also call the <code class="inline">[controllername]_xxxxx</code> and <code class="inline">route_xxxxx</code> triggers.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.url"></a>url</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function url(</td>
+										<td class="PParameter">$url,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$controller</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Attempts to change the specified clean URL to a dirty URL if clean URLs is disabled.&nbsp; Use this for linking to things.&nbsp; The applicable URL conversions are passed through the parse_urls trigger.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$url</td>
+									<td class="CDLDescription">The clean URL.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$use_chyrp_url</td>
+									<td class="CDLDescription">Use <code class="inline">Config.chyrp_url</code> instead of <code class="inline">Config.url</code>, when the <code class="inline">$url</code> begins with &ldquo;/&rdquo;?</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">Returns</h4>
+							<p class="CParagraph">A clean or dirty URL, depending on <code class="inline">Config.clean_urls</code>.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.add"></a>add</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function add(</td>
+										<td class="PParameter">$path,</td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$action</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Adds a route to Chyrp.&nbsp; Only needed for actions that have more than one parameter.&nbsp; For example, for /tags/ you won&rsquo;t need to do this, but you will for /tag/tag-name/.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$path</td>
+									<td class="CDLDescription">The path to add.&nbsp; Wrap variables with parentheses, e.g.&nbsp; &ldquo;tag/(name)/&rdquo;.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$action</td>
+									<td class="CDLDescription">The action the path points to.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#Route.remove" class="LFunction" >remove</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.remove"></a>remove</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public function remove(</td>
+										<td class="PParameter">$path</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Removes a route added by <a href="#Route.add" class="LFunction" >add</a>.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$path</td>
+									<td class="CDLDescription">The path to remove.</td>
+								</tr>
+							</table>
+							<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#Route.add" class="LFunction" >add</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Route.current"></a>current</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">public static function &amp; current(</td>
+										<td class="PParameter">$controller</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a singleton reference to the current class.</p>
+						</div>
+					</div>
+				</div>
+			</div><!--Content-->
+		</div>
+		<div class="clear"></div>
+		<div id="footer">
+			<a class="toogeneric" href="http://toogeneric.com/">&#42;</a>
+			Chyrp &copy; Alex Suraci 2007&mdash;
+		</div>
+	</body>
+</html>

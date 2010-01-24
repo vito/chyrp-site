@@ -1,0 +1,1029 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Chyrp Docs: Upgrader</title>
+		<link rel="stylesheet" href="http://chyrp.net/old/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<link rel="stylesheet" href="http://chyrp.net/old/css/docs.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+		<script src="http://chyrp.net/old/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/corner.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://chyrp.net/old/js/docs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/mint/?js" type="text/javascript"></script>
+		</head>
+	<body>
+		<h1 id="chyrp">Chyrp</h1>
+		<img id="logo" src="http://chyrp.net/old/images/logo.png" alt="Chyrp" />
+		<ul id="navigation">
+			<li><a href="http://chyrp.net/old/" title="Home">Home</a></li>
+			<li><a href="http://chyrp.net/old/extend" title="Extend">Extend</a></li>
+			<li><a href="http://chyrp.net/old/download" title="Download">Download</a></li>
+			<li><a href="http://chyrp.net/old/community" title="Community">Community</a></li>
+			<li class="selected"><a href="http://chyrp.net/old/code" title="Code">Code</a></li>
+			<li><a href="http://chyrp.net/old/blog" title="Blog">Blog</a></li>
+		</ul>
+		<div id="content">
+			<div id="Menu">
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Core</a>
+						<div class="MGroupContent" id="MGroupContent1">
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/common-php.html">Common</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/helpers-php.html">Helpers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/xmlrpc-php.html">XML-RPC</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile" id="MSelected">Upgrader</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Models</a>
+						<div class="MGroupContent" id="MGroupContent2">
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/model/Post-php.html">Post</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/model/Page-php.html">Page</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/model/User-php.html">User</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/model/Group-php.html">Group</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/model/Visitor-php.html">Visitor</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Controllers</a>
+						<div class="MGroupContent" id="MGroupContent3">
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/controller/Main-php.html">Main Controller</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/controller/Admin-php.html">Admin Controller</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Classes</a>
+						<div class="MGroupContent" id="MGroupContent4">
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Config-php.html">Config</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/SQL-php.html">SQL</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Query-php.html">Query</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Modules-php.html">Modules</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Feathers-php.html">Feathers</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Flash-php.html">Flash</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Model-php.html">Model</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Theme-php.html">Theme</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Trigger-php.html">Trigger</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Route-php.html">Route</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Paginator-php.html">Paginator</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/Session-php.html">Session</a></div>
+							</div>
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/class/QueryBuilder-php.html">QueryBuilder</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="MEntry">
+					<div class="MGroup">
+						<a>Interfaces</a>
+						<div class="MGroupContent" id="MGroupContent5">
+							<div class="MEntry">
+								<div class="MFile"><a href="includes/interface/Feather-php.html">Feather</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--Menu-->
+			<div id="Content">
+				<div class="CFile">
+					<div class="CTopic" id="MainTopic">
+						<h1 class="CTitle"><a name="Upgrader"></a>Upgrader</h1>
+						<div class="CBody">
+							<p class="CParagraph">A task-based general-purpose Chyrp upgrader.</p>
+						<p class="CParagraph">Performs upgrade functions based on individual tasks, and checks whether or not they need to be done.</p>
+						<p class="CParagraph">Version-agnostic.&nbsp; Completely safe to be run at all times, by anyone.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SMain">
+											<td class="SEntry"><a href="#Upgrader" >Upgrader</a></td>
+											<td class="SDescription">A task-based general-purpose Chyrp upgrader.</td>
+										</tr>
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#config_file" >config_file</a></td>
+											<td class="SDescription">Returns what config file their install is set up for.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#database_file" >database_file</a></td>
+											<td class="SDescription">Returns what database config file their install is set up for.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#using_yaml" >using_yaml</a></td>
+											<td class="SDescription">Are they using YAML config storage?</td>
+										</tr>
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Files" >Files</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFile SIndent1 SMarked">
+											<td class="SEntry"><a href="#Helpers" >Helpers</a></td>
+											<td class="SDescription">Various functions used throughout Chyrp&rsquo;s code.</td>
+										</tr>
+										<tr class="SFile SIndent1">
+											<td class="SEntry"><a href="#Gettext" >Gettext</a></td>
+											<td class="SDescription">Gettext library.</td>
+										</tr>
+										<tr class="SFile SIndent1 SMarked">
+											<td class="SEntry"><a href="#Streams" >Streams</a></td>
+											<td class="SDescription">Streams library.</td>
+										</tr>
+										<tr class="SFile SIndent1">
+											<td class="SEntry"><a href="#YAML" >YAML</a></td>
+											<td class="SDescription">Horde YAML parsing library.</td>
+										</tr>
+										<tr class="SFile SIndent1 SMarked">
+											<td class="SEntry"><a href="#SQL" >SQL</a></td>
+											<td class="SDescription"><a href="#SQL" class="LFile" >SQL</a></td>
+										</tr>
+										<tr class="SClass">
+											<td class="SEntry"><a href="#Config" >Config</a></td>
+											<td class="SDescription">Handles writing to whichever config file they&rsquo;re using.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Config.Variables" >Variables</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SVariable SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.$yaml" >$yaml</a></td>
+											<td class="SDescription">Stores all of the YAML data.</td>
+										</tr>
+										<tr class="SGroup SIndent1">
+											<td class="SEntry"><a href="#Config.Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.get" >get</a></td>
+											<td class="SDescription">Returns a config setting.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.set" >set</a></td>
+											<td class="SDescription">Sets a config setting.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.check" >check</a></td>
+											<td class="SDescription">Goes a config exist?</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.fallback" >fallback</a></td>
+											<td class="SDescription">Sets a config setting to $value if it does not exist.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.remove" >remove</a></td>
+											<td class="SDescription">Removes a setting if it exists.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.test" >test</a></td>
+											<td class="SDescription">Attempts to perform a task, and displays a &ldquo;success&rdquo; or &ldquo;failed&rdquo; message determined by the outcome.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.fix_htaccess" >fix_htaccess</a></td>
+											<td class="SDescription">Repairs their .htaccess file.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.tweets_to_posts" >tweets_to_posts</a></td>
+											<td class="SDescription">Enacts the &ldquo;tweet&rdquo; to &ldquo;post&rdquo; rename.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.pages_parent_id_column" >pages_parent_id_column</a></td>
+											<td class="SDescription">Adds the <code class="inline">parent_id</code> column to the &ldquo;pages&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.pages_list_order_column" >pages_list_order_column</a></td>
+											<td class="SDescription">Adds the <code class="inline">list_order</code> column to the &ldquo;pages&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.remove_beginning_slash_from_post_url" >remove_beginning_slash_from_post_url</a></td>
+											<td class="SDescription">Removes the slash at the beginning of the post URL setting.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.move_yml_yaml" >move_yml_yaml</a></td>
+											<td class="SDescription">Renames config.yml.php to config.yaml.php.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.update_protection" >update_protection</a></td>
+											<td class="SDescription">Updates the PHP protection code in the config file.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.theme_default_to_stardust" >theme_default_to_stardust</a></td>
+											<td class="SDescription">Changes their theme from &ldquo;default&rdquo; to &ldquo;stardust&rdquo;, or leaves it alone if they&rsquo;re not using &ldquo;default&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.default_db_adapter_to_mysql" >default_db_adapter_to_mysql</a></td>
+											<td class="SDescription">Adds an &ldquo;adapter&rdquo; SQL setting if it doesn&rsquo;t exist, and sets it to &ldquo;mysql&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.move_upload" >move_upload</a></td>
+											<td class="SDescription">Renames the &ldquo;upload&rdquo; directory to &ldquo;uploads&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.make_posts_xml" >make_posts_xml</a></td>
+											<td class="SDescription">Updates all of the post XML data to well-formed non-CDATAized XML.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.rss_posts_to_feed_items" >rss_posts_to_feed_items</a></td>
+											<td class="SDescription">Rename the feed items setting.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.update_groups_to_yaml" >update_groups_to_yaml</a></td>
+											<td class="SDescription">Updates the groups to use YAML-based permissions instead of table columns.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.add_permissions_table" >add_permissions_table</a></td>
+											<td class="SDescription">Creates the &ldquo;permissions&rdquo; table and fills it in with the default set.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.add_sessions_table" >add_sessions_table</a></td>
+											<td class="SDescription">Creates the &ldquo;sessions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.update_permissions_table" >update_permissions_table</a></td>
+											<td class="SDescription">Updates the &ldquo;permissions&rdquo; table from ## (id) =&gt; foo_bar (name) to foo_bar (id) =&gt; Foo Bar (name).</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.update_custom_routes" >update_custom_routes</a></td>
+											<td class="SDescription">Updates the custom routes to be path =&gt; action instead of # =&gt; path.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.remove_database_config_file" >remove_database_config_file</a></td>
+											<td class="SDescription">Removes the database.yaml.php file, which is merged into config.yaml.php.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.rename_database_setting_to_sql" >rename_database_setting_to_sql</a></td>
+											<td class="SDescription">Renames the &ldquo;database&rdquo; config setting to &ldquo;sql&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.update_post_status_column" >update_post_status_column</a></td>
+											<td class="SDescription">Updates the <code class="inline">status</code> column on the &ldquo;posts&rdquo; table to be a generic varchar field instead of enum.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.add_post_attributes_table" >add_post_attributes_table</a></td>
+											<td class="SDescription">Adds the &ldquo;post_attributes&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.post_xml_to_db" >post_xml_to_db</a></td>
+											<td class="SDescription">Migrates the XML post attributes to the &ldquo;post_attributes&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.add_group_id_to_permissions" >add_group_id_to_permissions</a></td>
+											<td class="SDescription">Adds the <code class="inline">group_id</code> column to the &ldquo;permissions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.group_permissions_to_db" >group_permissions_to_db</a></td>
+											<td class="SDescription">Migrates the group permissions from a YAML column to the &ldquo;permissions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent2 SMarked">
+											<td class="SEntry"><a href="#Config.remove_old_files" >remove_old_files</a></td>
+											<td class="SDescription">Removes old/unused files from previous installs.</td>
+										</tr>
+										<tr class="SFunction SIndent2">
+											<td class="SEntry"><a href="#Config.update_user_password_column" >update_user_password_column</a></td>
+											<td class="SDescription">Updates the <code class="inline">password</code> column on the &ldquo;users&rdquo; table to have a length of 60.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="config_file"></a>config_file</h3>
+						<div class="CBody">
+							<pre>function config_file()</pre><p class="CParagraph">Returns what config file their install is set up for.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="database_file"></a>database_file</h3>
+						<div class="CBody">
+							<pre>function database_file()</pre><p class="CParagraph">Returns what database config file their install is set up for.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="using_yaml"></a>using_yaml</h3>
+						<div class="CBody">
+							<pre>function using_yaml()</pre><p class="CParagraph">Are they using YAML config storage?</p>
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Files"></a>Files</h3>
+						</div>
+				</div>
+				<div class="CFile">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Helpers"></a>Helpers</h3>
+						<div class="CBody">
+							<p class="CParagraph">Various functions used throughout Chyrp&rsquo;s code.</p></div>
+					</div>
+				</div>
+				<div class="CFile">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Gettext"></a>Gettext</h3>
+						<div class="CBody">
+							<p class="CParagraph">Gettext library.</p></div>
+					</div>
+				</div>
+				<div class="CFile">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Streams"></a>Streams</h3>
+						<div class="CBody">
+							<p class="CParagraph">Streams library.</p></div>
+					</div>
+				</div>
+				<div class="CFile">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="YAML"></a>YAML</h3>
+						<div class="CBody">
+							<p class="CParagraph">Horde YAML parsing library.</p></div>
+					</div>
+				</div>
+				<div class="CFile">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="SQL"></a>SQL</h3>
+						<div class="CBody">
+								<h4 class="CHeading">See Also</h4>
+							<p class="CParagraph"><a href="#SQL" class="LFile" >SQL</a></p></div>
+					</div>
+				</div>
+				<div class="CClass">
+					<div class="CTopic">
+						<h2 class="CTitle"><a name="Config"></a>Config</h2>
+						<div class="CBody">
+							<p class="CParagraph">Handles writing to whichever config file they&rsquo;re using.</p>
+						
+							<!--START_ND_SUMMARY-->
+							<div class="Summary">
+								<div class="STitle">Summary</div>
+								<div class="SBody">
+									<table border="0" cellspacing="0" cellpadding="0" class="STable">
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Config.Variables" >Variables</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SVariable SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.$yaml" >$yaml</a></td>
+											<td class="SDescription">Stores all of the YAML data.</td>
+										</tr>
+										<tr class="SGroup">
+											<td class="SEntry"><a href="#Config.Functions" >Functions</a></td>
+											<td class="SDescription"></td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.get" >get</a></td>
+											<td class="SDescription">Returns a config setting.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.set" >set</a></td>
+											<td class="SDescription">Sets a config setting.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.check" >check</a></td>
+											<td class="SDescription">Goes a config exist?</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.fallback" >fallback</a></td>
+											<td class="SDescription">Sets a config setting to $value if it does not exist.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.remove" >remove</a></td>
+											<td class="SDescription">Removes a setting if it exists.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.test" >test</a></td>
+											<td class="SDescription">Attempts to perform a task, and displays a &ldquo;success&rdquo; or &ldquo;failed&rdquo; message determined by the outcome.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.fix_htaccess" >fix_htaccess</a></td>
+											<td class="SDescription">Repairs their .htaccess file.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.tweets_to_posts" >tweets_to_posts</a></td>
+											<td class="SDescription">Enacts the &ldquo;tweet&rdquo; to &ldquo;post&rdquo; rename.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.pages_parent_id_column" >pages_parent_id_column</a></td>
+											<td class="SDescription">Adds the <code class="inline">parent_id</code> column to the &ldquo;pages&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.pages_list_order_column" >pages_list_order_column</a></td>
+											<td class="SDescription">Adds the <code class="inline">list_order</code> column to the &ldquo;pages&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.remove_beginning_slash_from_post_url" >remove_beginning_slash_from_post_url</a></td>
+											<td class="SDescription">Removes the slash at the beginning of the post URL setting.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.move_yml_yaml" >move_yml_yaml</a></td>
+											<td class="SDescription">Renames config.yml.php to config.yaml.php.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.update_protection" >update_protection</a></td>
+											<td class="SDescription">Updates the PHP protection code in the config file.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.theme_default_to_stardust" >theme_default_to_stardust</a></td>
+											<td class="SDescription">Changes their theme from &ldquo;default&rdquo; to &ldquo;stardust&rdquo;, or leaves it alone if they&rsquo;re not using &ldquo;default&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.default_db_adapter_to_mysql" >default_db_adapter_to_mysql</a></td>
+											<td class="SDescription">Adds an &ldquo;adapter&rdquo; SQL setting if it doesn&rsquo;t exist, and sets it to &ldquo;mysql&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.move_upload" >move_upload</a></td>
+											<td class="SDescription">Renames the &ldquo;upload&rdquo; directory to &ldquo;uploads&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.make_posts_xml" >make_posts_xml</a></td>
+											<td class="SDescription">Updates all of the post XML data to well-formed non-CDATAized XML.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.rss_posts_to_feed_items" >rss_posts_to_feed_items</a></td>
+											<td class="SDescription">Rename the feed items setting.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.update_groups_to_yaml" >update_groups_to_yaml</a></td>
+											<td class="SDescription">Updates the groups to use YAML-based permissions instead of table columns.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.add_permissions_table" >add_permissions_table</a></td>
+											<td class="SDescription">Creates the &ldquo;permissions&rdquo; table and fills it in with the default set.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.add_sessions_table" >add_sessions_table</a></td>
+											<td class="SDescription">Creates the &ldquo;sessions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.update_permissions_table" >update_permissions_table</a></td>
+											<td class="SDescription">Updates the &ldquo;permissions&rdquo; table from ## (id) =&gt; foo_bar (name) to foo_bar (id) =&gt; Foo Bar (name).</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.update_custom_routes" >update_custom_routes</a></td>
+											<td class="SDescription">Updates the custom routes to be path =&gt; action instead of # =&gt; path.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.remove_database_config_file" >remove_database_config_file</a></td>
+											<td class="SDescription">Removes the database.yaml.php file, which is merged into config.yaml.php.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.rename_database_setting_to_sql" >rename_database_setting_to_sql</a></td>
+											<td class="SDescription">Renames the &ldquo;database&rdquo; config setting to &ldquo;sql&rdquo;.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.update_post_status_column" >update_post_status_column</a></td>
+											<td class="SDescription">Updates the <code class="inline">status</code> column on the &ldquo;posts&rdquo; table to be a generic varchar field instead of enum.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.add_post_attributes_table" >add_post_attributes_table</a></td>
+											<td class="SDescription">Adds the &ldquo;post_attributes&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.post_xml_to_db" >post_xml_to_db</a></td>
+											<td class="SDescription">Migrates the XML post attributes to the &ldquo;post_attributes&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.add_group_id_to_permissions" >add_group_id_to_permissions</a></td>
+											<td class="SDescription">Adds the <code class="inline">group_id</code> column to the &ldquo;permissions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.group_permissions_to_db" >group_permissions_to_db</a></td>
+											<td class="SDescription">Migrates the group permissions from a YAML column to the &ldquo;permissions&rdquo; table.</td>
+										</tr>
+										<tr class="SFunction SIndent1 SMarked">
+											<td class="SEntry"><a href="#Config.remove_old_files" >remove_old_files</a></td>
+											<td class="SDescription">Removes old/unused files from previous installs.</td>
+										</tr>
+										<tr class="SFunction SIndent1">
+											<td class="SEntry"><a href="#Config.update_user_password_column" >update_user_password_column</a></td>
+											<td class="SDescription">Updates the <code class="inline">password</code> column on the &ldquo;users&rdquo; table to have a length of 60.</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--END_ND_SUMMARY-->
+						</div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.Variables"></a>Variables</h3>
+						</div>
+				</div>
+				<div class="CVariable">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.$yaml"></a>$yaml</h3>
+						<div class="CBody">
+							<pre>static $yaml</pre><p class="CParagraph">Stores all of the YAML data.</p></div>
+					</div>
+				</div>
+				<div class="CGroup">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.Functions"></a>Functions</h3>
+						</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.get"></a>get</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">static function get(</td>
+										<td class="PParameter">$setting</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Returns a config setting.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$setting</td>
+									<td class="CDLDescription">The setting to return.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.set"></a>set</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">static function set(</td>
+										<td class="PParameter">$setting,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$value,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$message</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sets a config setting.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$setting</td>
+									<td class="CDLDescription">The config setting to set.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$value</td>
+									<td class="CDLDescription">The value for the setting.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$message</td>
+									<td class="CDLDescription">The message to display with test().</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.check"></a>check</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">static function check(</td>
+										<td class="PParameter">$setting</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Goes a config exist?</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$setting</td>
+									<td class="CDLDescription">Name of the config to check.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.fallback"></a>fallback</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">static function fallback(</td>
+										<td class="PParameter">$setting,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$value,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$message</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> null</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Sets a config setting to $value if it does not exist.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$setting</td>
+									<td class="CDLDescription">The config setting to set.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$value</td>
+									<td class="CDLDescription">The value for the setting.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$message</td>
+									<td class="CDLDescription">The message to display with test().</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.remove"></a>remove</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">static function remove(</td>
+										<td class="PParameter">$setting</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Removes a setting if it exists.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$setting</td>
+									<td class="CDLDescription">The setting to remove.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.test"></a>test</h3>
+						<div class="CBody">
+							<div class="code">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td class="PBeforeParameters">function test(</td>
+										<td class="PParameter">$try,</td>
+										<td class="PDefaultValuePrefix">&nbsp;&nbsp;</td>
+										<td class="PDefaultValue"></td>
+										</tr>
+									<tr>
+										<td></td>
+										<td class="PParameter">$message</td>
+										<td class="PDefaultValuePrefix">&nbsp;=&nbsp;</td>
+										<td class="PDefaultValue"> &quot;&quot;</td>
+										<td class="PAfterParameters">)</td>
+									</tr>
+								</table>
+							</div>
+							<p class="CParagraph">Attempts to perform a task, and displays a &ldquo;success&rdquo; or &ldquo;failed&rdquo; message determined by the outcome.</p>
+							<h4 class="CHeading">Parameters</h4>
+							<table border="0" cellspacing="0" cellpadding="0" class="CDescriptionList">
+								<tr>
+									<td class="CDLEntry">$try</td>
+									<td class="CDLDescription">The task to attempt.&nbsp; Should return something that evaluates to true or false.</td>
+								</tr>
+								<tr>
+									<td class="CDLEntry">$message</td>
+									<td class="CDLDescription">Message to display for the test.</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.fix_htaccess"></a>fix_htaccess</h3>
+						<div class="CBody">
+							<pre>function fix_htaccess()</pre><p class="CParagraph">Repairs their .htaccess file.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.tweets_to_posts"></a>tweets_to_posts</h3>
+						<div class="CBody">
+							<pre>function tweets_to_posts()</pre><p class="CParagraph">Enacts the &ldquo;tweet&rdquo; to &ldquo;post&rdquo; rename.</p>
+						<p class="CParagraph">Versions: 1.0.2 =&gt; 1.0.3</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.pages_parent_id_column"></a>pages_parent_id_column</h3>
+						<div class="CBody">
+							<pre>function pages_parent_id_column()</pre><p class="CParagraph">Adds the <code class="inline">parent_id</code> column to the &ldquo;pages&rdquo; table.</p>
+						<p class="CParagraph">Versions: 1.0.3 =&gt; 1.0.4</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.pages_list_order_column"></a>pages_list_order_column</h3>
+						<div class="CBody">
+							<pre>function pages_list_order_column()</pre><p class="CParagraph">Adds the <code class="inline">list_order</code> column to the &ldquo;pages&rdquo; table.</p>
+						<p class="CParagraph">Versions: 1.0.4 =&gt; 1.1.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.remove_beginning_slash_from_post_url"></a>remove_beginning_slash_from_post_url</h3>
+						<div class="CBody">
+							<pre>function remove_beginning_slash_from_post_url()</pre><p class="CParagraph">Removes the slash at the beginning of the post URL setting.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.move_yml_yaml"></a>move_yml_yaml</h3>
+						<div class="CBody">
+							<pre>function move_yml_yaml()</pre><p class="CParagraph">Renames config.yml.php to config.yaml.php.</p>
+						<p class="CParagraph">Versions: 1.1.2 =&gt; 1.1.3</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_protection"></a>update_protection</h3>
+						<div class="CBody">
+							<pre>function update_protection()</pre><p class="CParagraph">Updates the PHP protection code in the config file.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.theme_default_to_stardust"></a>theme_default_to_stardust</h3>
+						<div class="CBody">
+							<pre>function theme_default_to_stardust()</pre><p class="CParagraph">Changes their theme from &ldquo;default&rdquo; to &ldquo;stardust&rdquo;, or leaves it alone if they&rsquo;re not using &ldquo;default&rdquo;.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.default_db_adapter_to_mysql"></a>default_db_adapter_to_mysql</h3>
+						<div class="CBody">
+							<pre>function default_db_adapter_to_mysql()</pre><p class="CParagraph">Adds an &ldquo;adapter&rdquo; SQL setting if it doesn&rsquo;t exist, and sets it to &ldquo;mysql&rdquo;.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.move_upload"></a>move_upload</h3>
+						<div class="CBody">
+							<pre>function move_upload()</pre><p class="CParagraph">Renames the &ldquo;upload&rdquo; directory to &ldquo;uploads&rdquo;.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.make_posts_xml"></a>make_posts_xml</h3>
+						<div class="CBody">
+							<p class="CParagraph">Updates all of the post XML data to well-formed non-CDATAized XML.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.rss_posts_to_feed_items"></a>rss_posts_to_feed_items</h3>
+						<div class="CBody">
+							<pre>function rss_posts_to_feed_items()</pre><p class="CParagraph">Rename the feed items setting.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_groups_to_yaml"></a>update_groups_to_yaml</h3>
+						<div class="CBody">
+							<pre>function update_groups_to_yaml()</pre><p class="CParagraph">Updates the groups to use YAML-based permissions instead of table columns.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.add_permissions_table"></a>add_permissions_table</h3>
+						<div class="CBody">
+							<pre>function add_permissions_table()</pre><p class="CParagraph">Creates the &ldquo;permissions&rdquo; table and fills it in with the default set.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.add_sessions_table"></a>add_sessions_table</h3>
+						<div class="CBody">
+							<pre>function add_sessions_table()</pre><p class="CParagraph">Creates the &ldquo;sessions&rdquo; table.</p>
+						<p class="CParagraph">Versions: 1.1.3.2 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_permissions_table"></a>update_permissions_table</h3>
+						<div class="CBody">
+							<pre>function update_permissions_table()</pre><p class="CParagraph">Updates the &ldquo;permissions&rdquo; table from ## (id) =&gt; foo_bar (name) to foo_bar (id) =&gt; Foo Bar (name).</p>
+						<p class="CParagraph">Versions: 2.0b =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_custom_routes"></a>update_custom_routes</h3>
+						<div class="CBody">
+							<pre>function update_custom_routes()</pre><p class="CParagraph">Updates the custom routes to be path =&gt; action instead of # =&gt; path.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.remove_database_config_file"></a>remove_database_config_file</h3>
+						<div class="CBody">
+							<pre>function remove_database_config_file()</pre><p class="CParagraph">Removes the database.yaml.php file, which is merged into config.yaml.php.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.rename_database_setting_to_sql"></a>rename_database_setting_to_sql</h3>
+						<div class="CBody">
+							<pre>function rename_database_setting_to_sql()</pre><p class="CParagraph">Renames the &ldquo;database&rdquo; config setting to &ldquo;sql&rdquo;.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_post_status_column"></a>update_post_status_column</h3>
+						<div class="CBody">
+							<pre>function update_post_status_column()</pre><p class="CParagraph">Updates the <code class="inline">status</code> column on the &ldquo;posts&rdquo; table to be a generic varchar field instead of enum.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.add_post_attributes_table"></a>add_post_attributes_table</h3>
+						<div class="CBody">
+							<pre>function add_post_attributes_table()</pre><p class="CParagraph">Adds the &ldquo;post_attributes&rdquo; table.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.post_xml_to_db"></a>post_xml_to_db</h3>
+						<div class="CBody">
+							<pre>function post_xml_to_db()</pre><p class="CParagraph">Migrates the XML post attributes to the &ldquo;post_attributes&rdquo; table.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.add_group_id_to_permissions"></a>add_group_id_to_permissions</h3>
+						<div class="CBody">
+							<pre>function add_group_id_to_permissions()</pre><p class="CParagraph">Adds the <code class="inline">group_id</code> column to the &ldquo;permissions&rdquo; table.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.group_permissions_to_db"></a>group_permissions_to_db</h3>
+						<div class="CBody">
+							<pre>function group_permissions_to_db()</pre><p class="CParagraph">Migrates the group permissions from a YAML column to the &ldquo;permissions&rdquo; table.</p>
+						<p class="CParagraph">Versions: 2.0rc1 =&gt; 2.0rc2</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.remove_old_files"></a>remove_old_files</h3>
+						<div class="CBody">
+							<pre>function remove_old_files()</pre><p class="CParagraph">Removes old/unused files from previous installs.</p>
+						</div>
+					</div>
+				</div>
+				<div class="CFunction">
+					<div class="CTopic">
+						<h3 class="CTitle"><a name="Config.update_user_password_column"></a>update_user_password_column</h3>
+						<div class="CBody">
+							<pre>function update_user_password_column()</pre><p class="CParagraph">Updates the <code class="inline">password</code> column on the &ldquo;users&rdquo; table to have a length of 60.</p>
+						<p class="CParagraph">Versions: 2.0rc3 =&gt; 2.0</p>
+						</div>
+					</div>
+				</div>
+			</div><!--Content-->
+		</div>
+		<div class="clear"></div>
+		<div id="footer">
+			<a class="toogeneric" href="http://toogeneric.com/">&#42;</a>
+			Chyrp &copy; Alex Suraci 2007&mdash;
+		</div>
+	</body>
+</html>
