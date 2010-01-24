@@ -16,9 +16,9 @@ $topic.title
         </h3>
         <ul>
             <li><strong>Posts:</strong> $topic.user.message_count</li>
-            <li><strong>Topic Created:</strong> ${ topic.created_at | relative }</li>
+            <li><strong>Topic Created:</strong> <abbr class="relatize">${ topic.created_at | strftime("%c %z") }</abbr></li>
             {% if topic.updated %}
-            <li><strong>Topic Updated:</strong> ${ topic.updated_at | relative }</li>
+            <li><strong>Topic Updated:</strong> <abbr class="relatize">${ topic.updated_at | strftime("%c %z") }</abbr></li>
             {% endif %}
         </ul>
         {% if topic.editable or topic.deletable %}

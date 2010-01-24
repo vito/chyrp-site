@@ -12,7 +12,7 @@
             <li>Loves: <strong>$ver.loves</strong></li>
             <li>Downloads: <strong>$ver.downloads</strong></li>
             <li>Notes: <strong>$ver.note_count</strong></li>
-            <li>Last updated: <strong>${ ver.updated_at | fallback(ver.created_at) | relative }</strong></li>
+            <li>Last updated: <strong><abbr class="relatize">${ ver.updated_at | fallback(ver.created_at) | strftime("%c %z") }</abbr></strong></li>
         </ul>
         {% if ver.image %}
         <a class="preview" href="${ ver.image | uploaded }" style="background-image: url('$site.chyrp_url/includes/thumb.php?file=../uploads/$ver.image&amp;max_width=250px')"></a>

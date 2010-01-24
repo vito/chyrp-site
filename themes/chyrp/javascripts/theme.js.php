@@ -61,6 +61,11 @@ $(function(){
         return false;
     });
 
+    $(".relatize").each(function(){
+        $(this).attr("title", $(this).text());
+        $(this).relatizeDate();
+    });
+
     if (Cookie.get("hide_debug") == "true") {
         $("#debug").height(17);
         $("#debug").css("overflow-y", "hidden");

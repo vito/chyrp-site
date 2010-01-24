@@ -7,7 +7,7 @@
         <h4>Last Message</h4>
         <ul class="content">
             {% if topic.last_message %}
-            <li><a href="$topic.latest_message.url" title="${ topic.latest_message.created_at | relative }">${ topic.latest_message.created_at | relative }</a></li>
+            <li><a href="$topic.latest_message.url"><abbr class="relatize">${ topic.latest_message.created_at | strftime("%c %z") }</abbr></a></li>
             <li>by <a href="$topic.latest_message.user.url">$topic.latest_message.user.login</a></li>
             {% else %}
             <li>never</li>

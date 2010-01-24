@@ -10,15 +10,17 @@
     # Parse the route.
     $route = Route::current($extend);
 
-	if (module_enabled("cacher") and !empty(Modules::$instances["cacher"]->cacher->path)) {
-	  $cacher =& Modules::$instances["cacher"]->cacher;
+    if (module_enabled("cacher") and !empty(Modules::$instances["cacher"]->cacher->path)) {
+        $cacher =& Modules::$instances["cacher"]->cacher;
 
-	  $cacher->caches = INCLUDES_DIR."/caches/extend";
-	  $cacher->path = str_replace(INCLUDES_DIR."/caches",
-								  INCLUDES_DIR."/caches/extend",
-								  $cacher->path);
-	  $cacher->file = $cacher->path."/".md5($cacher->url).".html";
-	}
+        $cacher->caches = INCLUDES_DIR."/caches/extend";
+        $cacher->path = str_replace(INCLUDES_DIR."/caches",
+                                    INCLUDES_DIR."/caches/extend",
+                                    $cacher->path);
+        $cacher->file = $cacher->path."/".md5($cacher->url).".html";
+
+        $cacher->remove_expired();
+    }
 
     # Execute the appropriate Controller responder.
     $route->init();

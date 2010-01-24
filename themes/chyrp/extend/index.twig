@@ -23,7 +23,7 @@
         <ul class="content">
             {% if type.latest_activity %}
             <li><a href="$type.latest_activity.url">${ type.latest_activity.name | truncate(100) } v$type.latest_activity.latest_version.number</a></li>
-            <li>${ type.latest_activity.last_update | relative }</li>
+            <li><abbr class="relatize">${ type.latest_activity.last_update | strftime("%c %z") }</abbr></li>
             <li>by <a href="$type.latest_activity.user.url">$type.latest_activity.user.login</a></li>
             {% else %}
             <li>none</li>

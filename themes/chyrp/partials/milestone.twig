@@ -2,7 +2,7 @@
         <h2><a href="$milestone.url">$milestone.name</a></h2>
 
         <p class="info">
-            <span>$milestone.open_tickets</span> open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due <span class="{% if milestone.due | strtotime > now %}good{% else %}bad{% endif %}">${ milestone.due | relative }</span>{% endif %}
+            <span>$milestone.open_tickets</span> open ${ "ticket" | pluralize(milestone.open_tickets) }{% if milestone.due != "0000-00-00 00:00:00" %}, due <abbr class="relatize {% if milestone.due | strtotime > now %}good{% else %}bad{% endif %}">${ milestone.due | strftime("%c %z") }</span>{% endif %}
         </p>
 
         <div class="description">

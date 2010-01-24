@@ -17,6 +17,6 @@
             <span class="sub">(no one)</span>
             {% endif %}
         </td>
-        <td>${ ticket.last_activity | relative | replace(" ago", " old") }</td>
+        <td><abbr class="relatize">${ ticket.last_activity | strftime("%c %z") }</abbr></td>
     </tr>
 

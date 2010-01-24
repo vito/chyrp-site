@@ -6,9 +6,9 @@
         </h3>
         <ul>
             <li><strong>Posts:</strong> $message.user.message_count</li>
-            <li><strong>Created:</strong> ${ message.created_at | relative }</li>
+            <li><strong>Created:</strong> <abbr class="relatize">${ message.created_at | strftime("%c %z") }</abbr></li>
             {% if message.updated %}
-            <li><strong>Updated:</strong> ${ message.updated_at | relative }</li>
+            <li><strong>Updated:</strong> <abbr class="relatize">${ message.updated_at | strftime("%c %z") }</abbr></li>
             {% endif %}
             <li><strong>{% if route.action == "topic" %}Permalink{% else %}Context{% endif %}:</strong> <a href="${ message.url(true) }">$message.topic.title</a></li>
         </ul>

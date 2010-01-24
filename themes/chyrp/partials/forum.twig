@@ -10,7 +10,7 @@
             {% else %}
             <li><a href="$forum.latest_activity.url" title="${ forum.latest_activity.title | escape(true) }">${ forum.latest_activity.title | truncate(100) }</a></li>
             {% endif %}
-            <li>${ forum.last_activity | relative }</li>
+            <li><abbr class="relatize" title="${ forum.last_activity | strftime("%c %z") }">${ forum.last_activity | strftime("%c %z") }</abbr></li>
             <li>by <a href="$forum.latest_activity.user.url">$forum.latest_activity.user.login</a></li>
             {% else %}
             <li>never</li>
