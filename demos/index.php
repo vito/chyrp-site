@@ -19,7 +19,7 @@
     }
     closedir($open);
     
-    $num = (max($numbers) + 1);
+    $num = "demo".(max($numbers) + 1);
     
     dircopy("__stock", $num);
     
@@ -168,7 +168,7 @@
     $settings['host'] = "localhost";
     $settings['username'] = "";
     $settings['password'] = "";
-    $settings['database'] = "/srv/db/demos/demo".$num.".db";
+    $settings['database'] = "/srv/db/demos/".$num.".db";
     $settings['prefix'] = "";
     $settings['adapter'] = "sqlite";
     $settings['name'] = "Chyrp Demo";
